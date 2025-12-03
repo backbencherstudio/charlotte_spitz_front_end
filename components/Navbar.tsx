@@ -20,7 +20,7 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <header className="bg-[#000000] py-5 px-[140px]">
+    <header className="bg-[#000000] py-5">
       <div className="container mx-auto flex justify-between items-center">
         {/* Left: Logo */}
         <div className="text-[#5952FF] text-3xl font-bold tracking-wide">
