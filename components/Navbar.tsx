@@ -15,11 +15,9 @@ import {
 import { cn } from "@/lib/utils";
 
 const menuItems = [
-  { en: "Home", bn: "হোম", slug: "/" },
-  { en: "Apartment", bn: "অ্যাপার্টমেন্ট", slug: "/apartments" },
-  { en: "Hotel", bn: "হোটেল", slug: "/hotels" },
-  { en: "Tours", bn: "ট্যুর", slug: "/tours" },
-  { en: "Contact Us", bn: "যোগাযোগ", slug: "/contact" },
+  { label: "How it works" },
+  { label: "Pricing " },
+  { label: "Testimonials" },
 ];
 
 export default function Navbar() {
@@ -28,25 +26,25 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <header className="bg-primaryColor py-4 px-4">
+    <header className="bg-[#000000] py-5 px-[140px]">
       <div className="container mx-auto flex justify-between items-center">
         {/* Left: Logo */}
-        <div className="text-white text-3xl font-semibold tracking-wide">
-          LOGO
+        <div className="text-[#5952FF] text-3xl font-bold tracking-wide">
+          CVdigger
         </div>
 
         {/* Desktop Menu */}
         <nav className="hidden md:flex space-x-6 text-base">
           {menuItems.map((item) => (
             <Link
-              key={item.slug}
-              href={item.slug}
+              key={item.label}
+              href={item.label}
               className={cn(
                 "hover:text-secondaryColor transition",
-                pathname === item.slug ? "text-secondaryColor" : "text-white"
+                pathname === item.label ? "text-secondaryColor" : "text-white"
               )}
             >
-              {language === "en" ? item.en : item.bn}
+              {item.label}
             </Link>
           ))}
         </nav>
@@ -95,15 +93,15 @@ export default function Navbar() {
         <div className="md:hidden px-4 mt-4 space-y-3">
           {menuItems.map((item) => (
             <Link
-              key={item.slug}
-              href={item.slug}
+              key={item.label}
+              href={item.label}
               className={cn(
                 "block text-base py-2",
-                pathname === item.slug ? "text-secondaryColor" : "text-white"
+                pathname === item.label ? "text-secondaryColor" : "text-white"
               )}
               onClick={() => setMenuOpen(false)}
             >
-              {language === "en" ? item.en : item.bn}
+              {item.label}
             </Link>
           ))}
 
@@ -124,17 +122,16 @@ export default function Navbar() {
                 </option>
               </select>
             </div>
-         
-              <Link href="/login" className="text-white text-base">
-                Login
-              </Link>
-              <Link
-                href="/registration"
-                className="bg-secondaryColor inline-block text-blackColor font-medium cursor-pointer  text-base px-4 py-2 rounded-[8px]"
-              >
-                Sign up
-              </Link>
 
+            <Link href="/login" className="text-white text-base">
+              Login
+            </Link>
+            <Link
+              href="/registration"
+              className="bg-secondaryColor inline-block text-blackColor font-medium cursor-pointer  text-base px-4 py-2 rounded-[8px]"
+            >
+              Sign up
+            </Link>
           </div>
         </div>
       )}
