@@ -6,12 +6,6 @@ import { useState } from "react";
 import { BsGlobe2 } from "react-icons/bs";
 import { HiOutlineMenu, HiX } from "react-icons/hi";
 
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 
 const menuItems = [
@@ -50,28 +44,16 @@ export default function Navbar() {
         </nav>
 
         {/* Right: Language, Auth Buttons */}
-        <div className="hidden md:flex items-center space-x-[14px]">
-          {/* Language Dropdown */}
-          <DropdownMenu>
-            <DropdownMenuTrigger className="text-white text-base flex focus:outline-0 cursor-pointer items-center gap-[6px]">
-              <BsGlobe2 /> {language.toUpperCase()}
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => setLanguage("en")}>
-                English
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setLanguage("bn")}>
-                বাংলা
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-
-          <Link href="/login" className="text-white text-base">
+        <div className="flex items-center space-x-3.5">
+          <Link
+            href="/login"
+            className="text-white text-base bg-transparent border border-white px-6 py-2 rounded-full"
+          >
             Login
           </Link>
           <Link
-            href="/registration"
-            className="bg-secondaryColor text-blackColor font-medium cursor-pointer  text-base px-4 py-2 rounded-[8px]"
+            href="/signup"
+            className=" text-white font-medium cursor-pointer  text-base px-6 py-2 rounded-full bg-[#5952FF]"
           >
             Sign up
           </Link>

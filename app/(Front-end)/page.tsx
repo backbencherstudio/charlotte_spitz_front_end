@@ -1,3 +1,11 @@
+import HowItWorks from "@/components/Home/HowItWork";
+import TestimonialsSlider from "@/components/Home/TestimonialsSlider";
+
 export default function Home() {
-  return <div className="">Home</div>;
+  return (
+    <>
+      <HowItWorks />
+      <TestimonialsSlider />
+    </>
+  );
 }

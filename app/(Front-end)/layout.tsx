@@ -5,7 +5,9 @@ import React from "react";
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen flex flex-col">
-      {/* <Navbar /> */}
+      <div className="sticky top-0 z-50">
+        <Navbar />
+      </div>
       <main className="grow">{children}</main>
       <Footer />
     </div>
