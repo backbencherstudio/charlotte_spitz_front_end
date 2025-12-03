@@ -52,7 +52,7 @@ export function ATSDashboard() {
             </div>
 
             {/* Progress bar */}
-            <Progress value={item.score} className="h-2" />
+            <Progress value={item.score} className="h-3" />
 
             {/* Optional description */}
             {item.description && (
