@@ -102,7 +102,7 @@ export default function SubscriptionFormPage() {
       </div>
 
       {/* Form Card */}
-      <div className="bg-white rounded-lg p-6 shadow-sm max-w-2xl">
+      <div className="bg-white rounded-lg p-6 shadow-sm ">
         <div className="space-y-6">
           <div className="flex gap-4">
             {/* Plan Duration */}
