@@ -115,14 +115,14 @@ export default function TestimonialsSlider() {
       <div className="flex justify-center items-center gap-4">
         <button
           onClick={goToPrevious}
-          className="p-3 rounded-full bg-[#2563EB] text-white hover:bg-[#1E40AF] transition-colors duration-200 shadow-lg cursor-pointer"
+          className="p-3 rounded-full bg-[#2563EB] text-white hover:bg-[#2563EB]/90 transition-colors duration-200 shadow-lg cursor-pointer"
           aria-label="Previous testimonial"
         >
           <ChevronLeft className="w-5 h-5" />
         </button>
         <button
           onClick={goToNext}
-          className="p-3 rounded-full bg-[#2563EB] text-white hover:bg-[#1E40AF] transition-colors duration-200 shadow-lg cursor-pointer"
+          className="p-3 rounded-full bg-[#2563EB] text-white hover:bg-[#2563EB]/90 transition-colors duration-200 shadow-lg cursor-pointer"
           aria-label="Next testimonial"
         >
           <ChevronRight className="w-5 h-5" />
