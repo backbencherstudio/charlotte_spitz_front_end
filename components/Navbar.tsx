@@ -12,7 +12,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { cn } from "@/lib/utils";
 
 const menuItems = [
   { en: "Home", bn: "হোম", slug: "/" },
@@ -124,17 +123,16 @@ export default function Navbar() {
                 </option>
               </select>
             </div>
-         
-              <Link href="/login" className="text-white text-base">
-                Login
-              </Link>
-              <Link
-                href="/registration"
-                className="bg-secondaryColor inline-block text-blackColor font-medium cursor-pointer  text-base px-4 py-2 rounded-[8px]"
-              >
-                Sign up
-              </Link>
 
+            <Link href="/login" className="text-white text-base">
+              Login
+            </Link>
+            <Link
+              href="/registration"
+              className="bg-secondaryColor inline-block text-blackColor font-medium cursor-pointer  text-base px-4 py-2 rounded-[8px]"
+            >
+              Sign up
+            </Link>
           </div>
         </div>
       )}
