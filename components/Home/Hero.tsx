@@ -105,7 +105,6 @@ const HeroSection = () => {
                 </div>
               </div>
             </div>
-
             <button className="flex hover:scale-105 hover:shadow-lg hover:shadow-primaryColor/80  group items-center gap-2 bg-primaryColor hover:bg-primaryColor/90 text-white font-semibold px-8 py-4 rounded-full transition-all duration-300 text-lg cursor-pointer">
               Create a Resume
               <MdArrowOutward className="w-5 h-5  group-hover:rotate-45 transition-transform duration-200" />
