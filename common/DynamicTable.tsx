@@ -135,7 +135,7 @@ export default function DynamicTableWithPagination({
             <div className="relative" ref={filterDropdownRef}>
               <button
                 onClick={() => setShowFilterDropdown(!showFilterDropdown)}
-                className="flex items-center gap-1 px-2 sm:px-3 py-1.5 border rounded text-xs sm:text-sm text-[#4a4c56] hover:bg-gray-50"
+                className="flex items-center gap-1 px-2 sm:px-3 py-1.5 border rounded-lg text-xs sm:text-sm text-[#4a4c56] hover:bg-gray-50"
               >
                 {selectedFilter}
                 <ChevronDown className="w-3 h-3 sm:w-4 sm:h-4" />
@@ -170,10 +170,10 @@ export default function DynamicTableWithPagination({
                 setSearchQuery(e.target.value);
                 onPageChange(1); // Reset to first page on search
               }}
-              className="pl-8 sm:pl-10 pr-3 sm:pr-4 py-1.5 sm:py-2 border rounded text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-full sm:w-auto"
+              className="pl-8 sm:pl-10 pr-3 sm:pr-4 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-none w-full bg-gray-100 sm:w-auto"
             />
           </div>
-          <button className="flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 border rounded text-xs sm:text-sm text-[#4a4c56] hover:bg-gray-50 whitespace-nowrap">
+          <button className="flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 border rounded-l text-xs sm:text-sm text-[#4a4c56] hover:bg-gray-50 whitespace-nowrap">
             <Filter className="w-3 h-3 sm:w-4 sm:h-4" />
             <span className="hidden sm:inline">Filter</span>
           </button>
@@ -307,9 +307,9 @@ export default function DynamicTableWithPagination({
                 key={i}
                 onClick={() => typeof page === "number" && onPageChange(page)}
                 disabled={page === "..."}
-                className={`px-2 sm:px-3 py-1 rounded text-xs sm:text-sm ${
+                className={`px-2 sm:px-3 py-1 rounded text-xs sm:text-sm cursor-pointer ${
                   page === currentPage
-                    ? "bg-blue-600 text-white font-medium"
+                    ? "bg-[#5952FF] text-white font-medium"
                     : "text-[#777980] hover:bg-gray-100"
                 }`}
               >

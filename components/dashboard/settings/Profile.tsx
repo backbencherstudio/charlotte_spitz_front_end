@@ -44,7 +44,7 @@ export default function Profile() {
             {/* Profile Picture */}
             <div className="flex flex-col items-center">
               <div className="relative">
-                <div className="size-28 rounded-full bg-muted flex items-center justify-center overflow-hidden border-2 border-border">
+                <div className="size-28 rounded-full bg-muted flex items-center justify-center overflow-hidden border border-[#5952FF]">
                   <User className="size-16 text-muted-foreground" />
                 </div>
               </div>
@@ -109,14 +109,11 @@ export default function Profile() {
               <Button
                 variant="outline"
                 onClick={() => setIsEditing(!isEditing)}
-                className="border-primary/20 text-primary hover:bg-primary/10"
+                className="bg-[#E2DEFF] text-[#5952FF]"
               >
                 Edit profile
               </Button>
-              <Button
-                onClick={handleSave}
-                className="bg-primary text-primary-foreground hover:bg-primary/90"
-              >
+              <Button onClick={handleSave} className="bg-[#5952FF] text-white">
                 Save
               </Button>
             </div>
@@ -126,12 +123,12 @@ export default function Profile() {
             <div className="space-y-4">
               <h4 className="font-semibold text-lg">Profile Image</h4>
               <div className="relative inline-block">
-                <div className="size-24 rounded-full bg-muted flex items-center justify-center overflow-hidden border-2 border-border">
+                <div className="size-24 rounded-full bg-muted flex items-center justify-center overflow-hidden border border-[#5952FF]">
                   <User className="size-12 text-muted-foreground" />
                 </div>
                 <button
                   type="button"
-                  className="absolute bottom-0 right-0 size-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center border-2 border-background shadow-sm hover:bg-primary/90 transition-colors cursor-pointer"
+                  className="absolute bottom-0 right-0 size-8 rounded-full bg-amber-50 text-black flex items-center justify-center border-2 border-background shadow-sm transition-colors cursor-pointer"
                 >
                   <Pencil className="size-4" />
                 </button>

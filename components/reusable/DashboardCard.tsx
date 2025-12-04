@@ -19,7 +19,6 @@ interface DashboardCardProps {
 
 export default function DashboardCard({ data, className }: DashboardCardProps) {
   const IconComponent = data.icon;
-  const iconBgColor = data.iconBgColor || "bg-purple-500";
 
   return (
     <Card className={cn("shadow-sm", className)}>
@@ -27,7 +26,7 @@ export default function DashboardCard({ data, className }: DashboardCardProps) {
         <div className="flex items-start justify-between">
           <div className="flex-1">
             <div className="flex items-center gap-4 mb-4">
-              <div className={cn("p-3 rounded-lg", iconBgColor)}>
+              <div className={cn("p-3 rounded-lg bg-[#5952FF]")}>
                 <IconComponent className="w-6 h-6 text-white" />
               </div>
               <h3 className="text-sm font-medium text-foreground mb-2">
