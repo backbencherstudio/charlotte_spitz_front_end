@@ -11,31 +11,31 @@ export function ATSScoreCard({ score, status, subtitle }: ATSScoreCardProps) {
   const offset = circumference - (score / 100) * circumference;
 
   return (
-    <div className="">
-      <div className="bg-white rounded-2xl shadow-lg border">
+    <div className=" ">
+      <div className="bg-white p-4 hero-Shadow lg:p-5 rounded-lg max-w-[265px] shadow-lg border">
         {/* Header Section */}
-        <div className="p-6 sm:p-8">
-          <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-3">
+        <div className="">
+          <h2 className="text-base font-bold text-slate-900 dark:text-white mb-2">
             Tailored ATS Score
           </h2>
 
-          <div className="flex gap-2 items-start mb-2">
-            <span className="bg-[#5952FF] text-white px-6 p-2 rounded-md">
+          <button className="flex gap-2 items-start mb-2">
+            <span className="bg-primaryColor text-white px-2 py-0.5 pb-1 text-xs rounded-sm">
               {status}
             </span>
-          </div>
+          </button>
 
-          <p className="text-lg text-[#777980]">{subtitle}</p>
+          <p className="text-sm text-descriptionColor">{subtitle}</p>
         </div>
 
         {/* Circular Progress Section */}
-        <div className="p-6 sm:p-8 flex justify-center">
-          <div className="relative">
-            <svg className="w-full h-full">
+        <div className=" flex justify-center py-2">
+          <div className="relative w-[99px] h-[99px] ">
+            <svg className="w-full  h-full">
               <circle
                 cx="50%"
                 cy="50%"
-                r="45"
+                r="40"
                 fill="none"
                 stroke="currentColor"
                 strokeWidth="8"
@@ -45,7 +45,7 @@ export function ATSScoreCard({ score, status, subtitle }: ATSScoreCardProps) {
               <circle
                 cx="50%"
                 cy="50%"
-                r="45"
+                r="40"
                 fill="none"
                 stroke="currentColor"
                 strokeWidth="8"
@@ -57,7 +57,7 @@ export function ATSScoreCard({ score, status, subtitle }: ATSScoreCardProps) {
             </svg>
 
             {/* Center Score */}
-            <div className="absolute inset-0 flex items-center justify-center">
+            <div className="absolute flex top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 items-center justify-center">
               <div className="text-center">
                 <div className="font-bold text-slate-900 dark:text-white">
                   {score}%
@@ -68,17 +68,17 @@ export function ATSScoreCard({ score, status, subtitle }: ATSScoreCardProps) {
         </div>
 
         {/* Legend Section */}
-        <div className="px-6 sm:px-8 pb-6 sm:pb-8 pt-4">
+        <div className=" ">
           <div className="flex flex-wrap gap-6">
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 bg-[#CBD5E1]" />
-              <span className="text-xs sm:text-sm text-[#777980]">
+              <span className="text-xs sm:text-sm text-descriptionColor">
                 Original CV
               </span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-3 h-3 bg-[#5952FF]" />
-              <span className="text-xs sm:text-sm text-[#777980]">
+              <div className="w-3 h-3 bg-primaryColor" />
+              <span className="text-xs sm:text-sm text-descriptionColor">
                 Tailored CV
               </span>
             </div>
