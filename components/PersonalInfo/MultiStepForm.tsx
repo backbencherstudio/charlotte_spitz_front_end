@@ -8,6 +8,7 @@ import { HiLightBulb } from "react-icons/hi";
 import PersonalInfoStep from "./Steps/PersonalInfoStep";
 import ProgressBar from "./Steps/ProgressBar";
 import SkillsSection from "./Steps/SkillsSection";
+import WorkExperienceStep from "./Steps/WorkExperience";
 
 const STEPS = [
   { id: 1, name: "Personal Info", label: "Personal Info", icon: <FileText /> },
@@ -54,7 +55,13 @@ interface FormData {
     languages: string[];
   };
   workExperience: {
-    experience: string;
+    jobTitle: string;
+    companyName: string;
+    startDate: string;
+    endDate: string;
+    location: string;
+    responsibilities: string;
+    achievements: string;
   };
   certifications: {
     certifications: string;
@@ -83,7 +90,13 @@ export default function MultiStepForm() {
       languages: [],
     },
     workExperience: {
-      experience: "",
+      jobTitle: "",
+      companyName: "",
+      startDate: "",
+      endDate: "",
+      location: "",
+      responsibilities: "",
+      achievements: "",
     },
     certifications: {
       certifications: "",
@@ -138,10 +151,10 @@ export default function MultiStepForm() {
             />
           )}
           {currentStep === 3 && (
-            <PersonalInfoStep
-              data={formData.personalInfo}
+            <WorkExperienceStep
+              data={formData.workExperience}
               onUpdate={(data: any) =>
-                handleUpdateFormData("personalInfo", data)
+                handleUpdateFormData("workExperience", data)
               }
             />
           )}

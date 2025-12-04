@@ -108,6 +108,9 @@ export default function SkillsSection({ data, onUpdate }: SkillsSectionProps) {
   return (
     <main>
       <div>
+        <h2 className="text-4xl text-[#070707] font-bold mb-6 text-center">
+          Your Skills Section
+        </h2>
         <div className="mb-8">
           <h2 className="text-xl font-semibold text-gray-900 mb-4">
             Hard Skills Examples
