@@ -207,7 +207,7 @@ export default function DynamicTableWithPagination({
                   {columns.map((col, idx) => (
                     <td
                       key={idx}
-                      className="px-2 sm:px-3 lg:px-4 py-2 sm:py-3 text-xs text-[#777980]"
+                      className="px-2 sm:px-3 lg:px-4 py-2 sm:py-3 text-xs text-descriptionColor"
                     >
                       {col.formatter
                         ? col.formatter(row[col.accessor], row)
@@ -220,14 +220,14 @@ export default function DynamicTableWithPagination({
                         {onView && (
                           <Link
                             href={`/dashboard/submissions/${row.id}`}
-                            className="w-4 h-4 text-[#777980] hover:text-[#0068ef] cursor-pointer"
+                            className="w-4 h-4 text-descriptionColor hover:text-[#0068ef] cursor-pointer"
                           >
                             <Eye className="w-4 h-4" />
                           </Link>
                         )}
                         {onMore && (
                           <MoreVertical
-                            className="w-4 h-4 text-[#777980] hover:text-[#0068ef] cursor-pointer"
+                            className="w-4 h-4 text-descriptionColor hover:text-[#0068ef] cursor-pointer"
                             onClick={() => onMore(row)}
                           />
                         )}
@@ -240,7 +240,7 @@ export default function DynamicTableWithPagination({
               <tr>
                 <td
                   colSpan={columns.length + (onView || onMore ? 1 : 0)}
-                  className="px-4 py-10 text-center text-[#777980] text-xs sm:text-sm"
+                  className="px-4 py-10 text-center text-descriptionColor text-xs sm:text-sm"
                 >
                   {noDataMessage}
                 </td>
@@ -253,7 +253,7 @@ export default function DynamicTableWithPagination({
       {/* Pagination */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mt-6">
         <div className="flex items-center gap-2 flex-wrap">
-          <span className="text-xs sm:text-sm text-[#777980]">Showing</span>
+          <span className="text-xs sm:text-sm text-descriptionColor">Showing</span>
           {onItemsPerPageChange && (
             <div className="relative" ref={itemsPerPageRef}>
               <button
@@ -285,7 +285,7 @@ export default function DynamicTableWithPagination({
             </div>
           )}
         </div>
-        <div className="text-xs sm:text-sm text-[#777980]">
+        <div className="text-xs sm:text-sm text-descriptionColor">
           <span className="hidden sm:inline">
             Showing {startRecord} to {endRecord} out of {totalRecords} records
           </span>
@@ -309,8 +309,8 @@ export default function DynamicTableWithPagination({
                 disabled={page === "..."}
                 className={`px-2 sm:px-3 py-1 rounded text-xs sm:text-sm cursor-pointer ${
                   page === currentPage
-                    ? "bg-[#5952FF] text-white font-medium"
-                    : "text-[#777980] hover:bg-gray-100"
+                    ? "bg-primaryColor text-white font-medium"
+                    : "text-descriptionColor hover:bg-gray-100"
                 }`}
               >
                 {page}
