@@ -92,7 +92,7 @@ export default function SubscriptionFormPage() {
         <div className="flex items-center gap-2 text-sm text-[#4a4c56] mt-4">
           <Link
             href="/dashboard/subscriptions"
-            className="hover:text-purple-600"
+            className="hover:text-[#5952FF]"
           >
             Membership Plans
           </Link>
@@ -104,7 +104,7 @@ export default function SubscriptionFormPage() {
       {/* Form Card */}
       <div className="bg-white rounded-lg p-6 shadow-sm ">
         <div className="space-y-6">
-          <div className="flex gap-4">
+          <div className="flex flex-col md:flex-row gap-4">
             {/* Plan Duration */}
             <div className="flex-1">
               <label className="block text-sm font-medium text-[#4a4c56] mb-2">
@@ -160,7 +160,7 @@ export default function SubscriptionFormPage() {
                 value={formData.price}
                 onChange={(e) => handleInputChange("price", e.target.value)}
                 placeholder="Enter your price"
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#5952FF] focus:border-transparent"
               />
             </div>
           </div>
@@ -218,7 +218,7 @@ export default function SubscriptionFormPage() {
               value={formData.numberOfCV}
               onChange={(e) => handleInputChange("numberOfCV", e.target.value)}
               placeholder="Enter your price"
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#5952FF] focus:border-transparent"
             />
           </div>
 
@@ -227,7 +227,7 @@ export default function SubscriptionFormPage() {
             <label className="block text-sm font-medium text-[#4a4c56] mb-2">
               Benefits
             </label>
-            <div className="flex gap-2 mb-3">
+            <div className="relative mb-3">
               <input
                 type="text"
                 value={formData.benefitInput}
@@ -241,12 +241,12 @@ export default function SubscriptionFormPage() {
                   }
                 }}
                 placeholder="Input service name"
-                className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                className="w-full px-4 pr-12 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#5952FF] focus:border-transparent"
               />
               <button
                 type="button"
                 onClick={handleAddBenefit}
-                className="px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors flex items-center justify-center"
+                className="absolute right-2 top-1/2 -translate-y-1/2 p-2  text-[#5952FF] rounded-lg transition-colors flex items-center justify-center"
               >
                 <Plus className="w-5 h-5" />
               </button>
@@ -258,13 +258,13 @@ export default function SubscriptionFormPage() {
                 {benefits.map((benefit, index) => (
                   <span
                     key={index}
-                    className="inline-flex items-center gap-2 px-3 py-1.5 bg-purple-600 text-white rounded-lg text-sm"
+                    className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#E2DEFF] text-[#5952FF] rounded-lg text-sm"
                   >
                     {benefit}
                     <button
                       type="button"
                       onClick={() => handleRemoveBenefit(index)}
-                      className="hover:bg-purple-700 rounded transition-colors"
+                      className=" rounded transition-colors"
                     >
                       <X className="w-4 h-4" />
                     </button>
@@ -279,7 +279,7 @@ export default function SubscriptionFormPage() {
             <button
               type="button"
               onClick={handleSave}
-              className="bg-purple-600 hover:bg-purple-700 text-white font-medium py-3 px-6 rounded-lg transition-colors"
+              className="bg-[#5952FF] text-white font-medium py-3 px-6 rounded-lg transition-colors"
             >
               Save
             </button>

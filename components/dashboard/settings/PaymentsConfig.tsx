@@ -22,7 +22,9 @@ export default function PaymentsConfig() {
     <>
       <CardHeader className="">
         <div>
-          <CardTitle>Payment Gateway Configuration</CardTitle>
+          <CardTitle className="text-2xl font-bold mb-2">
+            Payment Gateway Configuration
+          </CardTitle>
           <CardDescription>
             Configure your payment processors and settings
           </CardDescription>
@@ -113,18 +115,16 @@ export default function PaymentsConfig() {
               </p>
             </div>
             <Switch
-              id="invoice-generation"
+              id="invoice-generation cursor-pointer"
               checked={invoiceGeneration}
               onCheckedChange={setInvoiceGeneration}
             />
           </div>
         </div>
       </CardContent>
-      {/* <CardFooter className="flex justify-end border-t py-4">
-        <Button className="px-8 bg-primary text-primary-foreground">
-          Save
-        </Button>
-      </CardFooter> */}
+      <CardFooter className="flex justify-end border-t py-4">
+        <Button className="px-8 bg-[#5952FF] text-white">Save</Button>
+      </CardFooter>
     </>
   );
 }

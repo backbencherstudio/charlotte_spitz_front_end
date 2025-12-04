@@ -51,10 +51,10 @@ export default function SettingsPage() {
                   key={item.id}
                   type="button"
                   onClick={() => handleMenuClick(item.id)}
-                  className={`flex w-full items-center rounded-lg px-3 py-2 text-left text-sm font-medium transition-colors ${
+                  className={`flex w-full items-center rounded-lg px-3 py-2 text-left text-sm font-medium transition-colors cursor-pointer ${
                     isActive
-                      ? "bg-primary text-primary-foreground"
-                      : "text-foreground/70 hover:bg-accent hover:text-accent-foreground"
+                      ? "bg-[#5952FF] text-white"
+                      : "text-foreground/70 bg-accent hover:text-accent-foreground"
                   }`}
                 >
                   {item.label}

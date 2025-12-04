@@ -12,7 +12,7 @@ interface Submission {
   status: "Approve" | "Pending" | "Revision";
 }
 
-export default function SubmissionsPage() {
+export default function ActivityLogsPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [selectedFilter, setSelectedFilter] = useState("All");
@@ -153,9 +153,9 @@ export default function SubmissionsPage() {
   return (
     <div className="p-6">
       <div className="mb-8 space-y-1.5">
-        <h1 className="text-2xl font-bold ">Submissions List</h1>
+        <h1 className="text-2xl font-bold ">Activity Logs</h1>
         <h2 className="text-[#A1A1A1]">
-          Manage and review all resume submissions.
+          View system and admin activity history
         </h2>
       </div>
       <DynamicTableWithPagination
@@ -165,8 +165,8 @@ export default function SubmissionsPage() {
         itemsPerPage={itemsPerPage}
         onPageChange={handlePageChange}
         onItemsPerPageChange={handleItemsPerPageChange}
-        onView={handleView}
-        onMore={handleMore}
+        // onView={handleView}
+        // onMore={handleMore}
         noDataMessage="No submissions found."
         searchPlaceholder="search users..."
         filterOptions={filterOptions}

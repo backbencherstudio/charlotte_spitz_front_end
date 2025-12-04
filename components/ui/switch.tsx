@@ -49,10 +49,11 @@ function Switch({
       <div
         className={cn(
           "relative w-11 h-6 rounded-full transition-colors",
-          currentChecked ? "bg-primary" : "bg-gray-200",
-          "focus-within:outline-none focus-within:ring-4 focus-within:ring-primary/20",
+          currentChecked ? "bg-[#5952FF]" : "bg-gray-200",
+          "focus-within:outline-none focus-within:ring-4 focus-within:ring-[#5952FF]/20",
           className
         )}
+        style={currentChecked ? { backgroundColor: "#5952FF" } : undefined}
       >
         <div
           className={cn(

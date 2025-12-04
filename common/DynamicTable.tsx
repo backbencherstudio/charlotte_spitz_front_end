@@ -126,19 +126,19 @@ export default function DynamicTableWithPagination({
   return (
     <div>
       {/* Table Controls */}
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center gap-4">
-          <h2 className="text-lg font-semibold text-[#4a4c56]">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
+        <div className="flex items-center gap-2 sm:gap-4 flex-wrap">
+          <h2 className="text-base sm:text-lg font-semibold text-[#4a4c56]">
             Submissions List
           </h2>
           {filterOptions && onFilterChange && (
             <div className="relative" ref={filterDropdownRef}>
               <button
                 onClick={() => setShowFilterDropdown(!showFilterDropdown)}
-                className="flex items-center gap-1 px-3 py-1.5 border rounded text-sm text-[#4a4c56] hover:bg-gray-50"
+                className="flex items-center gap-1 px-2 sm:px-3 py-1.5 border rounded-lg text-xs sm:text-sm text-[#4a4c56] hover:bg-gray-50"
               >
                 {selectedFilter}
-                <ChevronDown className="w-4 h-4" />
+                <ChevronDown className="w-3 h-3 sm:w-4 sm:h-4" />
               </button>
               {showFilterDropdown && (
                 <div className="absolute top-full left-0 mt-1 bg-white border rounded shadow-lg z-10 min-w-[120px]">
@@ -159,9 +159,9 @@ export default function DynamicTableWithPagination({
             </div>
           )}
         </div>
-        <div className="flex items-center gap-3">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+        <div className="flex items-center gap-2 sm:gap-3">
+          <div className="relative flex-1 sm:flex-initial">
+            <Search className="absolute left-2 sm:left-3 top-1/2 transform -translate-y-1/2 w-3 h-3 sm:w-4 sm:h-4 text-gray-400" />
             <input
               type="text"
               placeholder={searchPlaceholder}
@@ -170,31 +170,31 @@ export default function DynamicTableWithPagination({
                 setSearchQuery(e.target.value);
                 onPageChange(1); // Reset to first page on search
               }}
-              className="pl-10 pr-4 py-2 border rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="pl-8 sm:pl-10 pr-3 sm:pr-4 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-none w-full bg-gray-100 sm:w-auto"
             />
           </div>
-          <button className="flex items-center gap-2 px-4 py-2 border rounded text-sm text-[#4a4c56] hover:bg-gray-50">
-            <Filter className="w-4 h-4" />
-            Filter
+          <button className="flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 border rounded-l text-xs sm:text-sm text-[#4a4c56] hover:bg-gray-50 whitespace-nowrap">
+            <Filter className="w-3 h-3 sm:w-4 sm:h-4" />
+            <span className="hidden sm:inline">Filter</span>
           </button>
         </div>
       </div>
 
       {/* Table */}
-      <div className="overflow-x-auto xl:overflow-x-hidden border rounded-lg">
-        <table className="min-w-[1000px] w-full text-left">
+      <div className="overflow-x-auto border rounded-lg">
+        <table className="min-w-[600px] sm:min-w-[800px] lg:min-w-[1000px] w-full text-left">
           <thead className="bg-neutral-50">
             <tr>
               {columns.map((col, index) => (
                 <th
                   key={index}
-                  className="px-4 py-3 text-sm font-medium text-[#4a4c56]"
+                  className="px-2 sm:px-3 lg:px-4 py-2 sm:py-3 text-xs sm:text-sm font-medium text-[#4a4c56]"
                 >
                   {col.label}
                 </th>
               ))}
               {(onView || onMore) && (
-                <th className="px-4 py-3 text-sm font-medium text-[#4a4c56]">
+                <th className="px-2 sm:px-3 lg:px-4 py-2 sm:py-3 text-xs sm:text-sm font-medium text-[#4a4c56]">
                   Action
                 </th>
               )}
@@ -205,15 +205,18 @@ export default function DynamicTableWithPagination({
               paginatedData.map((row, i) => (
                 <tr key={i} className="border-t hover:bg-gray-50">
                   {columns.map((col, idx) => (
-                    <td key={idx} className="px-4 py-3 text-xs text-[#777980]">
+                    <td
+                      key={idx}
+                      className="px-2 sm:px-3 lg:px-4 py-2 sm:py-3 text-xs text-[#777980]"
+                    >
                       {col.formatter
                         ? col.formatter(row[col.accessor], row)
                         : String(row[col.accessor] ?? "")}
                     </td>
                   ))}
                   {(onView || onMore) && (
-                    <td className="px-4 py-3">
-                      <div className="flex items-center gap-3">
+                    <td className="px-2 sm:px-3 lg:px-4 py-2 sm:py-3">
+                      <div className="flex items-center gap-2 sm:gap-3">
                         {onView && (
                           <Link
                             href={`/dashboard/submissions/${row.id}`}
@@ -237,7 +240,7 @@ export default function DynamicTableWithPagination({
               <tr>
                 <td
                   colSpan={columns.length + (onView || onMore ? 1 : 0)}
-                  className="px-4 py-10 text-center text-[#777980] text-sm"
+                  className="px-4 py-10 text-center text-[#777980] text-xs sm:text-sm"
                 >
                   {noDataMessage}
                 </td>
@@ -248,16 +251,16 @@ export default function DynamicTableWithPagination({
       </div>
 
       {/* Pagination */}
-      <div className="flex items-center justify-between mt-6">
-        <div className="flex items-center gap-2">
-          <span className="text-sm text-[#777980]">Showing</span>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mt-6">
+        <div className="flex items-center gap-2 flex-wrap">
+          <span className="text-xs sm:text-sm text-[#777980]">Showing</span>
           {onItemsPerPageChange && (
             <div className="relative" ref={itemsPerPageRef}>
               <button
                 onClick={() =>
                   setShowItemsPerPageDropdown(!showItemsPerPageDropdown)
                 }
-                className="flex items-center gap-1 px-2 py-1 border rounded text-sm text-[#4a4c56] hover:bg-gray-50"
+                className="flex items-center gap-1 px-2 py-1 border rounded text-xs sm:text-sm text-[#4a4c56] hover:bg-gray-50"
               >
                 {itemsPerPage}
                 <ChevronDown className="w-3 h-3" />
@@ -282,37 +285,44 @@ export default function DynamicTableWithPagination({
             </div>
           )}
         </div>
-        <div className="text-sm text-[#777980]">
-          Showing {startRecord} to {endRecord} out of {totalRecords} records
+        <div className="text-xs sm:text-sm text-[#777980]">
+          <span className="hidden sm:inline">
+            Showing {startRecord} to {endRecord} out of {totalRecords} records
+          </span>
+          <span className="sm:hidden">
+            {startRecord}-{endRecord} of {totalRecords}
+          </span>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1 sm:gap-2 justify-center sm:justify-start">
           <button
             onClick={() => onPageChange(currentPage - 1)}
             disabled={currentPage === 1}
-            className="p-1.5 border rounded disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-50"
+            className="p-1 sm:p-1.5 border rounded disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-50"
           >
-            <ChevronLeft className="w-4 h-4" />
+            <ChevronLeft className="w-3 h-3 sm:w-4 sm:h-4" />
           </button>
-          {getPagination().map((page, i) => (
-            <button
-              key={i}
-              onClick={() => typeof page === "number" && onPageChange(page)}
-              disabled={page === "..."}
-              className={`px-3 py-1 rounded text-sm ${
-                page === currentPage
-                  ? "bg-blue-600 text-white font-medium"
-                  : "text-[#777980] hover:bg-gray-100"
-              }`}
-            >
-              {page}
-            </button>
-          ))}
+          <div className="flex items-center gap-1 sm:gap-2">
+            {getPagination().map((page, i) => (
+              <button
+                key={i}
+                onClick={() => typeof page === "number" && onPageChange(page)}
+                disabled={page === "..."}
+                className={`px-2 sm:px-3 py-1 rounded text-xs sm:text-sm cursor-pointer ${
+                  page === currentPage
+                    ? "bg-[#5952FF] text-white font-medium"
+                    : "text-[#777980] hover:bg-gray-100"
+                }`}
+              >
+                {page}
+              </button>
+            ))}
+          </div>
           <button
             onClick={() => onPageChange(currentPage + 1)}
             disabled={currentPage === totalPages}
-            className="p-1.5 border rounded disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-50"
+            className="p-1 sm:p-1.5 border rounded disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-50"
           >
-            <ChevronRight className="w-4 h-4" />
+            <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4" />
           </button>
         </div>
       </div>

@@ -90,7 +90,7 @@ export default function SubmissionDetailsPage() {
         {/* Left Panel - User Information */}
         <div className="space-y-6">
           <div className="bg-white rounded-lg p-6 shadow-sm">
-            <h2 className="text-lg font-semibold text-[#4a4c56] mb-6">
+            <h2 className="text-lg font-semibold text-[#4a4c56] mb-6 border-b border-gray-200 pb-2">
               User Information
             </h2>
 
@@ -170,7 +170,7 @@ export default function SubmissionDetailsPage() {
           <div className="space-y-3">
             <button
               onClick={handleApprove}
-              className="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2"
+              className="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2 cursor-pointer"
             >
               <CheckCircle className="w-5 h-5" />
               Approve Submission
@@ -178,7 +178,7 @@ export default function SubmissionDetailsPage() {
 
             <button
               onClick={handlePending}
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2"
+              className="w-full bg-[#5952FF] hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2 cursor-pointer"
             >
               <Clock className="w-5 h-5" />
               Pending
@@ -186,7 +186,7 @@ export default function SubmissionDetailsPage() {
 
             <button
               onClick={handleRevision}
-              className="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2"
+              className="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2 cursor-pointer"
             >
               <AlertCircle className="w-5 h-5" />
               Revision
@@ -194,7 +194,7 @@ export default function SubmissionDetailsPage() {
 
             <button
               onClick={handleDownloadPDF}
-              className="w-full border border-gray-300 hover:bg-gray-50 text-[#4a4c56] font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2"
+              className="w-full border border-gray-300 hover:bg-gray-50 text-[#4a4c56] font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2 cursor-pointer"
             >
               <Download className="w-5 h-5" />
               Download PDF
@@ -206,12 +206,10 @@ export default function SubmissionDetailsPage() {
         <div className="space-y-6">
           <div className="bg-white rounded-lg p-6 shadow-sm">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-lg font-semibold text-[#4a4c56]">
-                Resume Form Data
-              </h2>
+              <h2 className="text-lg font-bold ">Resume Form Data</h2>
               <button
                 onClick={handleEdit}
-                className="bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center gap-2"
+                className="bg-[#E2DEFF] text-[#5952FF] font-medium py-2 px-4 rounded-lg transition-colors flex items-center gap-2"
               >
                 <Edit className="w-4 h-4" />
                 Edit Submission

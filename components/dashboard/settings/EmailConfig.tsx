@@ -106,9 +106,7 @@ export default function EmailConfig() {
         </div>
       </CardContent>
       <CardFooter className="flex justify-end py-4">
-        <Button className="px-8 bg-primary text-primary-foreground">
-          Save
-        </Button>
+        <Button className="px-8 bg-[#5952FF] text-white">Save</Button>
       </CardFooter>
     </>
   );

@@ -71,7 +71,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
     router.push("/login");
   };
   return (
-    <div className="h-screen">
+    <div className="h-full">
       {/* Overlay for mobile */}
       {isOpen && (
         <div
@@ -85,16 +85,23 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
         className={`
           ${
             isOpen
-              ? "z-50 h-full overflow-hidden absolute top-0 left-0"
-              : "h-full"
+              ? "z-50 h-full overflow-hidden absolute top-0 left-0 xl:relative xl:z-auto"
+              : "h-full hidden xl:flex"
           }
           flex flex-col
           bg-white
-          w-full overflow-y-auto
+          w-[238px] overflow-y-auto
         `}
       >
-        <div className="flex justify-end xl:hidden cursor-pointer p-4">
-          <button onClick={onClose} className="hover:opacity-70">
+        <div className="flex justify-end xl:hidden p-4">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onClose();
+            }}
+            className="cursor-pointer hover:opacity-70 transition-opacity p-2 rounded-md hover:bg-gray-100 relative z-10"
+            aria-label="Close sidebar"
+          >
             <X size={24} />
           </button>
         </div>
@@ -102,7 +109,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
         {/* App Name Section */}
         <div className="px-6 py-6">
           <Link href="/dashboard" className="block">
-            <h1 className="text-3xl font-bold text-purple-600">CVdigger</h1>
+            <h1 className="text-3xl font-bold text-[#5952FF]">CVdigger</h1>
           </Link>
         </div>
 
@@ -120,7 +127,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
                   transition-colors duration-200
                   ${
                     active
-                      ? "bg-purple-600 text-white"
+                      ? "bg-[#5952FF] text-white"
                       : "text-black hover:bg-gray-100"
                   }
                 `}

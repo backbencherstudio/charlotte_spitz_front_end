@@ -83,7 +83,7 @@ export default function Storage() {
             <Input id="aws-region" placeholder="us-east-1" type="text" />
           </div>
           <CardFooter className="flex justify-end py-4">
-            <Button className="px-8">Save</Button>
+            <Button className="px-8 bg-[#5952FF] text-white">Save</Button>
           </CardFooter>
         </div>
       </CardContent>
