@@ -109,7 +109,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
         {/* App Name Section */}
         <div className="px-6 py-6">
           <Link href="/dashboard" className="block">
-            <h1 className="text-3xl font-bold text-purple-600">CVdigger</h1>
+            <h1 className="text-3xl font-bold text-[#5952FF]">CVdigger</h1>
           </Link>
         </div>
 
@@ -127,7 +127,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
                   transition-colors duration-200
                   ${
                     active
-                      ? "bg-purple-600 text-white"
+                      ? "bg-[#5952FF] text-white"
                       : "text-black hover:bg-gray-100"
                   }
                 `}

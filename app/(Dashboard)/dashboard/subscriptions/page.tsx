@@ -57,7 +57,7 @@ export default function SubscriptionsPage() {
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
       <div className="mb-8 space-y-2">
-        <h1 className="text-2xl font-semibold text-[#4a4c56]">Subscriptions</h1>
+        <h1 className="text-2xl font-bold mb-2">Subscriptions</h1>
         <h2 className="text-[#A1A1A1]">Create and manage subscription plans</h2>
       </div>
 
@@ -66,7 +66,7 @@ export default function SubscriptionsPage() {
           <div
             key={pkg.id}
             className={`bg-white rounded-lg p-6 shadow-sm ${
-              pkg.isPremium ? "border border-purple-200" : ""
+              pkg.isPremium ? "" : ""
             }`}
           >
             {/* Header */}
@@ -80,7 +80,7 @@ export default function SubscriptionsPage() {
             {/* Price */}
             <div className="mb-6">
               <div className="flex items-baseline gap-2">
-                <span className="text-4xl font-bold text-purple-600">
+                <span className="text-4xl font-bold text-[#5952FF]">
                   {pkg.price}
                 </span>
                 <span className="text-sm text-[#A1A1A1]">{pkg.period}</span>
@@ -91,7 +91,7 @@ export default function SubscriptionsPage() {
             <div className="space-y-3 mb-6">
               {pkg.features.map((feature, index) => (
                 <div key={index} className="flex items-center gap-3">
-                  <Check className="w-5 h-5 text-purple-600 shrink-0" />
+                  <Check className="w-5 h-5 text-[#5952FF] shrink-0" />
                   <span className="text-sm text-[#4a4c56]">{feature.text}</span>
                 </div>
               ))}
@@ -100,7 +100,7 @@ export default function SubscriptionsPage() {
             {/* Edit Button */}
             <Link
               href={`/dashboard/subscriptions/${pkg.id}`}
-              className="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2"
+              className="w-full bg-[#5952FF]  text-white font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2"
             >
               <Edit className="w-4 h-4" />
               Edit
