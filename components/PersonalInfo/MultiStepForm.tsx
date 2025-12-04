@@ -7,6 +7,7 @@ import { BiSolidCertification } from "react-icons/bi";
 import { HiLightBulb } from "react-icons/hi";
 import PersonalInfoStep from "./Steps/PersonalInfoStep";
 import ProgressBar from "./Steps/ProgressBar";
+import SkillsSection from "./Steps/SkillsSection";
 
 const STEPS = [
   { id: 1, name: "Personal Info", label: "Personal Info", icon: <FileText /> },
@@ -92,7 +93,10 @@ export default function MultiStepForm() {
     },
   });
 
-  const handleUpdateFormData = (stepName: keyof FormData, data: any) => {
+  const handleUpdateFormData = <T extends keyof FormData>(
+    stepName: T,
+    data: FormData[T]
+  ) => {
     setFormData((prev) => ({
       ...prev,
       [stepName]: data,
@@ -103,7 +107,6 @@ export default function MultiStepForm() {
     if (currentStep < STEPS.length) {
       setCurrentStep(currentStep + 1);
     } else {
-      // Form submission
       console.log("Form completed:", formData);
       alert("Form submitted successfully!");
     }
@@ -129,11 +132,9 @@ export default function MultiStepForm() {
             />
           )}
           {currentStep === 2 && (
-            <PersonalInfoStep
-              data={formData.personalInfo}
-              onUpdate={(data: any) =>
-                handleUpdateFormData("personalInfo", data)
-              }
+            <SkillsSection
+              data={formData.skills}
+              onUpdate={(data: any) => handleUpdateFormData("skills", data)}
             />
           )}
           {currentStep === 3 && (
