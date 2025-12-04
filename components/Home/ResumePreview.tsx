@@ -4,6 +4,7 @@ import type React from "react";
 
 import { ChevronDown } from "lucide-react";
 import { useState } from "react";
+import Link from "next/link";
 
 interface ResumeData {
   name: string;
@@ -38,23 +39,24 @@ interface SectionProps {
   isOpen: boolean;
   onToggle: () => void;
   children: React.ReactNode;
+  className?: string;
 }
 
-function Section({ title, isOpen, onToggle, children }: SectionProps) {
+function Section({ title, isOpen, onToggle,className, children }: SectionProps) {
   return (
-    <div className="border-b border-border pb-4 last:border-b-0">
+    <div className={`border-b border-border  mt-1.5 last:border-b-0 ${className}`}>
       <button
         onClick={onToggle}
-        className="flex w-full items-center justify-between py-2 text-left hover:opacity-70 transition-opacity"
+        className="flex w-full items-center gap-3  py-1 text-left cursor-pointer transition-opacity"
       >
-        <h2 className="text-lg font-semibold text-foreground">{title}</h2>
+        <h2 className="text-[13px] font-bold text-foreground">{title}</h2>
         <ChevronDown
-          className={`h-5 w-5 text-foreground transition-transform duration-200 ${
+          className={`h-4 w-4 text-foreground transition-transform duration-200 ${
             isOpen ? "rotate-180" : ""
           }`}
         />
       </button>
-      {isOpen && <div className="mt-3 space-y-3">{children}</div>}
+      {isOpen && <div className="mt-1 space-y-3">{children}</div>}
     </div>
   );
 }
@@ -63,8 +65,8 @@ export function ResumePreview({ data }: { data: ResumeData }) {
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({
     summary: true,
     experience: true,
-    education: false,
-    skills: false,
+    education: true,
+    skills: true,
   });
 
   const toggleSection = (section: string) => {
@@ -75,57 +77,65 @@ export function ResumePreview({ data }: { data: ResumeData }) {
   };
 
   return (
-    <div className="relative bg-background rounded-lg border border-border">
-      <div className="p-6 pr-8">
+    <div className="relative bg-background rounded-md border border-gray-200 ">
+      <div className="p-3 ">
         {/* Header */}
-        <div className="mb-6">
-          <h1 className="text-2xl font-bold text-foreground">{data.name}</h1>
-          <div className="mt-2 flex flex-wrap gap-4 text-sm text-muted-foreground">
+        <div className="mb-2.5">
+          <h1 className="text-[15px] font-bold text-foreground">{data.name}</h1>
+          <div className="mt-1.5 flex flex-wrap items-center gap-3 text-[11px] text-muted-foreground">
             <a href={`mailto:${data.email}`} className="hover:text-foreground">
               {data.email}
             </a>
-            <span>{data.phone}</span>
+            <div className="text-[11px] flex gap-1 items-end">
+            <span className="text-muted-foreground">•</span>
+            <p>{data.phone}</p>
+            </div>
+            <div className="text-[11px] flex gap-1 items-end">
+            <span className="text-muted-foreground">•</span>
             <span>{data.location}</span>
+            </div>
           </div>
         </div>
 
         {/* Professional Summary Section */}
         <Section
+          className="pb-2.5"
           title="Professional Summary"
           isOpen={openSections.summary}
           onToggle={() => toggleSection("summary")}
         >
-          <p className="text-sm text-foreground leading-relaxed">
+          <p className="text-[11px] text-foreground leading-relaxed">
             {data.summary}
           </p>
         </Section>
 
         {/* Experience Section */}
         <Section
+          className="pb-2.5"
           title="Experience"
           isOpen={openSections.experience}
           onToggle={() => toggleSection("experience")}
         >
-          <div className="space-y-4">
+          <div className="space-y-3">
             {data.experience.map((job) => (
               <div key={job.id}>
                 <div className="flex items-start justify-between gap-4">
                   <div>
-                    <h3 className="font-semibold text-foreground">
+                    <h3 className="font-semibold text-xs text-foreground">
                       {job.position}
                     </h3>
-                    <p className="text-sm text-muted-foreground">
+                    <Link href="#" className="text-[11px] font-semibold text-primaryColor ">
                       {job.company}
-                    </p>
+                    </Link>
                   </div>
-                  <div className="text-right text-xs text-muted-foreground whitespace-nowrap">
+                  <div className="text-right text-[11px] text-muted-foreground whitespace-nowrap">
                     <p>{job.date}</p>
                     {job.location && <p>{job.location}</p>}
                   </div>
                 </div>
-                <ul className="mt-2 space-y-1 ml-4">
+                <ul className="mt-1 space-y-1 ml-4">
                   {job.achievements.map((achievement, idx) => (
-                    <li key={idx} className="text-sm text-foreground list-disc">
+                    <li key={idx} className="text-[11px] text-foreground list-disc">
                       <span className="text-foreground">{achievement}</span>
                     </li>
                   ))}
@@ -137,23 +147,24 @@ export function ResumePreview({ data }: { data: ResumeData }) {
 
         {/* Education Section */}
         <Section
+          className="pb-2.5"
           title="Education"
           isOpen={openSections.education}
           onToggle={() => toggleSection("education")}
         >
-          <div className="space-y-3">
+          <div className="space-y-2">
             {data.education.map((edu) => (
               <div
                 key={edu.id}
                 className="flex items-start justify-between gap-4"
               >
                 <div>
-                  <h3 className="font-semibold text-foreground">
+                  <h3 className="font-bold text-xs text-foreground">
                     {edu.degree}
                   </h3>
-                  <p className="text-sm text-muted-foreground">{edu.school}</p>
+                  <p className="text-[11px] mt-1 text-primaryColor font-semibold">{edu.school}</p>
                   {edu.details && (
-                    <p className="text-xs text-muted-foreground mt-1">
+                    <p className="text-[11px]  text-muted-foreground mt-1">
                       {edu.details}
                     </p>
                   )}
@@ -172,28 +183,28 @@ export function ResumePreview({ data }: { data: ResumeData }) {
           isOpen={openSections.skills}
           onToggle={() => toggleSection("skills")}
         >
-          <div className="space-y-3">
+          <div className=" grid grid-cols-2 gap-1">
             <div>
-              <p className="text-xs font-semibold text-muted-foreground uppercase mb-1">
-                Programming Languages
+              <p className="text-xs font-semibold text-muted-foreground  mb-1">
+                Programming Languages :
               </p>
-              <p className="text-sm text-foreground">
+              <p className="text-[11px] text-foreground">
                 {data.skills.languages.join(", ")}
               </p>
             </div>
             <div>
-              <p className="text-xs font-semibold text-muted-foreground uppercase mb-1">
-                Frameworks
+              <p className="text-xs font-semibold text-muted-foreground  mb-1">
+                Frameworks :
               </p>
-              <p className="text-sm text-foreground">
+              <p className="text-[11px] text-foreground">
                 {data.skills.frameworks.join(", ")}
               </p>
             </div>
             <div>
-              <p className="text-xs font-semibold text-muted-foreground uppercase mb-1">
-                Tools
+              <p className="text-xs font-semibold text-muted-foreground  mb-1">
+                Tools :
               </p>
-              <p className="text-sm text-foreground">
+              <p className="text-[11px] text-foreground">
                 {data.skills.tools.join(", ")}
               </p>
             </div>

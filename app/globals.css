@@ -10,6 +10,9 @@
 }
 
 @theme inline {
+  --color-descriptionColor: #777980;
+  --color-grayColor: #64748B;
+  --color-primaryColor: #5952FF;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
@@ -125,4 +128,15 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.hero-Shadow{
+ box-shadow: 0px 0px 20px -5px rgba(0,167,141,0.65);
+-webkit-box-shadow: 0px 0px 20px -5px rgba(0,167,141,0.65);
+-moz-box-shadow: 0px 0px 20px -5px rgba(0,167,141,0.65);
+}
+.hero-Shadow2{
+box-shadow: -200px 0px 195px -66px rgba(212,122,229,0.3);
+-webkit-box-shadow: -200px 0px 195px -66px rgba(212,122,229,0.3);
+-moz-box-shadow: -200px 0px 195px -66px rgba(212,122,229,0.3);
 }
