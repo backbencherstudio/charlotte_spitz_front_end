@@ -18,7 +18,7 @@ export default function Footer() {
         <div className="container">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             <div>
-              <h1 className="text-[#5952FF] text-3xl font-bold tracking-wide ">
+              <h1 className="text-primaryColor text-3xl font-bold tracking-wide ">
                 CVdigger
               </h1>
               <p className="text-gray-200 mt-4">
