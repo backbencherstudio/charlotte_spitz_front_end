@@ -2,8 +2,9 @@
 "use client";
 
 import { BriefcaseBusiness, FileText, GraduationCap } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { BiSolidCertification } from "react-icons/bi";
+import { BiCertification } from "react-icons/bi";
 import { HiLightBulb } from "react-icons/hi";
 import CertificateStep from "./Steps/Certificate";
 import EducationStep from "./Steps/Education";
@@ -36,7 +37,7 @@ const STEPS = [
     id: 5,
     name: "Certification",
     label: "Certification",
-    icon: <BiSolidCertification className="h-8 w-8" />,
+    icon: <BiCertification className="h-8 w-8" />,
   },
 ];
 
@@ -82,6 +83,7 @@ interface FormData {
 }
 
 export default function MultiStepForm() {
+  const router = useRouter();
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState<FormData>({
     personalInfo: {
@@ -138,8 +140,7 @@ export default function MultiStepForm() {
     if (currentStep < STEPS.length) {
       setCurrentStep(currentStep + 1);
     } else {
-      console.log("Form completed:", formData);
-      alert("Form submitted successfully!");
+      router.push("/payment");
     }
   };
 
