@@ -104,7 +104,7 @@ export default function SubscriptionFormPage() {
       {/* Form Card */}
       <div className="bg-white rounded-lg p-6 shadow-sm ">
         <div className="space-y-6">
-          <div className="flex gap-4">
+          <div className="flex flex-col md:flex-row gap-4">
             {/* Plan Duration */}
             <div className="flex-1">
               <label className="block text-sm font-medium text-[#4a4c56] mb-2">

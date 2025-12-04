@@ -9,14 +9,17 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="min-h-screen flex">
-      <div className="w-full max-w-[238px]">
+      <div className="">
         <Sidebar
           isOpen={isSidebarOpen}
           onClose={() => setIsSidebarOpen(false)}
         />
       </div>
       <main className="w-full">
-        <Header />
+        <Header
+          onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+          isSidebarOpen={isSidebarOpen}
+        />
         <div className=" bg-[#FAFAFA]">{children}</div>
       </main>
     </div>
