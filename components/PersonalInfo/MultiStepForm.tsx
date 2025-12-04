@@ -5,6 +5,8 @@ import { BriefcaseBusiness, FileText, GraduationCap } from "lucide-react";
 import { useState } from "react";
 import { BiSolidCertification } from "react-icons/bi";
 import { HiLightBulb } from "react-icons/hi";
+import CertificateStep from "./Steps/Certificate";
+import EducationStep from "./Steps/Education";
 import PersonalInfoStep from "./Steps/PersonalInfoStep";
 import ProgressBar from "./Steps/ProgressBar";
 import SkillsSection from "./Steps/SkillsSection";
@@ -63,11 +65,19 @@ interface FormData {
     responsibilities: string;
     achievements: string;
   };
-  certifications: {
-    certifications: string;
+  education: {
+    degree: string;
+    institution: string;
+    result: string;
+    passingYear: string;
+    location: string;
   };
-  verification: {
-    verification: string;
+  certifications: {
+    certificateName: string;
+    organization: string;
+    result: string;
+    expiration: string;
+    certificateId: string;
   };
 }
 
@@ -98,11 +108,19 @@ export default function MultiStepForm() {
       responsibilities: "",
       achievements: "",
     },
-    certifications: {
-      certifications: "",
+    education: {
+      degree: "",
+      institution: "",
+      result: "",
+      passingYear: "",
+      location: "",
     },
-    verification: {
-      verification: "",
+    certifications: {
+      certificateName: "",
+      organization: "",
+      result: "",
+      expiration: "",
+      certificateId: "",
     },
   });
 
@@ -159,18 +177,16 @@ export default function MultiStepForm() {
             />
           )}
           {currentStep === 4 && (
-            <PersonalInfoStep
-              data={formData.personalInfo}
-              onUpdate={(data: any) =>
-                handleUpdateFormData("personalInfo", data)
-              }
+            <EducationStep
+              data={formData.education}
+              onUpdate={(data: any) => handleUpdateFormData("education", data)}
             />
           )}
           {currentStep === 5 && (
-            <PersonalInfoStep
-              data={formData.personalInfo}
+            <CertificateStep
+              data={formData.certifications}
               onUpdate={(data: any) =>
-                handleUpdateFormData("personalInfo", data)
+                handleUpdateFormData("certifications", data)
               }
             />
           )}
