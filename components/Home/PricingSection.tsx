@@ -33,8 +33,8 @@ export default function PricingSection() {
   ];
 
   return (
-    <section className="py-20 px-[140px] bg-[#F6F8FA]">
-      <div>
+    <section className="bg-[#F6F8FA] container">
+      <div className="py-20">
         {/* Header */}
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold text-[#1D1F2C] mb-4">

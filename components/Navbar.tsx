@@ -23,9 +23,12 @@ export default function Navbar() {
     <header className="bg-[#000000] py-5">
       <div className="container mx-auto flex justify-between items-center">
         {/* Left: Logo */}
-        <div className="text-[#5952FF] text-3xl font-bold tracking-wide">
+        <Link
+          href="/"
+          className="text-[#5952FF] text-3xl font-bold tracking-wide"
+        >
           CVdigger
-        </div>
+        </Link>
 
         {/* Desktop Menu */}
         <nav className="hidden md:flex space-x-6 text-base">
