@@ -73,74 +73,76 @@ export default function TestimonialsSlider() {
   };
 
   return (
-    <section className="px-[140px] py-20 bg-white">
-      <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-[#333333]">
-        What Our Users Say
-      </h2>
+    <section className="bg-white container">
+      <div className="py-20">
+        <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-[#333333]">
+          What Our Users Say
+        </h2>
 
-      <div className="relative mb-12">
-        <div className="hidden md:block overflow-hidden">
-          <div
-            className="flex transition-transform duration-500 ease-out"
-            style={{
-              transform: `translateX(-${currentIndex * (100 / 3)}%)`,
-            }}
-          >
-            {testimonials.map((testimonial) => (
-              <div key={testimonial.id} className="w-1/3 shrink-0 px-4">
-                <TestimonialCard testimonial={testimonial} />
-              </div>
-            ))}
+        <div className="relative mb-12">
+          <div className="hidden md:block overflow-hidden">
+            <div
+              className="flex transition-transform duration-500 ease-out"
+              style={{
+                transform: `translateX(-${currentIndex * (100 / 3)}%)`,
+              }}
+            >
+              {testimonials.map((testimonial) => (
+                <div key={testimonial.id} className="w-1/3 shrink-0 px-4">
+                  <TestimonialCard testimonial={testimonial} />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Mobile/Tablet View - Smooth Sliding */}
+          <div className="md:hidden overflow-hidden">
+            <div
+              className="flex transition-transform duration-500 ease-out"
+              style={{
+                transform: `translateX(-${currentIndex * 100}%)`,
+              }}
+            >
+              {testimonials.map((testimonial) => (
+                <div key={testimonial.id} className="w-full shrink-0">
+                  <TestimonialCard testimonial={testimonial} />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 
-        {/* Mobile/Tablet View - Smooth Sliding */}
-        <div className="md:hidden overflow-hidden">
-          <div
-            className="flex transition-transform duration-500 ease-out"
-            style={{
-              transform: `translateX(-${currentIndex * 100}%)`,
-            }}
-          >
-            {testimonials.map((testimonial) => (
-              <div key={testimonial.id} className="w-full shrink-0">
-                <TestimonialCard testimonial={testimonial} />
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Navigation Buttons */}
-      <div className="flex justify-center items-center gap-4">
-        <button
-          onClick={goToPrevious}
-          className="p-3 rounded-full bg-[#2563EB] text-white hover:bg-[#2563EB]/90 transition-colors duration-200 shadow-lg cursor-pointer"
-          aria-label="Previous testimonial"
-        >
-          <ChevronLeft className="w-5 h-5" />
-        </button>
-        <button
-          onClick={goToNext}
-          className="p-3 rounded-full bg-[#2563EB] text-white hover:bg-[#2563EB]/90 transition-colors duration-200 shadow-lg cursor-pointer"
-          aria-label="Next testimonial"
-        >
-          <ChevronRight className="w-5 h-5" />
-        </button>
-      </div>
-
-      {/* Indicator Dots - Mobile only */}
-      <div className="md:hidden flex justify-center gap-2 mt-6">
-        {testimonials.map((_, index) => (
+        {/* Navigation Buttons */}
+        <div className="flex justify-center items-center gap-4">
           <button
-            key={index}
-            onClick={() => setCurrentIndex(index)}
-            className={`w-2 h-2 rounded-full transition-all duration-200 ${
-              index === currentIndex ? "bg-[#1E40AF] w-6" : "bg-slate-300"
-            }`}
-            aria-label={`Go to testimonial ${index + 1}`}
-          />
-        ))}
+            onClick={goToPrevious}
+            className="p-3 rounded-full bg-[#2563EB] text-white hover:bg-[#2563EB]/90 transition-colors duration-200 shadow-lg cursor-pointer"
+            aria-label="Previous testimonial"
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </button>
+          <button
+            onClick={goToNext}
+            className="p-3 rounded-full bg-[#2563EB] text-white hover:bg-[#2563EB]/90 transition-colors duration-200 shadow-lg cursor-pointer"
+            aria-label="Next testimonial"
+          >
+            <ChevronRight className="w-5 h-5" />
+          </button>
+        </div>
+
+        {/* Indicator Dots - Mobile only */}
+        <div className="md:hidden flex justify-center gap-2 mt-6">
+          {testimonials.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentIndex(index)}
+              className={`w-2 h-2 rounded-full transition-all duration-200 ${
+                index === currentIndex ? "bg-[#1E40AF] w-6" : "bg-slate-300"
+              }`}
+              aria-label={`Go to testimonial ${index + 1}`}
+            />
+          ))}
+        </div>
       </div>
     </section>
   );

@@ -1,51 +1,51 @@
 import { ArrowRight, Check, Crown, Rocket } from "lucide-react";
+import Link from "next/link";
 
-export default function PricingSection() {
-  const plans = [
-    {
-      name: "Basic Package",
-      price: "$3",
-      period: "One Time",
-      icon: <Rocket />,
-      features: [
-        "1 CV optimization",
-        "Basic ATS score",
-        "Standard templates",
-        "Email support",
-      ],
-      buttonText: "Choose Starter",
-      featured: false,
-    },
-    {
-      name: "Premium Package",
-      price: "$19",
-      period: "One Time",
-      icon: <Crown />,
-      features: [
-        "Unlimited tailor credits",
-        "Up to 10 PDF downloads",
-        "1 Page Fit (Coming soon)",
-        "AI Bullet Rewrite (Coming Soon)",
-      ],
-      buttonText: "Choose Pro",
-      featured: true,
-    },
-  ];
+const plans = [
+  {
+    name: "Basic Package",
+    link: "/success",
+    price: "$3",
+    period: "One Time",
+    icon: <Rocket />,
+    features: [
+      "1 CV optimization",
+      "Basic ATS score",
+      "Standard templates",
+      "Email support",
+    ],
+    buttonText: "Choose Starter",
+    featured: false,
+  },
+  {
+    name: "Premium Package",
+    link: "/success",
+    price: "$19",
+    period: "One Time",
+    icon: <Crown />,
+    features: [
+      "Unlimited tailor credits",
+      "Up to 10 PDF downloads",
+      "1 Page Fit (Coming soon)",
+      "AI Bullet Rewrite (Coming Soon)",
+    ],
+    buttonText: "Choose Pro",
+    featured: true,
+  },
+];
 
+const Payment = () => {
   return (
-    <section className="bg-[#F6F8FA] container">
-      <div className="py-20">
-        {/* Header */}
+    <section className="py-20">
+      <div className="container">
         <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-[#1D1F2C] mb-4">
-            Simple, Transparent Pricing
-          </h2>
-          <p className="text-[#4A4C56] text-lg">
-            Choose the plan that works best for you
+          <h1 className="text-4xl text-[#070707] font-bold text-center">
+            Choose Your Package
+          </h1>
+          <p className="text-[#070707] text-base">
+            Select the format that works best for you
           </p>
         </div>
-
-        {/* Pricing Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-12">
           {plans.map((plan, index) => (
             <div
@@ -88,7 +88,8 @@ export default function PricingSection() {
               </ul>
 
               {/* Button */}
-              <button
+              <Link
+                href={plan.link}
                 className={`w-full py-3 px-6 rounded-full font-semibold flex items-center justify-center gap-2 transition-all duration-200 cursor-pointer ${
                   plan.featured
                     ? "bg-[#5952FF] hover:bg-[#4A47D6]/90 text-white shadow-lg hover:shadow-xl"
@@ -97,11 +98,13 @@ export default function PricingSection() {
               >
                 {plan.buttonText}
                 <ArrowRight className="w-5 h-5" />
-              </button>
+              </Link>
             </div>
           ))}
         </div>
       </div>
     </section>
   );
-}
+};
+
+export default Payment;
