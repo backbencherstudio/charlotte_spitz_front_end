@@ -31,7 +31,7 @@ export default function EmailConfig() {
         </div>
       </CardHeader>
       <CardContent className="space-y-6">
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid lg:grid-cols-2 gap-4">
           {/* Left Column */}
           <div className="space-y-6">
             <div className="space-y-2">
@@ -61,20 +61,6 @@ export default function EmailConfig() {
                 type="text"
               />
             </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="from-email">From Email Address</Label>
-              <Input
-                id="from-email"
-                type="email"
-                defaultValue="noreply@example.com"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="from-name">From Name</Label>
-              <Input id="from-name" type="text" defaultValue="Admin Panel" />
-            </div>
           </div>
 
           {/* Right Column */}
@@ -102,6 +88,21 @@ export default function EmailConfig() {
                 </SelectContent>
               </Select>
             </div>
+          </div>
+        </div>
+        <div className="space-y-4">
+          <div className="space-y-2 w-full">
+            <Label htmlFor="from-email">From Email Address</Label>
+            <Input
+              id="from-email"
+              type="email"
+              defaultValue="noreply@example.com"
+            />
+          </div>
+
+          <div className="space-y-2 w-full">
+            <Label htmlFor="from-name">From Name</Label>
+            <Input id="from-name" type="text" defaultValue="Admin Panel" />
           </div>
         </div>
       </CardContent>

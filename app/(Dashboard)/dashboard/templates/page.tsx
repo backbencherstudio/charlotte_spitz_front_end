@@ -67,85 +67,20 @@ const templatesData: TemplateData[] = [
   },
 ];
 
-// Template Preview Component
-function TemplatePreview({ type }: { type: "light" | "dark" }) {
-  if (type === "dark") {
-    return (
-      <div className="w-full h-48 from-green-800 to-green-900 rounded-lg p-4 flex items-start gap-4 relative overflow-hidden">
-        {/* Profile Picture Placeholder */}
-        <div className="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center text-white font-semibold text-sm">
-          RT
-        </div>
-        <div className="flex-1 text-white">
-          <h3 className="font-semibold text-lg mb-2">Rick Tang</h3>
-          <div className="space-y-1 text-xs opacity-90">
-            <div>Profile</div>
-            <div>Experience</div>
-            <div>Details</div>
-            <div>Links</div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="w-full h-48 bg-white rounded-lg p-4 border relative overflow-hidden">
-      {/* Abstract shapes */}
-      <div className="absolute top-0 right-0 w-24 h-24">
-        <div className="absolute top-2 right-2 w-16 h-16 bg-blue-200 rounded-full opacity-50 blur-sm"></div>
-        <div className="absolute top-4 right-4 w-12 h-12 bg-pink-200 rounded-full opacity-50 blur-sm"></div>
-      </div>
-
-      {/* Content */}
-      <div className="relative z-10">
-        <h3 className="font-semibold text-lg mb-4">Rick Tang</h3>
-        <div className="grid grid-cols-2 gap-4 text-xs">
-          <div>
-            <div className="font-medium mb-1">Experience</div>
-            <div className="text-gray-500 space-y-1">
-              <div>• Software Engineer</div>
-              <div>• Product Manager</div>
-            </div>
-          </div>
-          <div>
-            <div className="font-medium mb-1">Details</div>
-            <div className="text-gray-500 space-y-1">
-              <div>Address</div>
-              <div>Phone</div>
-              <div>Email</div>
-              <div>LinkedIn</div>
-              <div>Skills</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 // Template Card Component
 function TemplateCard({ template }: { template: TemplateData }) {
   return (
-    <Card className="overflow-hidden">
+    <Card className="">
       <CardContent className="p-0">
         {/* Image Section */}
-        <div
-          className="w-full h-48 relative overflow-hidden mb-2
-        "
-        >
+        <div className="w-full h-48 relative overflow-hidden mb-2">
           <Image
             src={image1}
             alt={template.name}
             fill
-            className="object-cover"
+            className="object-cover bg-center bg-no-repeat"
           />
         </div>
-
-        {/* Preview Section */}
-        {/* <div className="p-4">
-          <TemplatePreview type={template.previewType} />
-        </div> */}
 
         {/* Template Info Section */}
         <div className="px-4 pb-4 space-y-3">
@@ -206,9 +141,9 @@ function TemplateCard({ template }: { template: TemplateData }) {
 export default function TemplatesPage() {
   return (
     <div className="p-4 sm:p-6 bg-gray-50 min-h-screen">
-      <div className="mb-6">
-        <h1 className="text-4xl font-semibold mb-2">Templates</h1>
-        <p className="text-sm text-gray-500">
+      <div className="mb-8 space-y-1.5">
+        <h1 className="text-3xl font-bold">Templates</h1>
+        <p className="text-[#A1A1A1]">
           Manage your resume templates and customize them to fit your needs.
         </p>
       </div>

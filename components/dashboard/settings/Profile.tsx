@@ -53,19 +53,17 @@ export default function Profile() {
                 <p className="text-sm text-muted-foreground mt-1">
                   {formData.designation}
                 </p>
-                <p className="text-sm text-muted-foreground">
-                  Dhaka, Bangladesh
-                </p>
+                <p className="text-sm font-semibold">Dhaka, Bangladesh</p>
               </div>
             </div>
 
             {/* Personal Information */}
             <div className="space-y-4">
-              <h4 className="font-semibold text-lg">Personal Information</h4>
+              <h4 className="font-bold text-lg">Personal Information</h4>
               <div className="space-y-4">
                 <div className="flex justify-between items-center py-2">
                   <span className="text-muted-foreground text-sm">Name:</span>
-                  <span className="font-medium text-sm">
+                  <span className="font-bold text-sm">
                     {formData.firstName} {formData.lastName || ""}
                   </span>
                 </div>
@@ -73,19 +71,19 @@ export default function Profile() {
                   <span className="text-muted-foreground text-sm">
                     Email Address:
                   </span>
-                  <span className="font-medium text-sm">{formData.email}</span>
+                  <span className="font-bold text-sm">{formData.email}</span>
                 </div>
                 <div className="flex justify-between items-center py-2">
                   <span className="text-muted-foreground text-sm">
                     Phone Number:
                   </span>
-                  <span className="font-medium text-sm">{formData.phone}</span>
+                  <span className="font-bold text-sm">{formData.phone}</span>
                 </div>
                 <div className="flex justify-between items-center py-2">
                   <span className="text-muted-foreground text-sm">
                     Designation:
                   </span>
-                  <span className="font-medium text-sm">
+                  <span className="font-bold text-sm">
                     {formData.designation}
                   </span>
                 </div>
@@ -93,7 +91,7 @@ export default function Profile() {
                   <span className="text-muted-foreground text-sm">
                     Languages:
                   </span>
-                  <span className="font-medium text-sm">
+                  <span className="font-bold text-sm">
                     {formData.languages}
                   </span>
                 </div>
@@ -121,7 +119,7 @@ export default function Profile() {
           <CardContent className="space-y-6">
             {/* Profile Image Section */}
             <div className="space-y-4">
-              <h4 className="font-semibold text-lg">Profile Image</h4>
+              <h4 className="font-bold text-lg">Profile Image</h4>
               <div className="relative inline-block">
                 <div className="size-24 rounded-full bg-muted flex items-center justify-center overflow-hidden border border-[#5952FF]">
                   <User className="size-12 text-muted-foreground" />
@@ -138,7 +136,9 @@ export default function Profile() {
             {/* Form Fields */}
             <div className="grid gap-6 md:grid-cols-2">
               <div className="space-y-2">
-                <Label htmlFor="firstName">First Name</Label>
+                <Label htmlFor="firstName" className="font-bold">
+                  First Name
+                </Label>
                 <Input
                   id="firstName"
                   placeholder="Enter your name"
@@ -151,7 +151,9 @@ export default function Profile() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="lastName">Last Name</Label>
+                <Label htmlFor="lastName" className="font-bold">
+                  Last Name
+                </Label>
                 <Input
                   id="lastName"
                   placeholder="Enter your last name"
@@ -164,7 +166,9 @@ export default function Profile() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="email">Email Address</Label>
+                <Label htmlFor="email" className="font-bold">
+                  Email Address
+                </Label>
                 <Input
                   id="email"
                   type="email"
@@ -176,7 +180,9 @@ export default function Profile() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="phone">Phone Number</Label>
+                <Label htmlFor="phone" className="font-bold">
+                  Phone Number
+                </Label>
                 <Input
                   id="phone"
                   type="tel"
@@ -188,7 +194,9 @@ export default function Profile() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="designation">Designation</Label>
+                <Label htmlFor="designation" className="font-bold">
+                  Designation
+                </Label>
                 <Select
                   value={formData.designation}
                   onValueChange={(value) =>
@@ -209,7 +217,9 @@ export default function Profile() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="languages">Languages</Label>
+                <Label htmlFor="languages" className="font-bold">
+                  Languages
+                </Label>
                 <Select
                   value={formData.languages}
                   onValueChange={(value) =>

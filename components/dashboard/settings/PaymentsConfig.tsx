@@ -40,7 +40,7 @@ export default function PaymentsConfig() {
           />
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid  lg:grid-cols-2 gap-4">
           <div className="space-y-2">
             <Label htmlFor="stripe-publishable">Stripe Publishable Key</Label>
             <div className="relative">

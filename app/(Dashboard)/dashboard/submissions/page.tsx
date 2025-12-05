@@ -153,7 +153,7 @@ export default function SubmissionsPage() {
   return (
     <div className="p-6">
       <div className="mb-8 space-y-1.5">
-        <h1 className="text-2xl font-bold ">Submissions List</h1>
+        <h1 className="text-3xl font-bold">Submissions List</h1>
         <h2 className="text-[#A1A1A1]">
           Manage and review all resume submissions.
         </h2>
