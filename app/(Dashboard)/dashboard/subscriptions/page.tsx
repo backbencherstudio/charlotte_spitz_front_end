@@ -56,8 +56,8 @@ export default function SubscriptionsPage() {
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
-      <div className="mb-8 space-y-2">
-        <h1 className="text-2xl font-bold mb-2">Subscriptions</h1>
+      <div className="mb-8 space-y-1.5">
+        <h1 className="text-3xl font-bold">Subscriptions</h1>
         <h2 className="text-[#A1A1A1]">Create and manage subscription plans</h2>
       </div>
 

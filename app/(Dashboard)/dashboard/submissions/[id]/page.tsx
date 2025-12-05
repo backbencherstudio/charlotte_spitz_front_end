@@ -205,7 +205,7 @@ export default function SubmissionDetailsPage() {
         {/* Right Panel - Resume Form Data */}
         <div className="space-y-6">
           <div className="bg-white rounded-lg p-6 shadow-sm">
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6 gap-4">
               <h2 className="text-lg font-bold ">Resume Form Data</h2>
               <button
                 onClick={handleEdit}
