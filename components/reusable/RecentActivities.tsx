@@ -21,7 +21,7 @@ export default function RecentActivities({
   className,
 }: RecentActivitiesProps) {
   return (
-    <Card className={cn("shadow-sm ", className)}>
+    <Card className={cn("shadow-sm py-5 h-full", className)}>
       <CardHeader>
         <CardTitle className="text-lg font-bold">{title}</CardTitle>
       </CardHeader>

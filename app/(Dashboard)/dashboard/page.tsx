@@ -116,7 +116,7 @@ export default function page() {
         <div className="lg:col-span-8">
           <DashboardChart />
         </div>
-        <div className="lg:col-span-4">
+        <div className="lg:col-span-4 h-full">
           <RecentActivities activities={recentActivitiesData} />
         </div>
       </div>

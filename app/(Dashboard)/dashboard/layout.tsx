@@ -15,7 +15,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           onClose={() => setIsSidebarOpen(false)}
         />
       </div>
-      <main className="w-full">
+      <main className="w-full h-screen overflow-y-auto">
         <Header
           onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
           isSidebarOpen={isSidebarOpen}

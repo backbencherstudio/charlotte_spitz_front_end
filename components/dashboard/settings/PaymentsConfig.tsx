@@ -20,7 +20,7 @@ export default function PaymentsConfig() {
 
   return (
     <>
-      <CardHeader className="">
+      <CardHeader className="pt-5">
         <div>
           <CardTitle className="text-2xl font-bold mb-2">
             Payment Gateway Configuration
