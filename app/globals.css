@@ -3,6 +3,10 @@
 
 @custom-variant dark (&:is(.dark *));
 
+body {
+  font-family: inter, sans-serif;
+ 
+}
 .container {
   max-width: 1342px;
   padding: 0 16px;
