@@ -39,7 +39,7 @@ export default function WorkExperienceStep({
 
   return (
     <div>
-      <h2 className="text-4xl text-[#070707] font-bold mb-6 text-center">
+      <h2 className="text-2xl md:text-4xl text-[#070707] font-bold mb-6 text-center">
         Your Work Experience
       </h2>
 
