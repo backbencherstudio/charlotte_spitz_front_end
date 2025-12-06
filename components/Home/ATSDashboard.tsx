@@ -38,13 +38,15 @@ const scoreItems: ScoreItem[] = [
 export function ATSDashboard() {
   return (
     <Card className="w-full hero-Shadow p-4 lg:p-5 rounded-lg max-w-[265px] shadow-lg border ">
-      <CardContent className="space-y-4 p-0 ">
+      <CardContent className="space-y-2 p-0 ">
         {scoreItems.map((item) => (
           <div key={item.label} className="space-y-2">
             <div className="flex items-center justify-between">
-              <div className="">
-                <h3 className="font-semibold text-[13px] text-foreground">{item.label} <span className="text-grayColor"> +{item.change}%</span></h3>
-               
+              <div>
+                <h3 className="font-semibold text-[13px] text-foreground">
+                  {item.label}{" "}
+                  <span className="text-grayColor"> +{item.change}%</span>
+                </h3>
               </div>
               <span className="text-base font-medium text-descriptionColor">
                 {item.score}%

@@ -1,4 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
+
+import dynamic from "next/dynamic";
+import { useEffect, useState } from "react";
+
+// ApexCharts must load dynamically in Next.js
+const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 interface ATSScoreCardProps {
   score: number;
@@ -7,14 +14,58 @@ interface ATSScoreCardProps {
 }
 
 export function ATSScoreCard({ score, status, subtitle }: ATSScoreCardProps) {
-  const circumference = 2 * Math.PI * 45;
-  const offset = circumference - (score / 100) * circumference;
+  const [chartOptions, setChartOptions] = useState<any>(null);
+
+  useEffect(() => {
+    const newChartOptions = {
+      series: [score],
+
+      chart: {
+        type: "radialBar",
+        height: 100,
+        width: 100,
+      },
+
+      plotOptions: {
+        radialBar: {
+          hollow: {
+            size: "60%",
+          },
+          track: {
+            background: "#E2E8F0",
+          },
+          dataLabels: {
+            show: true,
+            value: {
+              fontSize: "16px",
+              fontWeight: "700",
+              color: "#0F172A",
+              formatter: () => `${score}%`,
+              verticalAlign: "middle",
+              align: "center",
+              offsetY: 0,
+            },
+          },
+        },
+      },
+
+      colors: ["#5952FF"],
+
+      stroke: {
+        lineCap: "round",
+      },
+
+      labels: [""],
+    };
+
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setChartOptions(newChartOptions);
+  }, [score]);
 
   return (
-    <div className=" ">
+    <div className="">
       <div className="bg-white p-4 hero-Shadow lg:p-5 rounded-lg max-w-[265px] shadow-lg border">
-        {/* Header Section */}
-        <div className="">
+        <div>
           <h2 className="text-base font-bold text-slate-900 dark:text-white mb-2">
             Tailored ATS Score
           </h2>
@@ -28,47 +79,20 @@ export function ATSScoreCard({ score, status, subtitle }: ATSScoreCardProps) {
           <p className="text-sm text-descriptionColor">{subtitle}</p>
         </div>
 
-        {/* Circular Progress Section */}
-        <div className=" flex justify-center py-2">
-          <div className="relative w-[99px] h-[99px] ">
-            <svg className="w-full  h-full">
-              <circle
-                cx="50%"
-                cy="50%"
-                r="40"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="8"
-                className="text-slate-200 dark:text-slate-700"
-              />
-              {/* Progress Circle */}
-              <circle
-                cx="50%"
-                cy="50%"
-                r="40"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="8"
-                strokeDasharray={circumference}
-                strokeDashoffset={offset}
-                strokeLinecap="round"
-                className="text-indigo-500 dark:text-indigo-400 transition-all duration-1000"
-              />
-            </svg>
-
-            {/* Center Score */}
-            <div className="absolute flex top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 items-center justify-center">
-              <div className="text-center">
-                <div className="font-bold text-slate-900 dark:text-white">
-                  {score}%
-                </div>
-              </div>
-            </div>
-          </div>
+        {/* Apex Circular Chart */}
+        <div className="flex justify-center py-2">
+          {chartOptions && (
+            <Chart
+              options={chartOptions}
+              series={chartOptions.series}
+              type="radialBar"
+              height={150}
+              width={150}
+            />
+          )}
         </div>
 
-        {/* Legend Section */}
-        <div className=" ">
+        <div>
           <div className="flex flex-wrap gap-6">
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 bg-[#CBD5E1]" />
@@ -76,6 +100,7 @@ export function ATSScoreCard({ score, status, subtitle }: ATSScoreCardProps) {
                 Original CV
               </span>
             </div>
+
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 bg-primaryColor" />
               <span className="text-xs sm:text-sm text-descriptionColor">
