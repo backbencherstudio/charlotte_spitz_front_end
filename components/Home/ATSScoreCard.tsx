@@ -4,7 +4,6 @@
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 
-// ApexCharts must load dynamically in Next.js
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 interface ATSScoreCardProps {
@@ -41,9 +40,9 @@ export function ATSScoreCard({ score, status, subtitle }: ATSScoreCardProps) {
               fontWeight: "700",
               color: "#0F172A",
               formatter: () => `${score}%`,
-              verticalAlign: "middle",
+              offsetY: 10,
               align: "center",
-              offsetY: 0,
+              verticalAlign: "middle",
             },
           },
         },

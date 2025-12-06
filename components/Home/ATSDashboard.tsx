@@ -40,7 +40,7 @@ export function ATSDashboard() {
     <Card className="w-full hero-Shadow p-4 lg:p-5 rounded-lg max-w-[265px] shadow-lg border ">
       <CardContent className="space-y-2 p-0 ">
         {scoreItems.map((item) => (
-          <div key={item.label} className="space-y-2">
+          <div key={item.label}>
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="font-semibold text-[13px] text-foreground">
@@ -53,10 +53,8 @@ export function ATSDashboard() {
               </span>
             </div>
 
-            {/* Progress bar */}
             <Progress value={item.score} className="h-3" />
 
-            {/* Optional description */}
             {item.description && (
               <p className="text-xs text-muted-foreground">
                 {item.description}
