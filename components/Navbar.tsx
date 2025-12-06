@@ -48,13 +48,23 @@ export default function Navbar() {
         <div className="hidden md:flex items-center space-x-3.5">
           <Link
             href="/login"
-            className="text-white text-base bg-transparent border border-white px-6 py-2 rounded-full"
+            className="flex items-center gap-2 
+        bg-transparent text-white 
+        font-semibold px-6 py-2 rounded-full 
+        border border-white hover:scale-105 
+        hover:shadow-lg hover:shadow-primaryColor/80 
+        transition-all duration-300 cursor-pointer group text-lg  justify-center"
           >
             Login
           </Link>
           <Link
             href="/signup"
-            className=" text-white font-medium cursor-pointer  text-base px-6 py-2 rounded-full bg-[#5952FF]"
+            className="flex items-center gap-2 
+        bg-primaryColor text-white 
+        font-semibold px-6 py-2 rounded-full 
+        hover:bg-primaryColor/90 hover:scale-105 
+        hover:shadow-lg hover:shadow-primaryColor/80 
+        transition-all duration-300 cursor-pointer group text-lg  justify-center"
           >
             Sign up
           </Link>
