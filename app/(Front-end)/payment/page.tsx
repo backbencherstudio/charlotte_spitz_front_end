@@ -1,5 +1,6 @@
-import { ArrowRight, Check, Crown, Rocket } from "lucide-react";
+import { Check, Crown, Rocket } from "lucide-react";
 import Link from "next/link";
+import { MdArrowOutward } from "react-icons/md";
 
 const plans = [
   {
@@ -50,11 +51,7 @@ const Payment = () => {
           {plans.map((plan, index) => (
             <div
               key={index}
-              className={`rounded-2xl p-8 sm:p-10 transition-all duration-300 ${
-                plan.featured
-                  ? "bg-white border-2 border-[#5952FF] shadow-xl"
-                  : "bg-white border border-slate-200 shadow-lg"
-              }`}
+              className={`rounded-2xl p-8 sm:p-10 transition-all duration-300 hover:shadow-lg border hover:border hover:border-[#5952FF]`}
             >
               {/* Plan Name */}
               <div className="flex items-center gap-3 mb-4">
@@ -94,7 +91,7 @@ const Payment = () => {
         `}
               >
                 {plan.buttonText}
-                <ArrowRight className="w-5 h-5 transition-transform duration-200 group-hover:rotate-45" />
+                <MdArrowOutward className="w-5 h-5 transition-transform duration-200 group-hover:rotate-45" />
               </Link>
             </div>
           ))}
