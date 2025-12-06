@@ -1,6 +1,7 @@
 "use client";
-import { ArrowRight, Check, Crown, Rocket } from "lucide-react";
+import { Check, Crown, Rocket } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { MdArrowOutward } from "react-icons/md";
 import Button from "../reusable/Button";
 
 export default function PricingSection() {
@@ -37,7 +38,7 @@ export default function PricingSection() {
   ];
 
   return (
-    <section className="bg-[#F6F8FA]">
+    <section id="pricing" className="bg-[#F6F8FA]">
       <div className=" container">
         <div className="py-20">
           {/* Header */}
@@ -55,11 +56,7 @@ export default function PricingSection() {
             {plans.map((plan, index) => (
               <div
                 key={index}
-                className={`rounded-2xl p-8 sm:p-10 transition-all duration-300 ${
-                  plan.featured
-                    ? "bg-white border-2 border-[#5952FF] shadow-xl"
-                    : "bg-white border border-slate-200 shadow-lg"
-                }`}
+                className={`rounded-2xl p-8 sm:p-10 transition-all duration-300 hover:shadow-lg border hover:border hover:border-[#5952FF]`}
               >
                 {/* Plan Name */}
                 <div className="flex items-center gap-3 mb-4">
@@ -94,7 +91,9 @@ export default function PricingSection() {
 
                 {/* Button */}
                 <Button
-                  icon={<ArrowRight className="w-5 h-5" />}
+                  icon={
+                    <MdArrowOutward className="w-5 h-5 transition-transform duration-200" />
+                  }
                   className="w-full items-center justify-center"
                   onClick={() => router.push("/payment")}
                 >

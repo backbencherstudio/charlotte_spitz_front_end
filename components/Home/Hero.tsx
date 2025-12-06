@@ -111,7 +111,7 @@ const HeroSection = () => {
             <Button
               onClick={() => router.push("/personal-info")}
               icon={
-                <MdArrowOutward className="w-5 h-5  group-hover:rotate-45 transition-transform duration-200" />
+                <MdArrowOutward className="w-5 h-5 transition-transform duration-200" />
               }
             >
               Create a Resume

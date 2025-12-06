@@ -8,9 +8,9 @@ import { HiOutlineMenu, HiX } from "react-icons/hi";
 import { cn } from "@/lib/utils";
 
 const menuItems = [
-  { label: "How it works" },
-  { label: "Pricing " },
-  { label: "Testimonials" },
+  { label: "How it works", href: "#how-it-works" },
+  { label: "Pricing ", href: "#pricing" },
+  { label: "Testimonials", href: "#testimonials" },
 ];
 
 export default function Navbar() {
@@ -33,10 +33,10 @@ export default function Navbar() {
           {menuItems.map((item) => (
             <Link
               key={item.label}
-              href={item.label}
+              href={item.href}
               className={cn(
-                "hover:text-secondaryColor transition",
-                pathname === item.label ? "text-secondaryColor" : "text-white"
+                "hover:text-primaryColor transition",
+                pathname === item.label ? "text-primaryColor" : "text-white"
               )}
             >
               {item.label}

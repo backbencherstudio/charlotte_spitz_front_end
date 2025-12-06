@@ -1,12 +1,13 @@
 "use client";
-import { CheckCircle, Folder, Wallet } from "lucide-react";
+import { CheckCircle } from "lucide-react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { MdArrowOutward } from "react-icons/md";
 import Button from "../reusable/Button";
 const HowItWorks = () => {
   const router = useRouter();
   return (
-    <section className="bg-[#F6F8FA]">
+    <section id="how-it-works" className="bg-[#F6F8FA]">
       <div className="container ">
         <div className="py-20">
           <h1 className="text-2xl md:text-4xl font-bold text-center mb-12 text-[#1D1F2C]">
@@ -29,9 +30,15 @@ const HowItWorks = () => {
                 <div className="mb-8 flex items-center justify-center w-10 h-10 rounded-full bg-white border-2 border-[#5952FF] z-10">
                   01
                 </div>
-                <div className="bg-white rounded-lg p-6 text-center shadow-sm border border-slate-100 w-full">
+                <div className="bg-white rounded-lg p-6 text-center shadow-sm border border-slate-100 w-full hover:border hover:border-[#5952FF] hover:shadow-lg transition">
                   <div className="flex justify-center items-center bg-[#F6F8FA] w-10 h-10 p-2 rounded-md mx-auto mb-4">
-                    <Folder className="w-8 h-8 text-[#5952FF]" />
+                    <Image
+                      src="/images/folderIcon.svg"
+                      className="w-8 h-8 text-[#5952FF]"
+                      alt="folder-icon"
+                      width={100}
+                      height={100}
+                    />
                   </div>
                   <h3 className="text-xl font-bold text-black mb-3">
                     Complete Questionnaire
@@ -48,9 +55,15 @@ const HowItWorks = () => {
                 <div className="mb-8 flex items-center justify-center w-10 h-10 rounded-full bg-white border-2 border-[#5952FF] z-10">
                   02
                 </div>
-                <div className="bg-white rounded-lg p-6 text-center shadow-sm border border-slate-100 w-full">
+                <div className="bg-white rounded-lg p-6 text-center shadow-sm border border-slate-100 w-full hover:border hover:border-[#5952FF] hover:shadow-lg transition">
                   <div className="flex justify-center items-center bg-[#F6F8FA] w-10 h-10 p-2 rounded-md mx-auto mb-4">
-                    <Wallet className="w-8 h-8 text-[#5952FF]" />
+                    <Image
+                      src="/images/walletIcon.svg"
+                      className="w-8 h-8 text-[#5952FF]"
+                      alt="wallet-icon"
+                      width={100}
+                      height={100}
+                    />
                   </div>
                   <h3 className="text-xl font-bold text-black mb-3">
                     Make Payment
@@ -67,7 +80,7 @@ const HowItWorks = () => {
                 <div className="mb-8 flex items-center justify-center w-10 h-10 rounded-full bg-white border-2 border-[#5952FF] z-10">
                   03
                 </div>
-                <div className="bg-white rounded-lg p-6 text-center shadow-sm border border-slate-100 w-full">
+                <div className="bg-white rounded-lg p-6 text-center shadow-sm border border-slate-100 w-full hover:border hover:border-[#5952FF] hover:shadow-lg transition">
                   <div className="flex justify-center items-center bg-[#F6F8FA] w-10 h-10 p-2 rounded-md mx-auto mb-4">
                     <CheckCircle className="w-8 h-8 text-[#5952FF]" />
                   </div>
@@ -75,7 +88,7 @@ const HowItWorks = () => {
                     Get Your Resume
                   </h3>
                   <p className="text-gray-600 text-sm leading-relaxed">
-                    Download your optimized, job-ready resume instantly.
+                    Download your optimized, job-ready <br /> resume instantly.
                   </p>
                 </div>
               </div>
@@ -87,7 +100,7 @@ const HowItWorks = () => {
             <Button
               onClick={() => router.push("/personal-info")}
               icon={
-                <MdArrowOutward className="w-5 h-5  group-hover:rotate-45 transition-transform duration-200" />
+                <MdArrowOutward className="w-5 h-5 transition-transform duration-200" />
               }
             >
               Create a Resume

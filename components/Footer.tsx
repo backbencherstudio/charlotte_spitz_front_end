@@ -7,8 +7,8 @@ import { LiaLinkedin } from "react-icons/lia";
 
 const quickLinks = [
   { name: "Product", slug: "/" },
-  { name: "Privacy", slug: "/privacy" },
-  { name: "Contact", slug: "/contact" },
+  { name: "Privacy", slug: "/" },
+  { name: "Contact", slug: "/" },
 ];
 
 export default function Footer() {
@@ -41,7 +41,7 @@ export default function Footer() {
                   <Link
                     key={link.name}
                     href={link.slug}
-                    className="text-gray-200 text-sm md:text-base hover:text-white transition"
+                    className="text-gray-200 text-sm md:text-base hover:text-[#5952FF] transition"
                   >
                     {link.name}
                   </Link>
@@ -57,19 +57,19 @@ export default function Footer() {
               <div className="flex justify-center gap-6 mt-6">
                 <Facebook
                   size={22}
-                  className="cursor-pointer text-gray-200 hover:text-white"
+                  className="cursor-pointer text-gray-200 hover:text-[#5952FF]"
                 />
                 <Instagram
                   size={22}
-                  className="cursor-pointer text-gray-200 hover:text-white"
+                  className="cursor-pointer text-gray-200 hover:text-[#5952FF]"
                 />
                 <FaXTwitter
                   size={22}
-                  className="cursor-pointer text-gray-200 hover:text-white"
+                  className="cursor-pointer text-gray-200 hover:text-[#5952FF]"
                 />
                 <LiaLinkedin
                   size={22}
-                  className="cursor-pointer text-gray-200 hover:text-white"
+                  className="cursor-pointer text-gray-200 hover:text-[#5952FF]"
                 />
               </div>
             </div>

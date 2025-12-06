@@ -5,7 +5,7 @@
 
 body {
   font-family: inter, sans-serif;
- 
+  scroll-behavior: smooth;
 }
 .container {
   max-width: 1342px;
