@@ -3,13 +3,13 @@ import DashboardCard, {
   DashboardCardData,
 } from "@/components/reusable/DashboardCard";
 import { FileText, LayoutTemplate, Users, DollarSign } from "lucide-react";
-import DashboardChart from "@/components/reusable/DashboardChart";
 import RecentActivities, {
   ActivityData,
 } from "@/components/reusable/RecentActivities";
 import MostUsedTemplates, {
   TemplateData,
 } from "@/components/reusable/MostUsedTemplates";
+import { DashboardChart } from "@/components/reusable/DashboardChart";
 
 // JSON data for dashboard cards
 const dashboardCardsData: DashboardCardData[] = [
