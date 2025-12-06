@@ -85,7 +85,7 @@ export default function TestimonialsSlider() {
     <section className="bg-white">
       <div className="container">
         <div className="py-20">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-[#333333]">
+          <h2 className="text-2xl md:text-4xl font-bold text-center mb-12 text-[#333333]">
             What Our Users Say
           </h2>
 

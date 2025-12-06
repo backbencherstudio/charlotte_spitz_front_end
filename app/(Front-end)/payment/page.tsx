@@ -36,10 +36,10 @@ const plans = [
 
 const Payment = () => {
   return (
-    <section className="py-20">
+    <section className="py-15 md:py-20">
       <div className="container">
         <div className="text-center mb-12">
-          <h1 className="text-4xl text-[#070707] font-bold text-center">
+          <h1 className="text-2xl md:text-4xl text-[#070707] font-bold text-center">
             Choose Your Package
           </h1>
           <p className="text-[#070707] text-base">
@@ -90,14 +90,11 @@ const Payment = () => {
               {/* Button */}
               <Link
                 href={plan.link}
-                className={`w-full py-3 px-6 rounded-full font-semibold flex items-center justify-center gap-2 transition-all duration-200 cursor-pointer ${
-                  plan.featured
-                    ? "bg-[#5952FF] hover:bg-[#4A47D6]/90 text-white shadow-lg hover:shadow-xl"
-                    : "bg-[#5952FF] hover:bg-[#4A47D6]/90 text-white shadow-lg hover:shadow-xl"
-                }`}
+                className={`flex items-center gap-2 bg-primaryColor text-white font-semibold px-8 py-4 rounded-full hover:bg-primaryColor/90 hover:scale-105 hover:shadow-lg hover:shadow-primaryColor/80 transition-all duration-300 cursor-pointer group text-lg justify-center
+        `}
               >
                 {plan.buttonText}
-                <ArrowRight className="w-5 h-5" />
+                <ArrowRight className="w-5 h-5 transition-transform duration-200 group-hover:rotate-45" />
               </Link>
             </div>
           ))}
