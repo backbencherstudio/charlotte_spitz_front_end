@@ -1,5 +1,5 @@
 "use client";
-import { FileText } from "lucide-react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { MdArrowOutward } from "react-icons/md";
 import { PiClockCountdown } from "react-icons/pi";
@@ -87,7 +87,13 @@ const HeroSection = () => {
             <div className="flex items-center my-8 gap-x-4">
               <div className="flex items-start gap-3">
                 <div className="bg-[#FFFFFF] h-10 w-10 flex items-center justify-center rounded-md border border-gray-200">
-                  <FileText className="w-6 h-6" />
+                  <Image
+                    src="/images/fileTextIcon.svg"
+                    alt="CV Icon"
+                    width={100}
+                    height={100}
+                    className="h-6 w-6"
+                  />
                 </div>
                 <div>
                   <div className="text-xl font-bold text-[#07080B]">20,000</div>
