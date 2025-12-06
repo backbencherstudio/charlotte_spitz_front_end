@@ -2,7 +2,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Eye, Edit, Trash2 } from "lucide-react";
 import Image from "next/image";
-import image1 from "@/public/images/2.png";
+import Link from "next/link";
+import image1 from "@/public/images/10.png";
 
 // Template data type
 export interface TemplateData {
@@ -112,18 +113,20 @@ function TemplateCard({ template }: { template: TemplateData }) {
 
           {/* Action Buttons */}
           <div className="flex gap-2 pt-2">
-            <Button
-              variant="outline"
-              size="sm"
-              className="flex-1 bg-[#5952FF] text-white cursor-pointer"
-            >
-              <Eye className="w-4 h-4 mr-1" />
-              Preview
-            </Button>
-            <Button variant="outline" size="sm" className="flex-1">
+            <Link className="flex-1" href={`/dashboard/templates/preview`}>
+              <Button
+                variant="outline"
+                size="sm"
+                className="w-full bg-[#5952FF] text-white cursor-pointer hover:bg-[#4a43e6] hover:text-white"
+              >
+                <Eye className="w-4 h-4 mr-1" />
+                Preview
+              </Button>
+            </Link>
+            {/* <Button variant="outline" size="sm" className="flex-1">
               <Edit className="w-4 h-4 mr-1" />
               Edit
-            </Button>
+            </Button> */}
             <Button
               variant="outline"
               size="sm"

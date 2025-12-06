@@ -72,7 +72,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
     router.push("/login");
   };
   return (
-    <div className="h-full">
+    <div className="h-screen">
       {/* Overlay for mobile */}
       {isOpen && (
         <div
