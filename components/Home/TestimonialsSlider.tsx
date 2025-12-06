@@ -1,8 +1,16 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { ChevronLeft, ChevronRight, Star } from "lucide-react";
 import Image from "next/image";
-import { useState } from "react";
+import { Navigation, Pagination } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
+
+// Import Swiper CSS
+import { useRef } from "react";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 
 interface Testimonial {
   id: number;
@@ -15,42 +23,56 @@ interface Testimonial {
 const testimonials: Testimonial[] = [
   {
     id: 1,
-    text: "The AI doesn't just generate content—it genuinely understands what recruiters and hiring managers are looking for in a candidate. It goes beyond surface-level suggestions by tailoring my resume, optimizing the tone and structure of my portfolio, and even helping me communicate my skills and experience more strategically. I was able to high...",
+    text: "The AI doesn’t just generate content—it genuinely understands what recruiters and hiring managers are looking for in a candidate. It goes beyond surface-level suggestions by tailoring my resume, optimizing the tone and structure of my portfolio, and even helping me communicate my skills and experience more strategically. I was able to highlight what truly matters for the roles I’m applying to, and it made my entire job search process feel more focused, confident, and aligned with industry expectations.",
     name: "David K.",
     title: "Software engineer",
     avatar: "/images/david.jpg",
   },
   {
     id: 2,
-    text: "The AI doesn't just generate content—it genuinely understands what recruiters and hiring managers are looking for in a candidate. It goes beyond surface-level suggestions by tailoring my resume, optimizing the tone and structure of my portfolio, and even helping me communicate my skills and experience more strategically. I was able to high...",
+    text: "The AI doesn’t just generate content—it genuinely understands what recruiters and hiring managers are looking for in a candidate. It goes beyond surface-level suggestions by tailoring my resume, optimizing the tone and structure of my portfolio, and even helping me communicate my skills and experience more strategically. I was able to highlight what truly matters for the roles I’m applying to, and it made my entire job search process feel more focused, confident, and aligned with industry expectations.",
     name: "David K.",
     title: "Software engineer",
     avatar: "/images/david.jpg",
   },
   {
     id: 3,
-    text: "The AI doesn't just generate content—it genuinely understands what recruiters and hiring managers are looking for in a candidate. It goes beyond surface-level suggestions by tailoring my resume, optimizing the tone and structure of my portfolio, and even helping me communicate my skills and experience more strategically. I was able to high...",
+    text: "The AI doesn’t just generate content—it genuinely understands what recruiters and hiring managers are looking for in a candidate. It goes beyond surface-level suggestions by tailoring my resume, optimizing the tone and structure of my portfolio, and even helping me communicate my skills and experience more strategically. I was able to highlight what truly matters for the roles I’m applying to, and it made my entire job search process feel more focused, confident, and aligned with industry expectations.",
     name: "David K.",
     title: "Software engineer",
     avatar: "/images/david.jpg",
   },
   {
     id: 4,
-    text: "The AI doesn't just generate content—it genuinely understands what recruiters and hiring managers are looking for in a candidate. It goes beyond surface-level suggestions by tailoring my resume, optimizing the tone and structure of my portfolio, and even helping me communicate my skills and experience more strategically. I was able to high...",
+    text: "The AI doesn’t just generate content—it genuinely understands what recruiters and hiring managers are looking for in a candidate. It goes beyond surface-level suggestions by tailoring my resume, optimizing the tone and structure of my portfolio, and even helping me communicate my skills and experience more strategically. I was able to highlight what truly matters for the roles I’m applying to, and it made my entire job search process feel more focused, confident, and aligned with industry expectations.",
     name: "David K.",
     title: "Software engineer",
     avatar: "/images/david.jpg",
   },
   {
     id: 5,
-    text: "The AI doesn't just generate content—it genuinely understands what recruiters and hiring managers are looking for in a candidate. It goes beyond surface-level suggestions by tailoring my resume, optimizing the tone and structure of my portfolio, and even helping me communicate my skills and experience more strategically. I was able to high...",
+    text: "The AI doesn’t just generate content—it genuinely understands what recruiters and hiring managers are looking for in a candidate. It goes beyond surface-level suggestions by tailoring my resume, optimizing the tone and structure of my portfolio, and even helping me communicate my skills and experience more strategically. I was able to highlight what truly matters for the roles I’m applying to, and it made my entire job search process feel more focused, confident, and aligned with industry expectations.",
     name: "David K.",
     title: "Software engineer",
     avatar: "/images/david.jpg",
   },
   {
     id: 6,
-    text: "The AI doesn't just generate content—it genuinely understands what recruiters and hiring managers are looking for in a candidate. It goes beyond surface-level suggestions by tailoring my resume, optimizing the tone and structure of my portfolio, and even helping me communicate my skills and experience more strategically. I was able to high...",
+    text: "The AI doesn’t just generate content—it genuinely understands what recruiters and hiring managers are looking for in a candidate. It goes beyond surface-level suggestions by tailoring my resume, optimizing the tone and structure of my portfolio, and even helping me communicate my skills and experience more strategically. I was able to highlight what truly matters for the roles I’m applying to, and it made my entire job search process feel more focused, confident, and aligned with industry expectations.",
+    name: "David K.",
+    title: "Software engineer",
+    avatar: "/images/david.jpg",
+  },
+  {
+    id: 7,
+    text: "The AI doesn’t just generate content—it genuinely understands what recruiters and hiring managers are looking for in a candidate. It goes beyond surface-level suggestions by tailoring my resume, optimizing the tone and structure of my portfolio, and even helping me communicate my skills and experience more strategically. I was able to highlight what truly matters for the roles I’m applying to, and it made my entire job search process feel more focused, confident, and aligned with industry expectations.",
+    name: "David K.",
+    title: "Software engineer",
+    avatar: "/images/david.jpg",
+  },
+  {
+    id: 8,
+    text: "The AI doesn’t just generate content—it genuinely understands what recruiters and hiring managers are looking for in a candidate. It goes beyond surface-level suggestions by tailoring my resume, optimizing the tone and structure of my portfolio, and even helping me communicate my skills and experience more strategically. I was able to highlight what truly matters for the roles I’m applying to, and it made my entire job search process feel more focused, confident, and aligned with industry expectations.",
     name: "David K.",
     title: "Software engineer",
     avatar: "/images/david.jpg",
@@ -58,91 +80,49 @@ const testimonials: Testimonial[] = [
 ];
 
 export default function TestimonialsSlider() {
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  const goToPrevious = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? testimonials.length - 1 : prevIndex - 1
-    );
-  };
-
-  const goToNext = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === testimonials.length - 1 ? 0 : prevIndex + 1
-    );
-  };
-
+  const swiperRef = useRef<any>(null);
   return (
     <section className="bg-white">
       <div className="container">
         <div className="py-20">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-[#333333]">
+          <h2 className="text-2xl md:text-4xl font-bold text-center mb-12 text-[#333333]">
             What Our Users Say
           </h2>
 
-          <div className="relative mb-12">
-            <div className="hidden md:block overflow-hidden">
-              <div
-                className="flex transition-transform duration-500 ease-out"
-                style={{
-                  transform: `translateX(-${currentIndex * (100 / 3)}%)`,
-                }}
-              >
-                {testimonials.map((testimonial) => (
-                  <div key={testimonial.id} className="w-1/3 shrink-0 px-4">
-                    <TestimonialCard testimonial={testimonial} />
-                  </div>
-                ))}
-              </div>
-            </div>
+          <Swiper
+            modules={[Navigation, Pagination]}
+            spaceBetween={20}
+            slidesPerView={1}
+            navigation
+            pagination={false}
+            breakpoints={{
+              768: { slidesPerView: 2 },
+              1024: { slidesPerView: 3 },
+            }}
+            onSwiper={(swiper) => (swiperRef.current = swiper)}
+            className="pb-10"
+          >
+            {testimonials.map((testimonial) => (
+              <SwiperSlide key={testimonial.id}>
+                <TestimonialCard testimonial={testimonial} />
+              </SwiperSlide>
+            ))}
+          </Swiper>
 
-            {/* Mobile/Tablet View - Smooth Sliding */}
-            <div className="md:hidden overflow-hidden">
-              <div
-                className="flex transition-transform duration-500 ease-out"
-                style={{
-                  transform: `translateX(-${currentIndex * 100}%)`,
-                }}
-              >
-                {testimonials.map((testimonial) => (
-                  <div key={testimonial.id} className="w-full shrink-0">
-                    <TestimonialCard testimonial={testimonial} />
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Navigation Buttons */}
-          <div className="flex justify-center items-center gap-4">
+          <div className="flex justify-center gap-6 mt-8">
             <button
-              onClick={goToPrevious}
-              className="p-3 rounded-full bg-[#2563EB] text-white hover:bg-[#2563EB]/90 transition-colors duration-200 shadow-lg cursor-pointer"
-              aria-label="Previous testimonial"
+              onClick={() => swiperRef.current?.slidePrev()}
+              className="w-10 h-10 rounded-full bg-[#2563EB] text-white flex items-center justify-center shadow hover:bg-[#2563EB]/90 cursor-pointer"
             >
               <ChevronLeft className="w-5 h-5" />
             </button>
+
             <button
-              onClick={goToNext}
-              className="p-3 rounded-full bg-[#2563EB] text-white hover:bg-[#2563EB]/90 transition-colors duration-200 shadow-lg cursor-pointer"
-              aria-label="Next testimonial"
+              onClick={() => swiperRef.current?.slideNext()}
+              className="w-10 h-10 rounded-full bg-[#2563EB] text-white flex items-center justify-center shadow hover:bg-[#2563EB]/90 cursor-pointer"
             >
               <ChevronRight className="w-5 h-5" />
             </button>
-          </div>
-
-          {/* Indicator Dots - Mobile only */}
-          <div className="md:hidden flex justify-center gap-2 mt-6">
-            {testimonials.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => setCurrentIndex(index)}
-                className={`w-2 h-2 rounded-full transition-all duration-200 ${
-                  index === currentIndex ? "bg-[#1E40AF] w-6" : "bg-slate-300"
-                }`}
-                aria-label={`Go to testimonial ${index + 1}`}
-              />
-            ))}
           </div>
         </div>
       </div>
@@ -166,12 +146,10 @@ function TestimonialCard({ testimonial }: TestimonialCardProps) {
         ))}
       </div>
 
-      {/* Testimonial Text */}
       <p className="text-[#4A4C56] text-sm md:text-base leading-relaxed mb-6">
         {testimonial.text}
       </p>
 
-      {/* User Info */}
       <div className="flex items-center justify-between">
         <div>
           <p className="font-semibold text-[#333333] text-sm md:text-base">

@@ -48,7 +48,7 @@ export default function PersonalInfoStep({
 
   return (
     <div>
-      <h2 className="text-4xl text-[#070707] font-bold mb-6 text-center">
+      <h2 className="text-2xl md:text-4xl text-[#070707] font-bold mb-6 text-center">
         Let&apos;s Start With the Basics
       </h2>
 

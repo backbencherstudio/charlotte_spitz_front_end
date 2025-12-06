@@ -1,6 +1,10 @@
+"use client";
 import { ArrowRight, Check, Crown, Rocket } from "lucide-react";
+import { useRouter } from "next/navigation";
+import Button from "../reusable/Button";
 
 export default function PricingSection() {
+  const router = useRouter();
   const plans = [
     {
       name: "Basic Package",
@@ -38,7 +42,7 @@ export default function PricingSection() {
         <div className="py-20">
           {/* Header */}
           <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-[#1D1F2C] mb-4">
+            <h2 className="text-2xl md:text-4xl font-bold text-[#1D1F2C] mb-4">
               Simple, Transparent Pricing
             </h2>
             <p className="text-[#4A4C56] text-lg">
@@ -89,16 +93,13 @@ export default function PricingSection() {
                 </ul>
 
                 {/* Button */}
-                <button
-                  className={`w-full py-3 px-6 rounded-full font-semibold flex items-center justify-center gap-2 transition-all duration-200 cursor-pointer ${
-                    plan.featured
-                      ? "bg-[#5952FF] hover:bg-[#4A47D6]/90 text-white shadow-lg hover:shadow-xl"
-                      : "bg-[#5952FF] hover:bg-[#4A47D6]/90 text-white shadow-lg hover:shadow-xl"
-                  }`}
+                <Button
+                  icon={<ArrowRight className="w-5 h-5" />}
+                  className="w-full items-center justify-center"
+                  onClick={() => router.push("/payment")}
                 >
                   {plan.buttonText}
-                  <ArrowRight className="w-5 h-5" />
-                </button>
+                </Button>
               </div>
             ))}
           </div>

@@ -1,15 +1,18 @@
+"use client";
 import { FileText } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { MdArrowOutward } from "react-icons/md";
+import { PiClockCountdown } from "react-icons/pi";
+import Button from "../reusable/Button";
 import { ATSDashboard } from "./ATSDashboard";
 import { ATSScoreCard } from "./ATSScoreCard";
 import { ResumePreview } from "./ResumePreview";
-import { PiClockCountdown } from "react-icons/pi";
-import { MdArrowOutward } from "react-icons/md";
 const sampleResumeData = {
   name: "John Smith",
   email: "john.smith@example.com",
   phone: "(555) 123-0567",
   location: "New York, NY",
-  summary:`Experienced software engineer with over 8 years of expertise in developing
+  summary: `Experienced software engineer with over 8 years of expertise in developing
 scalable web applications and leading development teams. Proficient in JavaScript,React, and Node.js, with a proven track record of delivering high-quality code that meets both technical and business requirements.`,
   experience: [
     {
@@ -51,6 +54,7 @@ scalable web applications and leading development teams. Proficient in JavaScrip
 };
 
 const HeroSection = () => {
+  const router = useRouter();
   return (
     <section className="relative">
       <div className="absolute bottom-0 right-0 lg:max-w-[300px] md:max-w-[450px] xl:max-w-[600px] w-full h-[550px] z-0 bg-primaryColor" />
@@ -68,17 +72,14 @@ const HeroSection = () => {
 
             <div>
               <h1 className="md:text-[56px] text-3xl font-bold text-black leading-[120%] mb-4">
-                Your Next Job Starts in the {" "} 
-                <span className=" text-[#2920FE]">
-                    Dirt You Dig.
-                </span>
+                Your Next Job Starts in the{" "}
+                <span className=" text-[#2920FE]">Dirt You Dig.</span>
               </h1>
             </div>
 
             {/* Subheading */}
             <p className="text-base md:text-lg text-[#4A4C56] md:mr-10 lg:mr-30">
               Turn one resume into a fleet of AI-perfected CVs—each tuned to a{" "}
-             
               different job description with a single click.
             </p>
 
@@ -90,12 +91,14 @@ const HeroSection = () => {
                 </div>
                 <div>
                   <div className="text-xl font-bold text-[#07080B]">20,000</div>
-                  <div className="text-sm text-descriptionColor">CVs Optimized</div>
+                  <div className="text-sm text-descriptionColor">
+                    CVs Optimized
+                  </div>
                 </div>
               </div>
               <div className="flex items-start gap-3">
                 <div className="bg-[#FFFFFF] h-10 w-10 flex items-center justify-center rounded-md border border-gray-200">
-                  <PiClockCountdown  className="w-6 h-6" />
+                  <PiClockCountdown className="w-6 h-6" />
                 </div>
                 <div>
                   <div className="text-xl font-bold text-[#07080B]">2 min</div>
@@ -105,10 +108,14 @@ const HeroSection = () => {
                 </div>
               </div>
             </div>
-            <button className="flex hover:scale-105 hover:shadow-lg hover:shadow-primaryColor/80  group items-center gap-2 bg-primaryColor hover:bg-primaryColor/90 text-white font-semibold px-8 py-4 rounded-full transition-all duration-300 text-lg cursor-pointer">
+            <Button
+              onClick={() => router.push("/personal-info")}
+              icon={
+                <MdArrowOutward className="w-5 h-5  group-hover:rotate-45 transition-transform duration-200" />
+              }
+            >
               Create a Resume
-              <MdArrowOutward className="w-5 h-5  group-hover:rotate-45 transition-transform duration-200" />
-            </button>
+            </Button>
           </div>
 
           <div className="lg:col-span-5 relative ">
@@ -117,15 +124,14 @@ const HeroSection = () => {
             </div>
             <div className=" absolute top-0 -right-3.5 xl:-right-[60px] 2xl:-right-[200px] h-full ">
               <div className="h-full flex flex-col justify-center md:justify-between gap-3">
-              <ATSScoreCard
-                score={75}
-                status="Great match"
-                subtitle="Your application ranking"
-              />
-            <div>
-              <ATSDashboard />
-            </div>
-
+                <ATSScoreCard
+                  score={75}
+                  status="Great match"
+                  subtitle="Your application ranking"
+                />
+                <div>
+                  <ATSDashboard />
+                </div>
               </div>
             </div>
           </div>

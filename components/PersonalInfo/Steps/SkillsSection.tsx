@@ -108,11 +108,11 @@ export default function SkillsSection({ data, onUpdate }: SkillsSectionProps) {
   return (
     <main>
       <div>
-        <h2 className="text-4xl text-[#070707] font-bold mb-6 text-center">
+        <h2 className="text-2xl md:text-4xl text-[#070707] font-bold mb-6 text-center">
           Your Skills Section
         </h2>
         <div className="mb-8">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">
+          <h2 className="text-[16px] md:text-xl font-semibold text-gray-900 mb-4">
             Hard Skills Examples
           </h2>
           <div className="flex flex-wrap gap-3 mb-4">
@@ -120,17 +120,17 @@ export default function SkillsSection({ data, onUpdate }: SkillsSectionProps) {
               <div
                 key={skill.id}
                 onClick={() => selectHardSkill(skill.id)}
-                className="inline-flex items-center gap-2 p-8 border border-[#5952FF] rounded-sm relative"
+                className="inline-flex items-center gap-2 md:p-8 p-4 border border-[#5952FF] rounded-sm relative"
               >
                 <span className="text-[#1D1F2C]">{skill.name}</span>
-                <div className="absolute right-2 top-2">
-                  <Checkbox className="cursor-pointer rounded-full h-5 w-5 data-[state=checked]:bg-[#5952FF] data-[state=checked]:border-[#5952FF]" />
+                <div className="absolute top-0.5 right-0.5 md:right-2 md:top-2">
+                  <Checkbox className="cursor-pointer rounded-full h-4 w-4 md:h-5 md:w-5 data-[state=checked]:bg-[#5952FF] data-[state=checked]:border-[#5952FF]" />
                 </div>
               </div>
             ))}
             <button
               onClick={() => setIsInputVisible(true)}
-              className="inline-flex items-center gap-2 p-8 border border-[#5952FF] rounded-sm cursor-pointer text-[#1D1F2C]"
+              className="inline-flex items-center gap-2 md:p-8 p-4 border border-[#5952FF] rounded-sm cursor-pointer text-[#1D1F2C]"
             >
               <Plus size={18} />
               <span>Add</span>
@@ -171,7 +171,7 @@ export default function SkillsSection({ data, onUpdate }: SkillsSectionProps) {
 
         {/* Soft Skills Section */}
         <div className="mb-8">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">
+          <h2 className="text-[16px] md:text-xl font-semibold text-gray-900 mb-4">
             Soft Skills Examples
           </h2>
           <div className="flex flex-wrap gap-3 mb-4">
@@ -226,7 +226,7 @@ export default function SkillsSection({ data, onUpdate }: SkillsSectionProps) {
 
         {/* Languages Section */}
         <div className="mb-12">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">
+          <h2 className="text-[16px] md:text-xl font-semibold text-gray-900 mb-4">
             Languages
           </h2>
           <div className="flex flex-wrap gap-3 mb-4">

@@ -50,7 +50,7 @@ export default function FAQAccordion() {
       <div className="container">
         {/* Header */}
         <div className="mb-14 text-center">
-          <h1 className="text-3xl font-bold tracking-tight text-[#1D1F2C] md:text-4xl">
+          <h1 className="text-2xl md:text-4xl font-bold tracking-tight text-[#1D1F2C]">
             Frequently Asked Questions
           </h1>
         </div>

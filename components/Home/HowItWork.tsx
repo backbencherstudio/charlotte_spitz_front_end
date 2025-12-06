@@ -1,24 +1,28 @@
-import { ArrowRight, CheckCircle, Folder, Wallet } from "lucide-react";
+"use client";
+import { CheckCircle, Folder, Wallet } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { MdArrowOutward } from "react-icons/md";
+import Button from "../reusable/Button";
 const HowItWorks = () => {
+  const router = useRouter();
   return (
     <section className="bg-[#F6F8FA]">
       <div className="container ">
         <div className="py-20">
-          <h1 className="text-4xl font-bold text-center mb-12 text-[#1D1F2C]">
+          <h1 className="text-2xl md:text-4xl font-bold text-center mb-12 text-[#1D1F2C]">
             How it Works
           </h1>
 
           <div className="relative mb-16">
             {/* Dotted Line */}
             <div
-              className="absolute top-5 left-[150px] right-[150px] h-px hidden md:block"
+              className="absolute top-5 left-[190px] right-[190px] h-px hidden md:block"
               style={{
                 backgroundImage:
                   "repeating-linear-gradient(to right, rgb(203, 213, 225) 0px, rgb(203, 213, 225) 8px, transparent 8px, transparent 16px)",
               }}
             />
 
-            {/* Step Numbers and Cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {/* Step 1 */}
               <div className="flex flex-col items-center">
@@ -80,10 +84,14 @@ const HowItWorks = () => {
 
           {/* CTA Button */}
           <div className="flex justify-center">
-            <button className="bg-[#5952FF] hover:bg-[#4B47D6]/90 text-white font-semibold py-3 px-8 rounded-full flex items-center gap-2 transition-colors duration-200 shadow-lg cursor-pointer">
+            <Button
+              onClick={() => router.push("/personal-info")}
+              icon={
+                <MdArrowOutward className="w-5 h-5  group-hover:rotate-45 transition-transform duration-200" />
+              }
+            >
               Create a Resume
-              <ArrowRight className="w-5 h-5" />
-            </button>
+            </Button>
           </div>
         </div>
       </div>

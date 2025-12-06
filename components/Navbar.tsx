@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { BsGlobe2 } from "react-icons/bs";
 import { HiOutlineMenu, HiX } from "react-icons/hi";
 
 import { cn } from "@/lib/utils";
@@ -16,7 +15,6 @@ const menuItems = [
 
 export default function Navbar() {
   const pathname = usePathname();
-  const [language, setLanguage] = useState<"en" | "bn">("en");
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
@@ -25,7 +23,7 @@ export default function Navbar() {
         {/* Left: Logo */}
         <Link
           href="/"
-          className="text-[#5952FF] text-3xl font-bold tracking-wide"
+          className="text-[#5952FF] text-xl md:text-3xl font-bold tracking-wide"
         >
           CVdigger
         </Link>
@@ -47,7 +45,7 @@ export default function Navbar() {
         </nav>
 
         {/* Right: Language, Auth Buttons */}
-        <div className="flex items-center space-x-3.5">
+        <div className="hidden md:flex items-center space-x-3.5">
           <Link
             href="/login"
             className="text-white text-base bg-transparent border border-white px-6 py-2 rounded-full"
@@ -92,28 +90,12 @@ export default function Navbar() {
 
           {/* Language Dropdown (Mobile) */}
           <div className=" flex  items-center justify-between">
-            <div className="text-white text-base flex items-center gap-2 ">
-              <BsGlobe2 />
-              <select
-                value={language}
-                onChange={(e) => setLanguage(e.target.value as "en" | "bn")}
-                className="bg-transparent outline-none text-white"
-              >
-                <option value="en" className="text-black">
-                  English
-                </option>
-                <option value="bn" className="text-black">
-                  বাংলা
-                </option>
-              </select>
-            </div>
-
             <Link href="/login" className="text-white text-base">
               Login
             </Link>
             <Link
-              href="/registration"
-              className="bg-secondaryColor inline-block text-blackColor font-medium cursor-pointer  text-base px-4 py-2 rounded-[8px]"
+              href="/signup"
+              className=" text-white font-medium cursor-pointer  text-base px-6 py-2 rounded-full bg-[#5952FF]"
             >
               Sign up
             </Link>
