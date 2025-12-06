@@ -22,7 +22,7 @@ export default function DashboardCard({ data, className }: DashboardCardProps) {
 
   return (
     <Card className={cn("shadow-sm", className)}>
-      <CardContent className="">
+      <CardContent className="py-5">
         <div className="flex items-start justify-between">
           <div className="flex-1">
             <div className="flex items-center gap-4 mb-4">

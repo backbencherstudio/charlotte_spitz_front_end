@@ -13,6 +13,7 @@ import {
   Settings,
   LogOut,
 } from "lucide-react";
+import LogoutModal from "@/components/dashboard/LogoutModal";
 
 interface NavItem {
   icon: React.ReactNode;
@@ -71,7 +72,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
     router.push("/login");
   };
   return (
-    <div className="h-full">
+    <div className="h-screen">
       {/* Overlay for mobile */}
       {isOpen && (
         <div
@@ -108,7 +109,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
 
         {/* App Name Section */}
         <div className="px-6 py-6">
-          <Link href="/dashboard" className="block">
+          <Link href="/" className="block">
             <h1 className="text-3xl font-bold text-[#5952FF]">CVdigger</h1>
           </Link>
         </div>
@@ -149,13 +150,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
             <Settings size={20} />
             <span className="text-base font-medium">Settings</span>
           </Link>
-          <button
-            onClick={handleLogout}
-            className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-red-600 hover:bg-red-50 transition-colors duration-200 w-full"
-          >
-            <LogOut size={20} />
-            <span className="text-base font-medium">Log out</span>
-          </button>
+          <LogoutModal />
         </div>
       </div>
     </div>

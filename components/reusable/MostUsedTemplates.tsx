@@ -21,11 +21,11 @@ export default function MostUsedTemplates({
   className,
 }: MostUsedTemplatesProps) {
   return (
-    <Card className={cn("shadow-sm", className)}>
+    <Card className={cn("shadow-sm py-5", className)}>
       <CardHeader>
         <CardTitle className="text-lg font-bold">{title}</CardTitle>
       </CardHeader>
-      <CardContent className="space-y-6">
+      <CardContent className="space-y-4">
         {templates.map((template) => (
           <div key={template.id} className="space-y-3">
             <div className="flex items-center gap-3">

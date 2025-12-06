@@ -58,28 +58,34 @@ const data = [
 // #endregion
 const DashboardChart = () => {
   return (
-    <AreaChart
-      style={{
-        width: "100%",
-        maxWidth: "",
-        maxHeight: "500px",
-        aspectRatio: 1.618,
-      }}
-      responsive
-      data={data}
-      margin={{
-        top: 20,
-        right: 0,
-        left: 0,
-        bottom: 0,
-      }}
-    >
-      <CartesianGrid strokeDasharray="3 3" />
-      <XAxis dataKey="name" />
-      <YAxis width="auto" />
-      <Tooltip />
-      <Area type="monotone" dataKey="pv" stroke="#5952FF" fill="#DCDBFF" />
-    </AreaChart>
+    <div className="w-full h-full bg-white rounded-lg p-5 shadow-sm">
+      <div className="mb-3">
+        <h1 className="text-2xl font-bold">Total Revenue</h1>
+      </div>
+
+      <AreaChart
+        style={{
+          width: "100%",
+          maxWidth: "",
+          maxHeight: "400px",
+          aspectRatio: 1.618,
+        }}
+        responsive
+        data={data}
+        margin={{
+          top: 20,
+          right: 0,
+          left: 0,
+          bottom: 0,
+        }}
+      >
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="name" />
+        <YAxis width="auto" />
+        <Tooltip />
+        <Area type="monotone" dataKey="pv" stroke="#5952FF" fill="#DCDBFF" />
+      </AreaChart>
+    </div>
   );
 };
 
