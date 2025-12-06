@@ -46,27 +46,29 @@ export default function FAQAccordion() {
   ];
 
   return (
-    <main className="py-20 px-[140px]">
-      {/* Header */}
-      <div className="mb-14 text-center">
-        <h1 className="text-3xl font-bold tracking-tight text-[#1D1F2C] md:text-4xl">
-          Frequently Asked Questions
-        </h1>
-      </div>
+    <section className="py-20 bg-white">
+      <div className="container">
+        {/* Header */}
+        <div className="mb-14 text-center">
+          <h1 className="text-2xl md:text-4xl font-bold tracking-tight text-[#1D1F2C]">
+            Frequently Asked Questions
+          </h1>
+        </div>
 
-      {/* FAQ Accordion */}
-      <Accordion type="single" collapsible defaultValue="item-1">
-        {faqItems.map((item) => (
-          <AccordionItem key={item.id} value={item.id} className="border-b">
-            <AccordionTrigger className="py-4 font-bold text-[#333333] hover:no-underline text-lg cursor-pointer">
-              {item.question}
-            </AccordionTrigger>
-            <AccordionContent className="pb-4 text-[#4A4C56] text-sm">
-              {item.answer}
-            </AccordionContent>
-          </AccordionItem>
-        ))}
-      </Accordion>
-    </main>
+        {/* FAQ Accordion */}
+        <Accordion type="single" collapsible defaultValue="item-1">
+          {faqItems.map((item) => (
+            <AccordionItem key={item.id} value={item.id} className="border-b">
+              <AccordionTrigger className="py-4 font-bold text-[#333333] hover:no-underline text-lg cursor-pointer">
+                {item.question}
+              </AccordionTrigger>
+              <AccordionContent className="pb-4 text-[#4A4C56] text-sm">
+                {item.answer}
+              </AccordionContent>
+            </AccordionItem>
+          ))}
+        </Accordion>
+      </div>
+    </section>
   );
 }

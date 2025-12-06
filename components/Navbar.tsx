@@ -3,39 +3,40 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { BsGlobe2 } from "react-icons/bs";
 import { HiOutlineMenu, HiX } from "react-icons/hi";
 
 import { cn } from "@/lib/utils";
 
 const menuItems = [
-  { label: "How it works" },
-  { label: "Pricing " },
-  { label: "Testimonials" },
+  { label: "How it works", href: "#how-it-works" },
+  { label: "Pricing ", href: "#pricing" },
+  { label: "Testimonials", href: "#testimonials" },
 ];
 
 export default function Navbar() {
   const pathname = usePathname();
-  const [language, setLanguage] = useState<"en" | "bn">("en");
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <header className="bg-[#000000] py-5">
       <div className="container mx-auto flex justify-between items-center">
         {/* Left: Logo */}
-        <div className="text-[#5952FF] text-3xl font-bold tracking-wide">
+        <Link
+          href="/"
+          className="text-[#5952FF] text-xl md:text-3xl font-bold tracking-wide"
+        >
           CVdigger
-        </div>
+        </Link>
 
         {/* Desktop Menu */}
         <nav className="hidden md:flex space-x-6 text-base">
           {menuItems.map((item) => (
             <Link
               key={item.label}
-              href={item.label}
+              href={item.href}
               className={cn(
-                "hover:text-secondaryColor transition",
-                pathname === item.label ? "text-secondaryColor" : "text-white"
+                "hover:text-primaryColor transition",
+                pathname === item.label ? "text-primaryColor" : "text-white"
               )}
             >
               {item.label}
@@ -44,16 +45,26 @@ export default function Navbar() {
         </nav>
 
         {/* Right: Language, Auth Buttons */}
-        <div className="flex items-center space-x-3.5">
+        <div className="hidden md:flex items-center space-x-3.5">
           <Link
             href="/login"
-            className="text-white text-base bg-transparent border border-white px-6 py-2 rounded-full"
+            className="flex items-center gap-2 
+        bg-transparent text-white 
+        font-semibold px-6 py-2 rounded-full 
+        border border-white hover:scale-105 
+        hover:shadow-lg hover:shadow-primaryColor/80 
+        transition-all duration-300 cursor-pointer group text-lg  justify-center"
           >
             Login
           </Link>
           <Link
             href="/signup"
-            className=" text-white font-medium cursor-pointer  text-base px-6 py-2 rounded-full bg-[#5952FF]"
+            className="flex items-center gap-2 
+        bg-primaryColor text-white 
+        font-semibold px-6 py-2 rounded-full 
+        hover:bg-primaryColor/90 hover:scale-105 
+        hover:shadow-lg hover:shadow-primaryColor/80 
+        transition-all duration-300 cursor-pointer group text-lg  justify-center"
           >
             Sign up
           </Link>
@@ -89,28 +100,12 @@ export default function Navbar() {
 
           {/* Language Dropdown (Mobile) */}
           <div className=" flex  items-center justify-between">
-            <div className="text-white text-base flex items-center gap-2 ">
-              <BsGlobe2 />
-              <select
-                value={language}
-                onChange={(e) => setLanguage(e.target.value as "en" | "bn")}
-                className="bg-transparent outline-none text-white"
-              >
-                <option value="en" className="text-black">
-                  English
-                </option>
-                <option value="bn" className="text-black">
-                  বাংলা
-                </option>
-              </select>
-            </div>
-
             <Link href="/login" className="text-white text-base">
               Login
             </Link>
             <Link
-              href="/registration"
-              className="bg-secondaryColor inline-block text-blackColor font-medium cursor-pointer  text-base px-4 py-2 rounded-[8px]"
+              href="/signup"
+              className=" text-white font-medium cursor-pointer  text-base px-6 py-2 rounded-full bg-[#5952FF]"
             >
               Sign up
             </Link>

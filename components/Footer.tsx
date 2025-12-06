@@ -7,55 +7,81 @@ import { LiaLinkedin } from "react-icons/lia";
 
 const quickLinks = [
   { name: "Product", slug: "/" },
-  { name: "Privacy", slug: "/privacy" },
-  { name: "Contact", slug: "/contact" },
+  { name: "Privacy", slug: "/" },
+  { name: "Contact", slug: "/" },
 ];
 
 export default function Footer() {
   return (
-    <footer className="bg-[#001F1A] px-[140px] py-20">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-        <div>
-          <h1 className="text-[#5952FF] text-3xl font-bold tracking-wide ">
-            CVdigger
-          </h1>
-          <p className="text-gray-200 mt-4">
-            cvtailor.ai--your AI career partner
-          </p>
-        </div>
-        <div>
-          <h1 className="text-white font-bold tracking-wide text-center">
-            Links
-          </h1>
-          <p className="text-gray-200 mt-7 justify-center flex gap-4">
-            {quickLinks.map((link) => (
-              <Link key={link.name} href={link.slug}>
-                {" "}
-                {link.name}{" "}
+    <div className="bg-[#001F1A]">
+      <div className="py-16">
+        <div className="container">
+          {/* TOP SECTION */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 text-center md:text-left">
+            {/* Logo + tagline */}
+            <div>
+              <Link
+                href="/"
+                className="text-[#5952FF] text-3xl font-bold tracking-wide"
+              >
+                CVdigger
               </Link>
-            ))}
-          </p>
-        </div>
-        <div>
-          <h1 className="text-white font-bold tracking-wide text-center">
-            Connect
-          </h1>
-          <p className="text-gray-200 mt-7 justify-center flex gap-4">
-            <Facebook size={20} className="inline-block cursor-pointer" />
-            <Instagram size={20} className="inline-block cursor-pointer" />
-            <FaXTwitter size={20} className="inline-block cursor-pointer" />
-            <LiaLinkedin size={20} className="inline-block cursor-pointer" />
-          </p>
-        </div>
-      </div>
+              <p className="text-gray-200 mt-4 text-sm md:text-base">
+                cvtailor.ai — your AI career partner
+              </p>
+            </div>
 
-      {/* Footer Bottom */}
-      <div className="flex items-center justify-between mt-[100px] border-t border-gray-600 pt-6">
-        <h1 className="text-gray-400">
-          Copyright 2025 cvtailor ai. All Rights Reserved
-        </h1>
-        <h1 className="text-gray-400">Made with AI for AI-optimized careers</h1>
+            {/* Links */}
+            <div>
+              <h1 className="text-white font-bold tracking-wide text-lg text-center">
+                Links
+              </h1>
+              <div className="flex justify-center gap-6 mt-6 flex-wrap">
+                {quickLinks.map((link) => (
+                  <Link
+                    key={link.name}
+                    href={link.slug}
+                    className="text-gray-200 text-sm md:text-base hover:text-[#5952FF] transition"
+                  >
+                    {link.name}
+                  </Link>
+                ))}
+              </div>
+            </div>
+
+            {/* Social Icons */}
+            <div>
+              <h1 className="text-white font-bold tracking-wide text-lg text-center">
+                Connect
+              </h1>
+              <div className="flex justify-center gap-6 mt-6">
+                <Facebook
+                  size={22}
+                  className="cursor-pointer text-gray-200 hover:text-[#5952FF]"
+                />
+                <Instagram
+                  size={22}
+                  className="cursor-pointer text-gray-200 hover:text-[#5952FF]"
+                />
+                <FaXTwitter
+                  size={22}
+                  className="cursor-pointer text-gray-200 hover:text-[#5952FF]"
+                />
+                <LiaLinkedin
+                  size={22}
+                  className="cursor-pointer text-gray-200 hover:text-[#5952FF]"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* BOTTOM SECTION */}
+          <div className="mt-12 md:mt-20 border-t border-gray-600 pt-6 flex flex-col md:flex-row items-center justify-between gap-3 text-gray-400 text-sm md:text-base text-center md:text-left">
+            <p>Copyright 2025 cvtailor ai. All Rights Reserved</p>
+            <p>Made with AI for AI-optimized careers</p>
+          </div>
+        </div>
       </div>
-    </footer>
+    </div>
   );
 }

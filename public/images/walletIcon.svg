@@ -1,0 +1,49 @@
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="24" height="24" fill="#1E1E1E"/>
+<g id="update design 24/11/2025">
+<path d="M-1349 -1993C-1349 -1994.1 -1348.1 -1995 -1347 -1995H13009C13010.1 -1995 13011 -1994.1 13011 -1993V4192C13011 4193.1 13010.1 4194 13009 4194H-1347C-1348.1 4194 -1349 4193.1 -1349 4192V-1993Z" fill="#2B2B2B"/>
+<path d="M-1347 -1995V-1994H13009V-1995V-1996H-1347V-1995ZM13011 -1993H13010V4192H13011H13012V-1993H13011ZM13009 4194V4193H-1347V4194V4195H13009V4194ZM-1349 4192H-1348V-1993H-1349H-1350V4192H-1349ZM-1347 4194V4193C-1347.55 4193 -1348 4192.55 -1348 4192H-1349H-1350C-1350 4193.66 -1348.66 4195 -1347 4195V4194ZM13011 4192H13010C13010 4192.55 13009.6 4193 13009 4193V4194V4195C13010.7 4195 13012 4193.66 13012 4192H13011ZM13009 -1995V-1994C13009.6 -1994 13010 -1993.55 13010 -1993H13011H13012C13012 -1994.66 13010.7 -1996 13009 -1996V-1995ZM-1347 -1995V-1996C-1348.66 -1996 -1350 -1994.66 -1350 -1993H-1349H-1348C-1348 -1993.55 -1347.55 -1994 -1347 -1994V-1995Z" fill="white" fill-opacity="0.1"/>
+<g id="Home page " clip-path="url(#clip0_16_2)">
+<rect width="1600" height="4562" transform="translate(-788 -1121)" fill="white"/>
+<g id="How it Works Section">
+<rect width="1600" height="679" transform="translate(-788 -304)" fill="#F6F8FA"/>
+<g id="Frame 2147226567">
+<g id="cards">
+<g id="step 5" filter="url(#filter0_d_16_2)">
+<rect x="-200" y="-32" width="424" height="199" rx="12" fill="white" shape-rendering="crispEdges"/>
+<rect x="-199.5" y="-31.5" width="423" height="198" rx="11.5" stroke="#5952FF" shape-rendering="crispEdges"/>
+<g id="Frame 2147225711">
+<g id="Frame 2147226565">
+<g id="icon">
+<rect x="-11.5" y="-7.5" width="47" height="39" rx="7.5" fill="#F6F8FA"/>
+<rect x="-11.5" y="-7.5" width="47" height="39" rx="7.5" stroke="#E9E9EA"/>
+<g id="Frame">
+<path id="Vector" d="M11.0065 21.5H9.60546C6.02021 21.5 4.22759 21.5 3.11379 20.365C2 19.2301 2 17.4034 2 13.75C2 10.0966 2 8.26992 3.11379 7.13496C4.22759 6 6.02021 6 9.60546 6H13.4082C16.9934 6 18.7861 6 19.8999 7.13496C20.7568 8.00819 20.9544 9.2909 21 11.5V13" stroke="#5952FF" stroke-width="1.5" stroke-linecap="round"/>
+<path id="Vector_2" d="M19 18.5H16M16 21.5C14.3431 21.5 13 20.1569 13 18.5C13 16.8431 14.3431 15.5 16 15.5M19 21.5C20.6569 21.5 22 20.1569 22 18.5C22 16.8431 20.6569 15.5 19 15.5" stroke="#5952FF" stroke-width="1.5" stroke-linecap="round"/>
+<path id="Vector_3" d="M16 6L15.9006 5.69094C15.4056 4.15089 15.1581 3.38087 14.5688 2.94043C13.9796 2.5 13.1969 2.5 11.6315 2.5H11.3684C9.80304 2.5 9.02035 2.5 8.43111 2.94043C7.84186 3.38087 7.59435 4.15089 7.09934 5.69094L7 6" stroke="#5952FF" stroke-width="1.5"/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<defs>
+<filter id="filter0_d_16_2" x="-230" y="-62" width="484" height="259" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset/>
+<feGaussianBlur stdDeviation="15"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.356863 0 0 0 0 0.321569 0 0 0 0 0.996078 0 0 0 0.25 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_16_2"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_16_2" result="shape"/>
+</filter>
+<clipPath id="clip0_16_2">
+<rect width="1600" height="4562" fill="white" transform="translate(-788 -1121)"/>
+</clipPath>
+</defs>
+</svg>

@@ -1,4 +1,4 @@
-function PaginationPage({totalPages, setCurrentPage, currentPage} :any) {
+function PaginationPage({totalPages, setCurrentPage, currentPage} : {totalPages:number, setCurrentPage:React.Dispatch<React.SetStateAction<number>>, currentPage:number}) {
   return (
     <div className="mt-10 mb-0 lg:mb-20 ">
 <div className=" flex justify-end ">
@@ -9,7 +9,7 @@ function PaginationPage({totalPages, setCurrentPage, currentPage} :any) {
             
               <button
           onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-           className={`justify-start ${currentPage === 1 ? 'text-grayColor1 bg-grayColor1/20' : 'text-[#1d1f2c]'} border  border-descriptionColor/20 text-descriptionColor cursor-pointer disabled:cursor-not-allowed  px-[4px] lg:px-4 py-1 lg:py-2 rounded-md flex items-center text-xs md:text-sm lg:text-base gap-2`}
+           className={`justify-start ${currentPage === 1 ? 'text-grayColor1 bg-grayColor1/20' : 'text-[#1d1f2c]'} border  border-descriptionColor/20 text-descriptionColor cursor-pointer disabled:cursor-not-allowed  px-1 lg:px-4 py-1 lg:py-2 rounded-md flex items-center text-xs md:text-sm lg:text-base gap-2`}
           disabled={currentPage === 1}
         >
           &lt;&lt; Previous
@@ -29,7 +29,7 @@ function PaginationPage({totalPages, setCurrentPage, currentPage} :any) {
                       className={`lg:w-8 lg:h-8 w-5 h-5 p-1.5 lg:p-2.5 ${
                         currentPage === i + 1
                         ? 'bg-secondaryColor'
-                        : 'bg-white outline-1 text-xs md:text-sm lg:text-base outline-offset-[-1px] outline-[#f1f1f1]'
+                        : 'bg-white outline-1 text-xs md:text-sm lg:text-base -outline-offset-1 outline-[#f1f1f1]'
                       } rounded-xs inline-flex flex-col justify-center items-center gap-2.5 cursor-pointer`}
                     >
                       <div className={`justify-start ${
@@ -52,7 +52,7 @@ function PaginationPage({totalPages, setCurrentPage, currentPage} :any) {
                       className={`lg:w-8 lg:h-8 w-5 h-5 p-1.5 lg:p-2.5${
                         currentPage === i + 1
                         ? 'bg-secondaryColor'
-                        : 'bg-white outline-1 outline-offset-[-1px] outline-[#f1f1f1]'
+                        : 'bg-white outline-1 -outline-offset-1 outline-[#f1f1f1]'
                       } rounded-xs inline-flex flex-col justify-center items-center gap-2.5 cursor-pointer`}
                     >
                       <div className={`justify-start ${
@@ -93,7 +93,7 @@ function PaginationPage({totalPages, setCurrentPage, currentPage} :any) {
                       className={`lg:w-8 lg:h-8 w-5 h-5 p-1.5 lg:p-2.5 ${
                         currentPage === i + 1
                         ? 'bg-secondaryColor'
-                        : 'bg-white outline  outline-offset-[-1px] outline-[#f1f1f1]'
+                        : 'bg-white outline  -outline-offset-1 outline-[#f1f1f1]'
                       } rounded-xs inline-flex flex-col justify-center items-center gap-2.5 cursor-pointer`}
                     >
                       <div className={`justify-start ${
@@ -116,7 +116,7 @@ function PaginationPage({totalPages, setCurrentPage, currentPage} :any) {
                     className={`lg:w-8 lg:h-8 w-5 h-5 p-1.5 lg:p-2.5 ${
                       currentPage === i + 1
                       ? 'bg-secondaryColor'
-                      : 'bg-white outline  outline-offset-[-1px] outline-[#f1f1f1]'
+                      : 'bg-white outline  -outline-offset-1 outline-[#f1f1f1]'
                     } rounded-xs inline-flex flex-col justify-center items-center gap-2.5 cursor-pointer`}
                   >
                     <div className={`justify-start ${
@@ -134,7 +134,7 @@ function PaginationPage({totalPages, setCurrentPage, currentPage} :any) {
             <div className="h-8 px-1 py-2.5 bg-white rounded-xs inline-flex flex-col justify-center items-center gap-2.5">
               <button 
                 onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-                className={`justify-start ${currentPage === totalPages ? 'text-grayColor1 bg-grayColor1/20' : 'text-[#1d1f2c]'} border  border-descriptionColor/20 text-descriptionColor cursor-pointer disabled:cursor-not-allowed  px-[4px] lg:px-4 py-1 lg:py-2 rounded-md flex items-center text-xs md:text-sm lg:text-base gap-2`}
+                className={`justify-start ${currentPage === totalPages ? 'text-grayColor1 bg-grayColor1/20' : 'text-[#1d1f2c]'} border  border-descriptionColor/20 text-descriptionColor cursor-pointer disabled:cursor-not-allowed  px-1 lg:px-4 py-1 lg:py-2 rounded-md flex items-center text-xs md:text-sm lg:text-base gap-2`}
                 disabled={currentPage === totalPages}
               >
                Next &gt;&gt;
