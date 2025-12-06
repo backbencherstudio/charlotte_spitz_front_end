@@ -11,14 +11,13 @@ const HowItWorks = () => {
           <div className="relative mb-16">
             {/* Dotted Line */}
             <div
-              className="absolute top-5 left-[150px] right-[150px] h-px hidden md:block"
+              className="absolute top-5 left-[190px] right-[190px] h-px hidden md:block"
               style={{
                 backgroundImage:
                   "repeating-linear-gradient(to right, rgb(203, 213, 225) 0px, rgb(203, 213, 225) 8px, transparent 8px, transparent 16px)",
               }}
             />
 
-            {/* Step Numbers and Cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {/* Step 1 */}
               <div className="flex flex-col items-center">
