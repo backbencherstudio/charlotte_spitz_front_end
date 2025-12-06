@@ -3,8 +3,8 @@
 import type React from "react";
 
 import { ChevronDown } from "lucide-react";
-import { useState } from "react";
 import Link from "next/link";
+import { useState } from "react";
 
 interface ResumeData {
   name: string;
@@ -42,9 +42,17 @@ interface SectionProps {
   className?: string;
 }
 
-function Section({ title, isOpen, onToggle,className, children }: SectionProps) {
+function Section({
+  title,
+  isOpen,
+  onToggle,
+  className,
+  children,
+}: SectionProps) {
   return (
-    <div className={`border-b border-border  mt-1.5 last:border-b-0 ${className}`}>
+    <div
+      className={`border-b border-border  mt-1.5 last:border-b-0 ${className}`}
+    >
       <button
         onClick={onToggle}
         className="flex w-full items-center gap-3  py-1 text-left cursor-pointer transition-opacity"
@@ -87,12 +95,12 @@ export function ResumePreview({ data }: { data: ResumeData }) {
               {data.email}
             </a>
             <div className="text-[11px] flex gap-1 items-end">
-            <span className="text-muted-foreground">•</span>
-            <p>{data.phone}</p>
+              <span className="text-muted-foreground">•</span>
+              <p>{data.phone}</p>
             </div>
             <div className="text-[11px] flex gap-1 items-end">
-            <span className="text-muted-foreground">•</span>
-            <span>{data.location}</span>
+              <span className="text-muted-foreground">•</span>
+              <span>{data.location}</span>
             </div>
           </div>
         </div>
@@ -124,7 +132,10 @@ export function ResumePreview({ data }: { data: ResumeData }) {
                     <h3 className="font-semibold text-xs text-foreground">
                       {job.position}
                     </h3>
-                    <Link href="#" className="text-[11px] font-semibold text-primaryColor ">
+                    <Link
+                      href="#"
+                      className="text-[11px] font-semibold text-primaryColor "
+                    >
                       {job.company}
                     </Link>
                   </div>
@@ -135,7 +146,10 @@ export function ResumePreview({ data }: { data: ResumeData }) {
                 </div>
                 <ul className="mt-1 space-y-1 ml-4">
                   {job.achievements.map((achievement, idx) => (
-                    <li key={idx} className="text-[11px] text-foreground list-disc">
+                    <li
+                      key={idx}
+                      className="text-[11px] text-foreground list-disc"
+                    >
                       <span className="text-foreground">{achievement}</span>
                     </li>
                   ))}
@@ -162,7 +176,9 @@ export function ResumePreview({ data }: { data: ResumeData }) {
                   <h3 className="font-bold text-xs text-foreground">
                     {edu.degree}
                   </h3>
-                  <p className="text-[11px] mt-1 text-primaryColor font-semibold">{edu.school}</p>
+                  <p className="text-[11px] mt-1 text-primaryColor font-semibold">
+                    {edu.school}
+                  </p>
                   {edu.details && (
                     <p className="text-[11px]  text-muted-foreground mt-1">
                       {edu.details}

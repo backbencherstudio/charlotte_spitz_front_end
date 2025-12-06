@@ -82,7 +82,7 @@ const testimonials: Testimonial[] = [
 export default function TestimonialsSlider() {
   const swiperRef = useRef<any>(null);
   return (
-    <section className="bg-white">
+    <section id="testimonials" className="bg-white">
       <div className="container">
         <div className="py-20">
           <h2 className="text-2xl md:text-4xl font-bold text-center mb-12 text-[#333333]">
@@ -93,6 +93,12 @@ export default function TestimonialsSlider() {
             modules={[Navigation, Pagination]}
             spaceBetween={20}
             slidesPerView={1}
+            loop={true}
+            speed={1000}
+            autoplay={{
+              delay: 300000,
+              disableOnInteraction: false,
+            }}
             navigation
             pagination={false}
             breakpoints={{

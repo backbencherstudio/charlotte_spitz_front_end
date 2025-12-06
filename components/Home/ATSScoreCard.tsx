@@ -25,10 +25,9 @@ export function ATSScoreCard({ score, status, subtitle }: ATSScoreCardProps) {
   }, [score, circumference]);
 
   return (
-    <div className=" ">
+    <div className="">
       <div className="bg-white p-4 hero-Shadow lg:p-5 rounded-lg max-w-[265px] shadow-lg border">
-        {/* Header Section */}
-        <div className="">
+        <div>
           <h2 className="text-base font-bold text-slate-900 dark:text-white mb-2">
             Tailored ATS Score
           </h2>
@@ -86,8 +85,7 @@ export function ATSScoreCard({ score, status, subtitle }: ATSScoreCardProps) {
           </div>
         </div>
 
-        {/* Legend Section */}
-        <div className=" ">
+        <div>
           <div className="flex flex-wrap gap-6">
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 bg-[#CBD5E1]" />
@@ -95,6 +93,7 @@ export function ATSScoreCard({ score, status, subtitle }: ATSScoreCardProps) {
                 Original CV
               </span>
             </div>
+
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 bg-primaryColor" />
               <span className="text-xs sm:text-sm text-descriptionColor">

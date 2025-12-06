@@ -111,7 +111,7 @@ const HeroSection = () => {
             <Button
               onClick={() => router.push("/personal-info")}
               icon={
-                <MdArrowOutward className="w-5 h-5  group-hover:rotate-45 transition-transform duration-200" />
+                <MdArrowOutward className="w-5 h-5 transition-transform duration-200" />
               }
             >
               Create a Resume
@@ -123,7 +123,7 @@ const HeroSection = () => {
               <ResumePreview data={sampleResumeData} />
             </div>
             <div className=" absolute top-0 -right-3.5 xl:-right-[60px] 2xl:-right-[200px] h-full ">
-              <div className="h-full flex flex-col justify-center md:justify-between gap-3">
+              <div className="h-full flex flex-col justify-center md:justify-between gap-4">
                 <ATSScoreCard
                   score={75}
                   status="Great match"
