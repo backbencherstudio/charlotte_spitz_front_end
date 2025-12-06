@@ -153,7 +153,7 @@ export default function ActivityLogsPage() {
   return (
     <div className="p-6">
       <div className="mb-8 space-y-1.5">
-        <h1 className="text-2xl font-bold ">Activity Logs</h1>
+        <h1 className="text-3xl font-bold ">Activity Logs</h1>
         <h2 className="text-[#A1A1A1]">
           View system and admin activity history
         </h2>
