@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect, useState } from "react";
+
 interface ATSScoreCardProps {
   score: number;
   status: string;
@@ -7,8 +9,20 @@ interface ATSScoreCardProps {
 }
 
 export function ATSScoreCard({ score, status, subtitle }: ATSScoreCardProps) {
-  const circumference = 2 * Math.PI * 45;
-  const offset = circumference - (score / 100) * circumference;
+  const r = 40;
+  const strokeWidth = 8;
+  const circumference = 2 * Math.PI * r;
+
+  // animatedOffset starts at full circumference (0% filled) and animates
+  // to the computed offset when `score` changes so the progress transitions.
+  const [animatedOffset, setAnimatedOffset] = useState<number>(circumference);
+
+  useEffect(() => {
+    const target = circumference - (score / 100) * circumference;
+    // small timeout helps ensure initial render shows empty circle before animating
+    const id = setTimeout(() => setAnimatedOffset(target), 20);
+    return () => clearTimeout(id);
+  }, [score, circumference]);
 
   return (
     <div className=" ">
@@ -31,28 +45,33 @@ export function ATSScoreCard({ score, status, subtitle }: ATSScoreCardProps) {
         {/* Circular Progress Section */}
         <div className=" flex justify-center py-2">
           <div className="relative w-[99px] h-[99px] ">
-            <svg className="w-full  h-full">
+            <svg className="w-full h-full">
               <circle
                 cx="50%"
                 cy="50%"
-                r="40"
+                r={r}
                 fill="none"
                 stroke="currentColor"
-                strokeWidth="8"
+                strokeWidth={strokeWidth}
                 className="text-slate-200 dark:text-slate-700"
               />
-              {/* Progress Circle */}
+              {/* Progress Circle - rotated so 0% starts at top */}
               <circle
                 cx="50%"
                 cy="50%"
-                r="40"
+                r={r}
                 fill="none"
                 stroke="currentColor"
-                strokeWidth="8"
-                strokeDasharray={circumference}
-                strokeDashoffset={offset}
+                strokeWidth={strokeWidth}
+                strokeDasharray={`${circumference} ${circumference}`}
+                strokeDashoffset={animatedOffset}
                 strokeLinecap="round"
-                className="text-indigo-500 dark:text-indigo-400 transition-all duration-1000"
+                className="text-indigo-500 dark:text-indigo-400"
+                style={{
+                  transition: "stroke-dashoffset 800ms ease",
+                  transform: "rotate(-90deg)",
+                  transformOrigin: "50% 50%",
+                }}
               />
             </svg>
 
