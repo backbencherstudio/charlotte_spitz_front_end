@@ -22,9 +22,11 @@ import { Button } from "@/components/ui/button";
 export default function EmailConfig() {
   return (
     <>
-      <CardHeader>
+      <CardHeader className="pt-5">
         <div>
-          <CardTitle>Email & SMTP Configuration</CardTitle>
+          <CardTitle className="text-2xl font-bold mb-2">
+            Email & SMTP Configuration
+          </CardTitle>
           <CardDescription>
             Configure email settings and SMTP server
           </CardDescription>
