@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import React, { useState, useRef } from "react";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -13,9 +13,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Pencil, User } from "lucide-react";
+import Image from "next/image";
 
 export default function Profile() {
   const [isEditing, setIsEditing] = useState(true);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [formData, setFormData] = useState({
     firstName: "Jhon",
     lastName: "",
@@ -32,6 +35,21 @@ export default function Profile() {
   const handleSave = () => {
     setIsEditing(false);
     // Here you would typically save the data to your backend
+  };
+
+  const handleImageClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   return (
@@ -122,14 +140,30 @@ export default function Profile() {
               <h4 className="font-bold text-lg">Profile Image</h4>
               <div className="relative inline-block">
                 <div className="size-24 rounded-full bg-muted flex items-center justify-center overflow-hidden border border-[#5952FF]">
-                  <User className="size-12 text-muted-foreground" />
+                  {imagePreview ? (
+                    <Image
+                      src={imagePreview}
+                      alt="Profile preview"
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <User className="size-12 text-muted-foreground" />
+                  )}
                 </div>
                 <button
                   type="button"
-                  className="absolute bottom-0 right-0 size-8 rounded-full bg-amber-50 text-black flex items-center justify-center border-2 border-background shadow-sm transition-colors cursor-pointer"
+                  onClick={handleImageClick}
+                  className="absolute bottom-0 right-0 size-8 rounded-full bg-amber-50 text-black flex items-center justify-center border-2 border-background shadow-sm transition-colors cursor-pointer hover:bg-amber-100"
                 >
                   <Pencil className="size-4" />
                 </button>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileChange}
+                  className="hidden"
+                />
               </div>
             </div>
 
