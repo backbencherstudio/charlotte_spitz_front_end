@@ -36,10 +36,10 @@ export default function Profile() {
 
   return (
     <div>
-      <h1 className="text-2xl font-semibold mb-5">Profile</h1>
+      <h1 className="text-2xl font-bold mb-5">Profile</h1>
       <div className="grid gap-6 lg:grid-cols-2">
         {/* Left Section - Read-only Profile Display */}
-        <Card className="bg-card">
+        <Card className="bg-card py-6">
           <CardContent className="space-y-6">
             {/* Profile Picture */}
             <div className="flex flex-col items-center">
@@ -101,7 +101,7 @@ export default function Profile() {
         </Card>
 
         {/* Right Section - Editable Profile Form */}
-        <Card className="bg-card">
+        <Card className="bg-card py-6">
           <CardHeader>
             <div className="flex items-center gap-2 justify-between">
               <Button

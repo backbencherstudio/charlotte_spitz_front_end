@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { ChevronLeft, ChevronRight, Star } from "lucide-react";
+import { Star } from "lucide-react";
 import Image from "next/image";
 import { Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa6";
 // Import Swiper CSS
 import { useRef } from "react";
 import "swiper/css";
@@ -118,16 +118,16 @@ export default function TestimonialsSlider() {
           <div className="flex justify-center gap-6 mt-8">
             <button
               onClick={() => swiperRef.current?.slidePrev()}
-              className="w-10 h-10 rounded-full bg-[#2563EB] text-white flex items-center justify-center shadow hover:bg-[#2563EB]/90 cursor-pointer"
+              className="w-10 h-10 rounded-full bg-gray-200 text-primaryColor hover:text-white flex items-center justify-center shadow hover:bg-[#2563EB]/90 transition-all duration-200 hover:scale-105 card-Shadow cursor-pointer"
             >
-              <ChevronLeft className="w-5 h-5" />
+              <FaArrowLeft className="w-5 h-5 " />
             </button>
 
             <button
               onClick={() => swiperRef.current?.slideNext()}
-              className="w-10 h-10 rounded-full bg-[#2563EB] text-white flex items-center justify-center shadow hover:bg-[#2563EB]/90 cursor-pointer"
+              className="w-10 h-10 rounded-full bg-gray-200 text-primaryColor hover:text-white flex items-center justify-center shadow hover:bg-[#2563EB]/90 transition-all duration-200 hover:scale-105 card-Shadow cursor-pointer"
             >
-              <ChevronRight className="w-5 h-5" />
+              <FaArrowRight className="w-5 h-5" />
             </button>
           </div>
         </div>

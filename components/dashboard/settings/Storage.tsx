@@ -20,9 +20,11 @@ import { Button } from "@/components/ui/button";
 export default function Storage() {
   return (
     <>
-      <CardHeader>
+      <CardHeader className="pt-5">
         <div>
-          <CardTitle>Storage Configuration</CardTitle>
+          <CardTitle className="text-2xl font-bold mb-2">
+            Storage Configuration
+          </CardTitle>
           <CardDescription>Configure file storage location</CardDescription>
         </div>
       </CardHeader>

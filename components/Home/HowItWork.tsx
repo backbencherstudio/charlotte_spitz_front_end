@@ -6,6 +6,45 @@ import { MdArrowOutward } from "react-icons/md";
 import Button from "../reusable/Button";
 const HowItWorks = () => {
   const router = useRouter();
+  const steps = [
+    {
+      id: 1,
+      number: "01",
+      title: "Complete Questionnaire",
+      desc: "Upload your CV (PDF/DOCX/Text) and answer a few simple questions.",
+      icon: (
+        <Image
+          src="/images/folderIcon.svg"
+          className="w-8 h-8 text-[#5952FF]"
+          alt="folder-icon"
+          width={100}
+          height={100}
+        />
+      ),
+    },
+    {
+      id: 2,
+      number: "02",
+      title: "Make Payment",
+      desc: "Complete the payment to proceed with AI-powered resume generation.",
+      icon: (
+        <Image
+          src="/images/walletIcon.svg"
+          className="w-8 h-8 text-[#5952FF]"
+          alt="wallet-icon"
+          width={100}
+          height={100}
+        />
+      ),
+    },
+    {
+      id: 3,
+      number: "03",
+      title: "Get Your Resume",
+      desc: "Download your optimized, job-ready resume instantly.",
+      icon: <CheckCircle className="w-8 h-8 text-[#5952FF]" />,
+    },
+  ];
   return (
     <section id="how-it-works" className="bg-[#F6F8FA]">
       <div className="container ">
@@ -20,78 +59,25 @@ const HowItWorks = () => {
               className="absolute top-5 left-[190px] right-[190px] h-px hidden md:block"
               style={{
                 backgroundImage:
-                  "repeating-linear-gradient(to right, rgb(203, 213, 225) 0px, rgb(203, 213, 225) 8px, transparent 8px, transparent 16px)",
+                  "repeating-linear-gradient(to right, #5952FF 0px, #5952FF 8px, transparent 8px, transparent 16px)",
               }}
             />
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {/* Step 1 */}
-              <div className="flex flex-col items-center">
-                <div className="mb-8 flex items-center justify-center w-10 h-10 rounded-full bg-white border-2 border-[#5952FF] z-10">
-                  01
-                </div>
-                <div className="bg-white rounded-lg p-6 text-center shadow-sm border border-slate-100 w-full hover:border hover:border-[#5952FF] hover:shadow-lg transition">
-                  <div className="flex justify-center items-center bg-[#F6F8FA] w-10 h-10 p-2 rounded-md mx-auto mb-4">
-                    <Image
-                      src="/images/folderIcon.svg"
-                      className="w-8 h-8 text-[#5952FF]"
-                      alt="folder-icon"
-                      width={100}
-                      height={100}
-                    />
+            <div className="grid grid-cols-1 h-full md:grid-cols-3 gap-8 items-stretch">
+              {steps.map((step) => (
+                <div key={step.id} className="flex flex-col h-full items-center">
+                  <div className="mb-8 flex  items-center justify-center w-10 h-10 rounded-full bg-white border-2 border-[#5952FF] z-10">
+                    {step.number}
                   </div>
-                  <h3 className="text-xl font-bold text-black mb-3">
-                    Complete Questionnaire
-                  </h3>
-                  <p className="text-gray-600 text-sm leading-relaxed">
-                    Upload your CV (PDF/DOCX/Text) and answer a few simple
-                    questions.
-                  </p>
-                </div>
-              </div>
-
-              {/* Step 2 - Highlighted */}
-              <div className="flex flex-col items-center">
-                <div className="mb-8 flex items-center justify-center w-10 h-10 rounded-full bg-white border-2 border-[#5952FF] z-10">
-                  02
-                </div>
-                <div className="bg-white rounded-lg p-6 text-center shadow-sm border border-slate-100 w-full hover:border hover:border-[#5952FF] hover:shadow-lg transition">
-                  <div className="flex justify-center items-center bg-[#F6F8FA] w-10 h-10 p-2 rounded-md mx-auto mb-4">
-                    <Image
-                      src="/images/walletIcon.svg"
-                      className="w-8 h-8 text-[#5952FF]"
-                      alt="wallet-icon"
-                      width={100}
-                      height={100}
-                    />
+                  <div className="bg-white rounded-lg p-6 text-center shadow-sm border border-slate-100 w-full hover:border hover:border-[#5952FF] hover:scale-105  card-Shadow transition-all duration-200 flex-1 flex flex-col justify-start gap-">
+                    <div className="flex justify-center items-center bg-[#F6F8FA] w-10 h-10 p-2 rounded-md mx-auto mb-2">
+                      {step.icon}
+                    </div>
+                    <h3 className="text-xl font-bold text-black mb-1">{step.title}</h3>
+                    <p className="text-gray-600 text-sm leading-relaxed">{step.desc}</p>
                   </div>
-                  <h3 className="text-xl font-bold text-black mb-3">
-                    Make Payment
-                  </h3>
-                  <p className="text-gray-600 text-sm leading-relaxed">
-                    Complete the payment to proceed with AI-powered resume
-                    generation.
-                  </p>
                 </div>
-              </div>
-
-              {/* Step 3 */}
-              <div className="flex flex-col items-center">
-                <div className="mb-8 flex items-center justify-center w-10 h-10 rounded-full bg-white border-2 border-[#5952FF] z-10">
-                  03
-                </div>
-                <div className="bg-white rounded-lg p-6 text-center shadow-sm border border-slate-100 w-full hover:border hover:border-[#5952FF] hover:shadow-lg transition">
-                  <div className="flex justify-center items-center bg-[#F6F8FA] w-10 h-10 p-2 rounded-md mx-auto mb-4">
-                    <CheckCircle className="w-8 h-8 text-[#5952FF]" />
-                  </div>
-                  <h3 className="text-xl font-bold text-black mb-3">
-                    Get Your Resume
-                  </h3>
-                  <p className="text-gray-600 text-sm leading-relaxed">
-                    Download your optimized, job-ready <br /> resume instantly.
-                  </p>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
 

@@ -1,10 +1,6 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
-
-const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 interface ATSScoreCardProps {
   score: number;
@@ -13,52 +9,20 @@ interface ATSScoreCardProps {
 }
 
 export function ATSScoreCard({ score, status, subtitle }: ATSScoreCardProps) {
-  const [chartOptions, setChartOptions] = useState<any>(null);
+  const r = 40;
+  const strokeWidth = 8;
+  const circumference = 2 * Math.PI * r;
+
+  // animatedOffset starts at full circumference (0% filled) and animates
+  // to the computed offset when `score` changes so the progress transitions.
+  const [animatedOffset, setAnimatedOffset] = useState<number>(circumference);
 
   useEffect(() => {
-    const newChartOptions = {
-      series: [score],
-
-      chart: {
-        type: "radialBar",
-        height: 100,
-        width: 100,
-      },
-
-      plotOptions: {
-        radialBar: {
-          hollow: {
-            size: "60%",
-          },
-          track: {
-            background: "#E2E8F0",
-          },
-          dataLabels: {
-            show: true,
-            value: {
-              fontSize: "16px",
-              fontWeight: "700",
-              color: "#0F172A",
-              formatter: () => `${score}%`,
-              offsetY: 0,
-              offsetX: 0,
-            },
-          },
-        },
-      },
-
-      colors: ["#5952FF"],
-
-      stroke: {
-        lineCap: "round",
-      },
-
-      labels: [""],
-    };
-
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setChartOptions(newChartOptions);
-  }, [score]);
+    const target = circumference - (score / 100) * circumference;
+    // small timeout helps ensure initial render shows empty circle before animating
+    const id = setTimeout(() => setAnimatedOffset(target), 20);
+    return () => clearTimeout(id);
+  }, [score, circumference]);
 
   return (
     <div className="">
@@ -77,17 +41,48 @@ export function ATSScoreCard({ score, status, subtitle }: ATSScoreCardProps) {
           <p className="text-sm text-descriptionColor">{subtitle}</p>
         </div>
 
-        {/* Apex Circular Chart */}
-        <div className="flex justify-center py-2">
-          {chartOptions && (
-            <Chart
-              options={chartOptions}
-              series={chartOptions.series}
-              type="radialBar"
-              height={150}
-              width={150}
-            />
-          )}
+        {/* Circular Progress Section */}
+        <div className=" flex justify-center py-2">
+          <div className="relative w-[99px] h-[99px] ">
+            <svg className="w-full h-full">
+              <circle
+                cx="50%"
+                cy="50%"
+                r={r}
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={strokeWidth}
+                className="text-slate-200 dark:text-slate-700"
+              />
+              {/* Progress Circle - rotated so 0% starts at top */}
+              <circle
+                cx="50%"
+                cy="50%"
+                r={r}
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={strokeWidth}
+                strokeDasharray={`${circumference} ${circumference}`}
+                strokeDashoffset={animatedOffset}
+                strokeLinecap="round"
+                className="text-indigo-500 dark:text-indigo-400"
+                style={{
+                  transition: "stroke-dashoffset 800ms ease",
+                  transform: "rotate(-90deg)",
+                  transformOrigin: "50% 50%",
+                }}
+              />
+            </svg>
+
+            {/* Center Score */}
+            <div className="absolute flex top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 items-center justify-center">
+              <div className="text-center">
+                <div className="font-bold text-slate-900 dark:text-white">
+                  {score}%
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div>
