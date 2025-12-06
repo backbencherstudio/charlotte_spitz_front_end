@@ -1,9 +1,12 @@
+"use client";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { Plus, Minus } from "lucide-react";
+import { useState } from "react";
 
 export default function FAQAccordion() {
   const faqItems = [
@@ -45,9 +48,11 @@ export default function FAQAccordion() {
     },
   ];
 
+  const [openItem, setOpenItem] = useState<string | undefined>("item-1");
+
   return (
     <section className="py-20 bg-white">
-      <div className="container">
+      <div className="max-w-[830px] mx-auto px-4">
         {/* Header */}
         <div className="mb-14 text-center">
           <h1 className="text-2xl md:text-4xl font-bold tracking-tight text-[#1D1F2C]">
@@ -56,11 +61,29 @@ export default function FAQAccordion() {
         </div>
 
         {/* FAQ Accordion */}
-        <Accordion type="single" collapsible defaultValue="item-1">
+        <Accordion
+          type="single"
+          collapsible
+          value={openItem}
+          onValueChange={(val: string | undefined) => setOpenItem(val)}
+        >
           {faqItems.map((item) => (
-            <AccordionItem key={item.id} value={item.id} className="border-b">
-              <AccordionTrigger className="py-4 font-bold text-[#333333] hover:no-underline text-lg cursor-pointer">
-                {item.question}
+            <AccordionItem key={item.id} value={item.id} className="border-b question-Accordion">
+              <AccordionTrigger className="py-4 font-bold text-[#333333] hover:no-underline text-lg cursor-pointer flex items-center gap-3">
+                <span className="flex-1">{item.question}</span>
+                <span
+                  className={`ml-auto rounded-full  transition-all duration-300  text-muted-foreground ${
+                    openItem === item.id
+                      ? "border-white bg-orengeColor text-whiteColor"
+                      : "hover:border-gray-300"
+                  }`}
+                >
+                  {openItem === item.id ? (
+                    <Minus className="w-4 h-4" />
+                  ) : (
+                    <Plus className="w-4 h-4" />
+                  )}
+                </span>
               </AccordionTrigger>
               <AccordionContent className="pb-4 text-[#4A4C56] text-sm">
                 {item.answer}

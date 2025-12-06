@@ -56,7 +56,7 @@ export default function PricingSection() {
             {plans.map((plan, index) => (
               <div
                 key={index}
-                className={`rounded-2xl p-8 sm:p-10 transition-all duration-300 hover:shadow-lg border hover:border hover:border-[#5952FF]`}
+                className={`rounded-2xl p-8 sm:p-10 transition-all duration-300 card-Shadow border hover:border hover:border-[#5952FF]`}
               >
                 {/* Plan Name */}
                 <div className="flex items-center gap-3 mb-4">

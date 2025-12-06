@@ -87,7 +87,7 @@ export default function Navbar() {
           {menuItems.map((item) => (
             <Link
               key={item.label}
-              href={item.label}
+              href={item.href}
               className={cn(
                 "block text-base py-2",
                 pathname === item.label ? "text-secondaryColor" : "text-white"
