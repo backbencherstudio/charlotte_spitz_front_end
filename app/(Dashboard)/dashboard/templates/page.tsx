@@ -74,7 +74,7 @@ function TemplateCard({ template }: { template: TemplateData }) {
     <Card className="">
       <CardContent className="p-0">
         {/* Image Section */}
-        <div className="w-full h-48 relative overflow-hidden mb-2">
+        <div className="w-full h-60 relative overflow-hidden mb-2">
           <Image
             src={image1}
             alt={template.name}
@@ -117,7 +117,7 @@ function TemplateCard({ template }: { template: TemplateData }) {
               <Button
                 variant="outline"
                 size="sm"
-                className="w-full bg-[#5952FF] text-white cursor-pointer hover:bg-[#4a43e6] hover:text-white"
+                className="w-full bg-[#E7E4FF] text-[#5952FF] cursor-pointer hover:bg-[#4b43e6d4] hover:text-white"
               >
                 <Eye className="w-4 h-4 mr-1" />
                 Preview
@@ -130,7 +130,7 @@ function TemplateCard({ template }: { template: TemplateData }) {
             <Button
               variant="outline"
               size="sm"
-              className="bg-red-500 hover:bg-red-600 text-white border-red-500"
+              className="bg-[#FFDADA] hover:bg-red-600 text-red-600 hover:text-white cursor-pointer"
             >
               <Trash2 className="w-4 h-4" />
             </Button>
