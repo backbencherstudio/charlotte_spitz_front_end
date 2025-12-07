@@ -40,7 +40,7 @@ export default function SettingsPage() {
 
   return (
     <div className="min-h-screen bg-muted px-4 py-6 md:px-8 md:py-8">
-      <div className="mx-auto flex max-w-6xl flex-col gap-6 md:flex-row">
+      <div className="mx-auto flex w-full flex-col gap-6 md:flex-row">
         {/* Left settings navigation */}
         <aside className="w-full rounded-xl bg-card p-4 shadow-sm md:w-64">
           <div className="space-y-1">
