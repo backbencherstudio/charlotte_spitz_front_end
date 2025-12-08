@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { Checkbox } from "@/components/ui/checkbox";
-import { Plus } from "lucide-react";
-import { useState } from "react";
+import { Checkbox } from '@/components/ui/checkbox';
+import { Plus } from 'lucide-react';
+import { useState } from 'react';
 
 interface SkillTag {
   id: string;
@@ -24,39 +24,54 @@ interface SkillsSectionProps {
 
 export default function SkillsSection({ data, onUpdate }: SkillsSectionProps) {
   const [hardSkills, setHardSkills] = useState<SkillTag[]>([
-    { id: "1", name: "Microsoft Word" },
-    { id: "2", name: "Microsoft Excel" },
-    { id: "3", name: "Customer Service" },
-    { id: "4", name: "Data Entry" },
-    { id: "5", name: "QuickBooks" },
-    { id: "6", name: "Billing" },
-    { id: "7", name: "Medical Office Skills" },
-    { id: "8", name: "Computer Skills" },
+    { id: '1', name: 'Microsoft Word' },
+    { id: '2', name: 'Microsoft Excel' },
+    { id: '3', name: 'Customer Service' },
+    { id: '4', name: 'Data Entry' },
+    { id: '5', name: 'QuickBooks' },
+    { id: '6', name: 'Billing' },
+    { id: '7', name: 'Medical Office Skills' },
+    { id: '8', name: 'Computer Skills' },
   ]);
 
   const [softSkills, setSoftSkills] = useState<SkillTag[]>([
-    { id: "1", name: "Communication" },
-    { id: "2", name: "Time Management" },
-    { id: "3", name: "Leadership" },
-    { id: "4", name: "Teamwork" },
-    { id: "5", name: "Detail-Oriented" },
-    { id: "6", name: "Multitasking" },
+    { id: '1', name: 'Communication' },
+    { id: '2', name: 'Time Management' },
+    { id: '3', name: 'Leadership' },
+    { id: '4', name: 'Teamwork' },
+    { id: '5', name: 'Detail-Oriented' },
+    { id: '6', name: 'Multitasking' },
   ]);
 
   const [languages, setLanguages] = useState<SkillTag[]>([
-    { id: "1", name: "Bangla" },
-    { id: "2", name: "English" },
-    { id: "3", name: "Hindi" },
-    { id: "4", name: "Spanish" },
-    { id: "5", name: "French" },
-    { id: "6", name: "German" },
+    { id: '1', name: 'Bangla' },
+    { id: '2', name: 'English' },
+    { id: '3', name: 'Hindi' },
+    { id: '4', name: 'Spanish' },
+    { id: '5', name: 'French' },
+    { id: '6', name: 'German' },
   ]);
 
   const [selectedHardSkills, setSelectedHardSkills] = useState<string[]>([]);
 
-  const [newNote, setNewNote] = useState<string>("");
-  const [nextId, setNextId] = useState<number>(hardSkills.length + 1);
-  const [isInputVisible, setIsInputVisible] = useState<boolean>(false);
+  // Hard Skills state
+  const [newHardSkill, setNewHardSkill] = useState<string>('');
+  const [isHardSkillInputVisible, setIsHardSkillInputVisible] =
+    useState<boolean>(false);
+
+  // Soft Skills state
+  const [newSoftSkill, setNewSoftSkill] = useState<string>('');
+  const [isSoftSkillInputVisible, setIsSoftSkillInputVisible] =
+    useState<boolean>(false);
+
+  // Languages state
+  const [newLanguage, setNewLanguage] = useState<string>('');
+  const [isLanguageInputVisible, setIsLanguageInputVisible] =
+    useState<boolean>(false);
+
+  const [nextId, setNextId] = useState<number>(
+    Math.max(hardSkills.length, softSkills.length, languages.length) + 1
+  );
 
   const selectHardSkill = (id: string) => {
     setSelectedHardSkills((prev) =>
@@ -67,41 +82,41 @@ export default function SkillsSection({ data, onUpdate }: SkillsSectionProps) {
   };
 
   const handleHardSkillsSubmit = () => {
-    if (newNote.trim()) {
+    if (newHardSkill.trim()) {
       const newSkill = {
         id: String(nextId),
-        name: newNote,
+        name: newHardSkill,
       };
       setHardSkills((prevSkills) => [...prevSkills, newSkill]);
-      setNewNote("");
+      setNewHardSkill('');
       setNextId(nextId + 1);
-      setIsInputVisible(false);
+      setIsHardSkillInputVisible(false);
     }
   };
 
   const handleSoftSkillsSubmit = () => {
-    if (newNote.trim()) {
+    if (newSoftSkill.trim()) {
       const newSkill = {
         id: String(nextId),
-        name: newNote,
+        name: newSoftSkill,
       };
       setSoftSkills((prevSkills) => [...prevSkills, newSkill]);
-      setNewNote("");
+      setNewSoftSkill('');
       setNextId(nextId + 1);
-      setIsInputVisible(false);
+      setIsSoftSkillInputVisible(false);
     }
   };
 
   const handleLanguagesSubmit = () => {
-    if (newNote.trim()) {
+    if (newLanguage.trim()) {
       const newSkill = {
         id: String(nextId),
-        name: newNote,
+        name: newLanguage,
       };
       setLanguages((prevSkills) => [...prevSkills, newSkill]);
-      setNewNote("");
+      setNewLanguage('');
       setNextId(nextId + 1);
-      setIsInputVisible(false);
+      setIsLanguageInputVisible(false);
     }
   };
 
@@ -129,7 +144,7 @@ export default function SkillsSection({ data, onUpdate }: SkillsSectionProps) {
               </div>
             ))}
             <button
-              onClick={() => setIsInputVisible(true)}
+              onClick={() => setIsHardSkillInputVisible(true)}
               className="inline-flex items-center gap-2 md:p-8 p-4 border border-[#5952FF] rounded-sm cursor-pointer text-[#1D1F2C]"
             >
               <Plus size={18} />
@@ -138,7 +153,7 @@ export default function SkillsSection({ data, onUpdate }: SkillsSectionProps) {
           </div>
         </div>
 
-        {isInputVisible && (
+        {isHardSkillInputVisible && (
           <div className="fixed inset-0 bg-opacity-10 flex justify-center items-center">
             <div className="bg-white p-8 rounded-lg shadow-lg w-96">
               <h3 className="text-xl font-semibold mb-4">
@@ -146,8 +161,8 @@ export default function SkillsSection({ data, onUpdate }: SkillsSectionProps) {
               </h3>
               <input
                 type="text"
-                value={newNote}
-                onChange={(e) => setNewNote(e.target.value)}
+                value={newHardSkill}
+                onChange={(e) => setNewHardSkill(e.target.value)}
                 className="p-2 border border-[#5952FF] rounded-sm w-full mb-4"
                 placeholder="Enter a new hard skill..."
               />
@@ -159,7 +174,7 @@ export default function SkillsSection({ data, onUpdate }: SkillsSectionProps) {
                   Add
                 </button>
                 <button
-                  onClick={() => setIsInputVisible(false)}
+                  onClick={() => setIsHardSkillInputVisible(false)}
                   className="bg-gray-300 text-gray-700 px-4 py-2 rounded-sm cursor-pointer"
                 >
                   Cancel
@@ -185,14 +200,14 @@ export default function SkillsSection({ data, onUpdate }: SkillsSectionProps) {
             ))}
           </div>
           <button
-            onClick={() => setIsInputVisible(true)}
+            onClick={() => setIsSoftSkillInputVisible(true)}
             className="inline-flex items-center gap-2 border border-[#5952FF] rounded-sm cursor-pointer text-[#1D1F2C] px-4 py-2"
           >
             <Plus size={18} />
             <span>Add your own Skill</span>
           </button>
 
-          {isInputVisible && (
+          {isSoftSkillInputVisible && (
             <div className="fixed inset-0 bg-opacity-10 flex justify-center items-center">
               <div className="bg-white p-8 rounded-lg shadow-lg w-96">
                 <h3 className="text-xl font-semibold mb-4">
@@ -200,8 +215,8 @@ export default function SkillsSection({ data, onUpdate }: SkillsSectionProps) {
                 </h3>
                 <input
                   type="text"
-                  value={newNote}
-                  onChange={(e) => setNewNote(e.target.value)}
+                  value={newSoftSkill}
+                  onChange={(e) => setNewSoftSkill(e.target.value)}
                   className="p-2 border border-[#5952FF] rounded-sm w-full mb-4"
                   placeholder="Enter a new soft skill..."
                 />
@@ -213,7 +228,7 @@ export default function SkillsSection({ data, onUpdate }: SkillsSectionProps) {
                     Add
                   </button>
                   <button
-                    onClick={() => setIsInputVisible(false)}
+                    onClick={() => setIsSoftSkillInputVisible(false)}
                     className="bg-gray-300 text-gray-700 px-4 py-2 rounded-sm cursor-pointer"
                   >
                     Cancel
@@ -240,14 +255,14 @@ export default function SkillsSection({ data, onUpdate }: SkillsSectionProps) {
             ))}
           </div>
           <button
-            onClick={() => setIsInputVisible(true)}
+            onClick={() => setIsLanguageInputVisible(true)}
             className="inline-flex items-center gap-2 border border-[#5952FF] rounded-sm cursor-pointer text-[#1D1F2C] px-4 py-2"
           >
             <Plus size={18} />
             <span>Add languages</span>
           </button>
 
-          {isInputVisible && (
+          {isLanguageInputVisible && (
             <div className="fixed inset-0 bg-opacity-10 flex justify-center items-center">
               <div className="bg-white p-8 rounded-lg shadow-lg w-96">
                 <h3 className="text-xl font-semibold mb-4">
@@ -255,8 +270,8 @@ export default function SkillsSection({ data, onUpdate }: SkillsSectionProps) {
                 </h3>
                 <input
                   type="text"
-                  value={newNote}
-                  onChange={(e) => setNewNote(e.target.value)}
+                  value={newLanguage}
+                  onChange={(e) => setNewLanguage(e.target.value)}
                   className="p-2 border border-[#5952FF] rounded-sm w-full mb-4"
                   placeholder="Enter a new language..."
                 />
@@ -268,7 +283,7 @@ export default function SkillsSection({ data, onUpdate }: SkillsSectionProps) {
                     Add
                   </button>
                   <button
-                    onClick={() => setIsInputVisible(false)}
+                    onClick={() => setIsLanguageInputVisible(false)}
                     className="bg-gray-300 text-gray-700 px-4 py-2 rounded-sm cursor-pointer"
                   >
                     Cancel

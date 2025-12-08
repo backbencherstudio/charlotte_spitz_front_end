@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { CheckCheck } from "lucide-react";
-import Link from "next/link";
+import { CheckCheck } from 'lucide-react';
+import Link from 'next/link';
 
 export default function SuccessPage() {
   return (
@@ -40,8 +40,7 @@ export default function SuccessPage() {
             Check your email inbox
           </h3>
           <p className="text-gray-600 text-sm text-center">
-            Weill reach out to you if we have any questions about your resume.
-            Your completed resume will be delivered within 48 hours.
+            Your resume will be delivered within 48 hours (starting from the next business day).
           </p>
         </div>
 
@@ -53,15 +52,6 @@ export default function SuccessPage() {
             </div>
             <span className="text-[#25314C] text-sm text-left">
               Payment processed successfully
-            </span>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <div className="w-5 h-5 rounded-full flex items-center justify-center shrink-0">
-              <CheckCheck />
-            </div>
-            <span className="text-[#25314C] text-sm text-left">
-              Resume data saved securely
             </span>
           </div>
 

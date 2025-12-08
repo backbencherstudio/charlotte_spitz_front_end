@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { Label } from "@/components/ui/label";
+import { Label } from '@/components/ui/label';
 import {
   Select,
   SelectContent,
@@ -9,8 +9,8 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { useForm } from "react-hook-form";
+} from '@/components/ui/select';
+import { useForm } from 'react-hook-form';
 
 interface PersonalInfoData {
   fullName: string;
@@ -65,7 +65,7 @@ export default function PersonalInfoStep({
               id="fullName"
               className="w-full px-6 py-3 border rounded-sm focus:outline-none focus:ring-2 focus:ring-[#5952FF]"
               placeholder="Enter legal name"
-              {...register("fullName", { required: "Full name is required" })}
+              {...register('fullName', { required: 'Full name is required' })}
             />
             {errors.fullName && (
               <span className="text-red-600 text-sm">
@@ -85,8 +85,8 @@ export default function PersonalInfoStep({
               id="phoneNumber"
               className="w-full px-6 py-3 border rounded-sm focus:outline-none focus:ring-2 focus:ring-[#5952FF]"
               placeholder="Enter your number"
-              {...register("phoneNumber", {
-                required: "Phone number is required",
+              {...register('phoneNumber', {
+                required: 'Phone number is required',
               })}
             />
             {errors.phoneNumber && (
@@ -108,11 +108,11 @@ export default function PersonalInfoStep({
               type="email"
               placeholder="Enter your email address"
               className="w-full px-6 py-3 border rounded-sm focus:outline-none focus:ring-2 focus:ring-[#5952FF]"
-              {...register("email", {
-                required: "Email is required",
+              {...register('email', {
+                required: 'Email is required',
                 pattern: {
                   value: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
-                  message: "Invalid email format",
+                  message: 'Invalid email format',
                 },
               })}
             />
@@ -134,8 +134,8 @@ export default function PersonalInfoStep({
               id="cityState"
               placeholder="Bangladesh"
               className="w-full px-6 py-3 border rounded-sm focus:outline-none focus:ring-2 focus:ring-[#5952FF]"
-              {...register("cityState", {
-                required: "City & State is required",
+              {...register('cityState', {
+                required: 'City & State is required',
               })}
             />
             {errors.cityState && (
@@ -152,15 +152,14 @@ export default function PersonalInfoStep({
             >
               Resume Type
             </Label>
-            <Select onValueChange={(value) => setValue("resumeType", value)}>
+            <Select onValueChange={(value) => setValue('resumeType', value)}>
               <SelectTrigger className="w-full border rounded-sm focus:outline-none focus:ring-2 focus:ring-[#5952FF] cursor-pointer py-6 px-6">
                 <SelectValue placeholder="Select" />
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
                   <SelectLabel>Resume Types</SelectLabel>
-                  <SelectItem value="normal">Normal</SelectItem>
-                  <SelectItem value="natural">Natural</SelectItem>
+                  <SelectItem value="Standard">Standard</SelectItem>
                 </SelectGroup>
               </SelectContent>
             </Select>
@@ -177,7 +176,7 @@ export default function PersonalInfoStep({
             >
               Do you want your full address on your resume? (Yes/No)
             </Label>
-            <Select onValueChange={(value) => setValue("resumeType", value)}>
+            <Select onValueChange={(value) => setValue('resumeType', value)}>
               <SelectTrigger className="w-full border rounded-sm focus:outline-none focus:ring-2 focus:ring-[#5952FF] cursor-pointer py-6 px-6">
                 <SelectValue placeholder="Select" />
               </SelectTrigger>
@@ -205,7 +204,7 @@ export default function PersonalInfoStep({
             </Label>
             <input
               id="linkedinUrl"
-              {...register("linkedinUrl")}
+              {...register('linkedinUrl')}
               className="w-full px-6 py-3 border rounded-sm focus:outline-none focus:ring-2 focus:ring-[#5952FF]"
             />
           </div>
@@ -219,7 +218,7 @@ export default function PersonalInfoStep({
             </Label>
             <input
               id="websiteUrl"
-              {...register("websiteUrl")}
+              {...register('websiteUrl')}
               className="w-full px-6 py-3 border rounded-sm focus:outline-none focus:ring-2 focus:ring-[#5952FF]"
             />
           </div>
@@ -233,36 +232,36 @@ export default function PersonalInfoStep({
             </Label>
             <input
               id="websiteUrl"
-              {...register("websiteUrl")}
+              {...register('websiteUrl')}
               className="w-full px-6 py-3 border rounded-sm focus:outline-none focus:ring-2 focus:ring-[#5952FF]"
             />
           </div>
-          <div className="md:col-span-2">
+          {/* <div className="md:col-span-2">
             <Label
               htmlFor="summary"
               className="block mb-2 font-medium text-[#1D1F2C]"
             >
-              Professional Summary/Objective
+              Professional Summary/Objective (optional)
             </Label>
             <input
               id="websiteUrl"
-              {...register("websiteUrl")}
+              {...register('websiteUrl')}
               className="w-full px-6 py-3 border rounded-sm focus:outline-none focus:ring-2 focus:ring-[#5952FF]"
             />
-          </div>
+          </div> */}
           <div className="md:col-span-2">
             <Label
               htmlFor="summary"
               className="block mb-2 font-medium text-[#1D1F2C]"
             >
-              Professional Summary/Objective
+              Professional Summary/Objective (optional)
             </Label>
             <textarea
               id="summary"
               placeholder="Write a concise summary of your career goals and key achievements."
               className="w-full px-6 py-3 border rounded-sm focus:outline-none focus:ring-2 focus:ring-[#5952FF]"
               rows={4}
-              {...register("professionalSummary")}
+              {...register('professionalSummary')}
             />
           </div>
         </div>
