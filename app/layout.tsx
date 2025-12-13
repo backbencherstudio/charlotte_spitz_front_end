@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { ReduxProvider } from "@/src/redux/provider";
 
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
 });
-
 
 export const metadata: Metadata = {
   title: "CVdigger",
@@ -20,10 +20,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${inter.variable} antialiased`}
-      >
-        {children}
+      <body className={`${inter.variable} antialiased`}>
+        <ReduxProvider>{children}</ReduxProvider>
       </body>
     </html>
   );

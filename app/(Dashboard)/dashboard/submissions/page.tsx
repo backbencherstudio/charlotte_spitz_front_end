@@ -1,7 +1,8 @@
 "use client";
 
-import DynamicTableWithPagination from "@/common/DynamicTable";
-import React, { useState, useMemo } from "react";
+import SubmissionTable from "@/components/dashboard/submissions/SubmissionTable";
+import { useGetAllSubmissionsQuery } from "@/src/redux/features/submissions";
+import { useState } from "react";
 
 interface Submission {
   id: string;
@@ -17,58 +18,11 @@ export default function SubmissionsPage() {
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [selectedFilter, setSelectedFilter] = useState("All");
 
-  // Generate 60 sample submissions matching the image
-  const generateSampleData = (): Submission[] => {
-    const templates = [
-      "Modern Pro",
-      "Classic",
-      "Creative",
-      "Executive",
-      "Minimalist",
-    ];
-    const statuses: ("Approve" | "Pending" | "Revision")[] = [
-      "Approve",
-      "Pending",
-      "Revision",
-    ];
-    const customers = [
-      "Arlene",
-      "John",
-      "Sarah",
-      "Michael",
-      "Emily",
-      "David",
-      "Lisa",
-      "Robert",
-    ];
+  const { data: submissionsData, isLoading, error, refetch } = useGetAllSubmissionsQuery();
 
-    const data: Submission[] = [];
-    const baseDate = new Date("2025-06-20");
+  console.log("submissions -->", submissionsData);
 
-    for (let i = 0; i < 60; i++) {
-      const date = new Date(baseDate);
-      date.setDate(date.getDate() - Math.floor(i / 3));
 
-      data.push({
-        id: `${i + 1}`,
-        userId: "456789",
-        customerName: customers[i % customers.length],
-        submissionDate: date.toISOString(),
-        template: templates[i % templates.length],
-        status: statuses[i % statuses.length],
-      });
-    }
-
-    return data;
-  };
-
-  const [data] = useState<Submission[]>(generateSampleData());
-
-  // Filter data based on selected filter
-  const filteredData = useMemo(() => {
-    if (selectedFilter === "All") return data;
-    return data.filter((item) => item.status === selectedFilter);
-  }, [data, selectedFilter]);
 
   const columns = [
     {
@@ -158,9 +112,9 @@ export default function SubmissionsPage() {
           Manage and review all resume submissions.
         </h2>
       </div>
-      <DynamicTableWithPagination
+      <SubmissionTable
         columns={columns}
-        data={filteredData as unknown as Record<string, unknown>[]}
+        data={submissionsData?.data as unknown as Record<string, unknown>[]}
         currentPage={currentPage}
         itemsPerPage={itemsPerPage}
         onPageChange={handlePageChange}
