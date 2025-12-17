@@ -3,7 +3,7 @@
 
 import { BriefcaseBusiness, FileText, GraduationCap } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { BiCertification } from "react-icons/bi";
 import { HiLightBulb } from "react-icons/hi";
 import CertificateStep from "./Steps/Certificate";
@@ -65,66 +65,175 @@ interface FormData {
     location: string;
     responsibilities: string;
     achievements: string;
-  };
+    currentlyWorking?: boolean;
+  }[];
   education: {
     degree: string;
     institution: string;
     result: string;
     passingYear: string;
     location: string;
-  };
+  }[];
   certifications: {
     certificateName: string;
     organization: string;
     result: string;
     expiration: string;
     certificateId: string;
-  };
+  }[];
 }
 
 export default function MultiStepForm() {
   const router = useRouter();
-  const [currentStep, setCurrentStep] = useState(1);
-  const [formData, setFormData] = useState<FormData>({
-    personalInfo: {
-      fullName: "",
-      phoneNumber: "",
-      email: "",
-      cityState: "",
-      resumeType: "",
-      linkedinUrl: "",
-      websiteUrl: "",
-      professionalSummary: "",
-    },
-    skills: {
-      hardSkills: [],
-      softSkills: [],
-      languages: [],
-    },
-    workExperience: {
-      jobTitle: "",
-      companyName: "",
-      startDate: "",
-      endDate: "",
-      location: "",
-      responsibilities: "",
-      achievements: "",
-    },
-    education: {
-      degree: "",
-      institution: "",
-      result: "",
-      passingYear: "",
-      location: "",
-    },
-    certifications: {
-      certificateName: "",
-      organization: "",
-      result: "",
-      expiration: "",
-      certificateId: "",
-    },
+  const [currentStep, setCurrentStep] = useState<number>(() => {
+    if (typeof window !== "undefined") {
+      try {
+        const savedStep = window.localStorage.getItem("multiStepCurrentStep");
+        if (savedStep) {
+          const stepNum = Number(savedStep);
+          if (
+            !Number.isNaN(stepNum) &&
+            stepNum >= 1 &&
+            stepNum <= STEPS.length
+          ) {
+            return stepNum;
+          }
+        }
+      } catch {}
+    }
+    return 1;
   });
+  const [formData, setFormData] = useState<FormData>(() => {
+    const initial: FormData = {
+      personalInfo: {
+        fullName: "",
+        phoneNumber: "",
+        email: "",
+        cityState: "",
+        resumeType: "",
+        linkedinUrl: "",
+        websiteUrl: "",
+        professionalSummary: "",
+      },
+      skills: {
+        hardSkills: [],
+        softSkills: [],
+        languages: [],
+      },
+      workExperience: [
+        {
+          jobTitle: "",
+          companyName: "",
+          startDate: "",
+          endDate: "",
+          location: "",
+          responsibilities: "",
+          achievements: "",
+          currentlyWorking: false,
+        },
+      ],
+      education: [
+        {
+          degree: "",
+          institution: "",
+          result: "",
+          passingYear: "",
+          location: "",
+        },
+      ],
+      certifications: [
+        {
+          certificateName: "",
+          organization: "",
+          result: "",
+          expiration: "",
+          certificateId: "",
+        },
+      ],
+    };
+    if (typeof window !== "undefined") {
+      try {
+        const saved = window.localStorage.getItem("multiStepFormData");
+        if (saved) {
+          const parsed = JSON.parse(saved) as any;
+          // Migrate older shapes (single object) to arrays
+          if (!Array.isArray(parsed.workExperience)) {
+            parsed.workExperience = parsed.workExperience
+              ? [parsed.workExperience]
+              : [];
+          }
+          if (!Array.isArray(parsed.education)) {
+            parsed.education = parsed.education ? [parsed.education] : [];
+          }
+          if (!Array.isArray(parsed.certifications)) {
+            parsed.certifications = parsed.certifications
+              ? [parsed.certifications]
+              : [];
+          }
+          // Ensure at least one blank item exists for each array
+          if (
+            Array.isArray(parsed.workExperience) &&
+            parsed.workExperience.length === 0
+          ) {
+            parsed.workExperience = initial.workExperience;
+          }
+          if (
+            Array.isArray(parsed.education) &&
+            parsed.education.length === 0
+          ) {
+            parsed.education = initial.education;
+          }
+          if (
+            Array.isArray(parsed.certifications) &&
+            parsed.certifications.length === 0
+          ) {
+            parsed.certifications = initial.certifications;
+          }
+          return parsed as FormData;
+        }
+      } catch {}
+    }
+    return initial;
+  });
+
+  // Snapshot getters registered by child steps
+  const personalInfoGetterRef = useRef<(() => FormData["personalInfo"]) | null>(
+    null
+  );
+  const skillsGetterRef = useRef<(() => FormData["skills"]) | null>(null);
+  const workGetterRef = useRef<(() => FormData["workExperience"]) | null>(null);
+  const educationGetterRef = useRef<(() => FormData["education"]) | null>(null);
+  const certGetterRef = useRef<(() => FormData["certifications"]) | null>(null);
+
+  // LocalStorage keys
+  const STORAGE_KEYS = {
+    data: "multiStepFormData",
+    step: "multiStepCurrentStep",
+  } as const;
+
+  // Initial state is hydrated from localStorage via useState initializers
+
+  // Persist data/step on change
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    try {
+      window.localStorage.setItem(
+        "multiStepFormData",
+        JSON.stringify(formData)
+      );
+    } catch {
+      // ignore
+    }
+  }, [formData]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    try {
+      window.localStorage.setItem("multiStepCurrentStep", String(currentStep));
+    } catch {
+      // ignore
+    }
+  }, [currentStep]);
 
   const handleUpdateFormData = <T extends keyof FormData>(
     stepName: T,
@@ -137,23 +246,73 @@ export default function MultiStepForm() {
   };
 
   const handleNext = () => {
+    // Pull snapshot for current step so we have the latest values
+    let updated = formData;
+    if (currentStep === 1 && personalInfoGetterRef.current) {
+      updated = { ...formData, personalInfo: personalInfoGetterRef.current() };
+    } else if (currentStep === 2 && skillsGetterRef.current) {
+      updated = { ...formData, skills: skillsGetterRef.current() };
+    } else if (currentStep === 3 && workGetterRef.current) {
+      updated = { ...formData, workExperience: workGetterRef.current() };
+    } else if (currentStep === 4 && educationGetterRef.current) {
+      updated = { ...formData, education: educationGetterRef.current() };
+    } else if (currentStep === 5 && certGetterRef.current) {
+      updated = { ...formData, certifications: certGetterRef.current() };
+    }
+    setFormData(updated);
+    console.log("MultiStepForm data (step " + currentStep + "):", updated);
+    // Persist snapshot before navigating forward
+    try {
+      if (typeof window !== "undefined") {
+        window.localStorage.setItem(STORAGE_KEYS.data, JSON.stringify(updated));
+      }
+    } catch {}
     if (currentStep < STEPS.length) {
-      setCurrentStep(currentStep + 1);
+      setCurrentStep((s) => Math.min(s + 1, STEPS.length));
     } else {
       router.push("/payment");
     }
   };
 
   const handlePrevious = () => {
+    // Pull snapshot for current step and persist before going back
+    let updated = formData;
+    if (currentStep === 1 && personalInfoGetterRef.current) {
+      updated = { ...formData, personalInfo: personalInfoGetterRef.current() };
+    } else if (currentStep === 2 && skillsGetterRef.current) {
+      updated = { ...formData, skills: skillsGetterRef.current() };
+    } else if (currentStep === 3 && workGetterRef.current) {
+      updated = { ...formData, workExperience: workGetterRef.current() };
+    } else if (currentStep === 4 && educationGetterRef.current) {
+      updated = { ...formData, education: educationGetterRef.current() };
+    } else if (currentStep === 5 && certGetterRef.current) {
+      updated = { ...formData, certifications: certGetterRef.current() };
+    }
+    setFormData(updated);
+    try {
+      if (typeof window !== "undefined") {
+        window.localStorage.setItem(STORAGE_KEYS.data, JSON.stringify(updated));
+      }
+    } catch {}
     if (currentStep > 1) {
-      setCurrentStep(currentStep - 1);
+      setCurrentStep((s) => Math.max(s - 1, 1));
     }
   };
+
+  // const handleSubmited = () => {
+  //   // Final snapshot pull
+  //   let updated = formData;
+  //   if (currentStep === 5 && certGetterRef.current) {
+  //     updated = { ...formData, certifications: certGetterRef.current() };
+  //   }
+  //   console.log(updated, "data ceck==");
+  // };
 
   return (
     <div>
       <div className="py-20">
         <ProgressBar currentStep={currentStep} STEPS={STEPS} />
+
         <div className="mt-14 p-6 bg-[#F6F8FA] rounded-lg border">
           {currentStep === 1 && (
             <PersonalInfoStep
@@ -161,12 +320,19 @@ export default function MultiStepForm() {
               onUpdate={(data: any) =>
                 handleUpdateFormData("personalInfo", data)
               }
+              onSnapshot={(getter) => {
+                personalInfoGetterRef.current =
+                  getter as () => FormData["personalInfo"];
+              }}
             />
           )}
           {currentStep === 2 && (
             <SkillsSection
               data={formData.skills}
               onUpdate={(data: any) => handleUpdateFormData("skills", data)}
+              onSnapshot={(getter) => {
+                skillsGetterRef.current = getter as () => FormData["skills"];
+              }}
             />
           )}
           {currentStep === 3 && (
@@ -175,12 +341,20 @@ export default function MultiStepForm() {
               onUpdate={(data: any) =>
                 handleUpdateFormData("workExperience", data)
               }
+              onSnapshot={(getter) => {
+                workGetterRef.current =
+                  getter as () => FormData["workExperience"];
+              }}
             />
           )}
           {currentStep === 4 && (
             <EducationStep
               data={formData.education}
               onUpdate={(data: any) => handleUpdateFormData("education", data)}
+              onSnapshot={(getter) => {
+                educationGetterRef.current =
+                  getter as () => FormData["education"];
+              }}
             />
           )}
           {currentStep === 5 && (
@@ -189,6 +363,10 @@ export default function MultiStepForm() {
               onUpdate={(data: any) =>
                 handleUpdateFormData("certifications", data)
               }
+              onSnapshot={(getter) => {
+                certGetterRef.current =
+                  getter as () => FormData["certifications"];
+              }}
             />
           )}
 
@@ -201,8 +379,26 @@ export default function MultiStepForm() {
             >
               Back
             </button>
+            {/* {currentStep === STEPS.length ? (
+              <button
+                onClick={handleSubmited}
+                type="submit"
+                className="px-6 py-3 bg-[#5952FF] text-white rounded-sm flex-1 cursor-pointer hover:bg-[#5952FF]/90 font-semibold"
+              >
+                Submit
+              </button>
+            ) : (
+              <button
+                onClick={handleNext}
+                type="submit"
+                className="px-6 py-3 bg-[#5952FF] text-white rounded-sm flex-1 cursor-pointer hover:bg-[#5952FF]/90 font-semibold"
+              >
+                Continue
+              </button>
+            )} */}
             <button
               onClick={handleNext}
+              type="submit"
               className="px-6 py-3 bg-[#5952FF] text-white rounded-sm flex-1 cursor-pointer hover:bg-[#5952FF]/90 font-semibold"
             >
               {currentStep === STEPS.length ? "Submit" : "Continue"}

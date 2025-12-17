@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { Checkbox } from '@/components/ui/checkbox';
-import { Plus } from 'lucide-react';
-import { useState } from 'react';
+import { Checkbox } from "@/components/ui/checkbox";
+import { Plus } from "lucide-react";
+import { useEffect, useState } from "react";
 
 interface SkillTag {
   id: string;
@@ -20,52 +20,62 @@ interface SkillsSectionProps {
     softSkills: string[];
     languages: string[];
   }) => void;
+  onSnapshot?: (
+    getter: () => {
+      hardSkills: string[];
+      softSkills: string[];
+      languages: string[];
+    }
+  ) => void;
 }
 
-export default function SkillsSection({ data, onUpdate }: SkillsSectionProps) {
+export default function SkillsSection({
+
+  onSnapshot,
+}: SkillsSectionProps) {
   const [hardSkills, setHardSkills] = useState<SkillTag[]>([
-    { id: '1', name: 'Microsoft Word' },
-    { id: '2', name: 'Microsoft Excel' },
-    { id: '3', name: 'Customer Service' },
-    { id: '4', name: 'Data Entry' },
-    { id: '5', name: 'QuickBooks' },
-    { id: '6', name: 'Billing' },
-    { id: '7', name: 'Medical Office Skills' },
-    { id: '8', name: 'Computer Skills' },
+    { id: "1", name: "Microsoft Word" },
+    { id: "2", name: "Microsoft Excel" },
+    { id: "3", name: "Customer Service" },
+    { id: "4", name: "Data Entry" },
+    { id: "5", name: "QuickBooks" },
+    { id: "6", name: "Billing" },
+    { id: "7", name: "Medical Office Skills" },
+    { id: "8", name: "Computer Skills" },
   ]);
 
   const [softSkills, setSoftSkills] = useState<SkillTag[]>([
-    { id: '1', name: 'Communication' },
-    { id: '2', name: 'Time Management' },
-    { id: '3', name: 'Leadership' },
-    { id: '4', name: 'Teamwork' },
-    { id: '5', name: 'Detail-Oriented' },
-    { id: '6', name: 'Multitasking' },
+    { id: "1", name: "Communication" },
+    { id: "2", name: "Time Management" },
+    { id: "3", name: "Leadership" },
+    { id: "4", name: "Teamwork" },
+    { id: "5", name: "Detail-Oriented" },
+    { id: "6", name: "Multitasking" },
   ]);
 
   const [languages, setLanguages] = useState<SkillTag[]>([
-    { id: '1', name: 'Bangla' },
-    { id: '2', name: 'English' },
-    { id: '3', name: 'Hindi' },
-    { id: '4', name: 'Spanish' },
-    { id: '5', name: 'French' },
-    { id: '6', name: 'German' },
+    { id: "1", name: "Bangla" },
+    { id: "2", name: "English" },
+    { id: "3", name: "Hindi" },
+    { id: "4", name: "Spanish" },
+    { id: "5", name: "French" },
+    { id: "6", name: "German" },
   ]);
 
   const [selectedHardSkills, setSelectedHardSkills] = useState<string[]>([]);
 
   // Hard Skills state
-  const [newHardSkill, setNewHardSkill] = useState<string>('');
+  const [newHardSkill, setNewHardSkill] = useState<string>("");
   const [isHardSkillInputVisible, setIsHardSkillInputVisible] =
     useState<boolean>(false);
 
   // Soft Skills state
-  const [newSoftSkill, setNewSoftSkill] = useState<string>('');
+  const [newSoftSkill, setNewSoftSkill] = useState<string>("");
   const [isSoftSkillInputVisible, setIsSoftSkillInputVisible] =
     useState<boolean>(false);
 
   // Languages state
-  const [newLanguage, setNewLanguage] = useState<string>('');
+  const [newLanguage, setNewLanguage] = useState<string>("");
   const [isLanguageInputVisible, setIsLanguageInputVisible] =
     useState<boolean>(false);
 
@@ -88,7 +98,7 @@ export default function SkillsSection({ data, onUpdate }: SkillsSectionProps) {
         name: newHardSkill,
       };
       setHardSkills((prevSkills) => [...prevSkills, newSkill]);
-      setNewHardSkill('');
+      setNewHardSkill("");
       setNextId(nextId + 1);
       setIsHardSkillInputVisible(false);
     }
@@ -101,7 +111,7 @@ export default function SkillsSection({ data, onUpdate }: SkillsSectionProps) {
         name: newSoftSkill,
       };
       setSoftSkills((prevSkills) => [...prevSkills, newSkill]);
-      setNewSoftSkill('');
+      setNewSoftSkill("");
       setNextId(nextId + 1);
       setIsSoftSkillInputVisible(false);
     }
@@ -114,11 +124,29 @@ export default function SkillsSection({ data, onUpdate }: SkillsSectionProps) {
         name: newLanguage,
       };
       setLanguages((prevSkills) => [...prevSkills, newSkill]);
-      setNewLanguage('');
+      setNewLanguage("");
       setNextId(nextId + 1);
       setIsLanguageInputVisible(false);
     }
   };
+
+  // Register snapshot getter so parent can pull values on navigation
+  useEffect(() => {
+    const getSnapshot = () => {
+      const hardSelectedNames = hardSkills
+        .filter((s) => selectedHardSkills.includes(s.id))
+        .map((s) => s.name);
+      const softNames = softSkills.map((s) => s.name);
+      const languageNames = languages.map((l) => l.name);
+      return {
+        hardSkills: hardSelectedNames,
+        softSkills: softNames,
+        languages: languageNames,
+      };
+    };
+    onSnapshot?.(getSnapshot);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hardSkills, softSkills, languages, selectedHardSkills]);
 
   return (
     <main>
