@@ -10,6 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 interface PersonalInfoData {
@@ -26,11 +27,13 @@ interface PersonalInfoData {
 interface PersonalInfoStepProps {
   data: PersonalInfoData;
   onUpdate: (data: PersonalInfoData) => void;
+  onSnapshot?: (getter: () => PersonalInfoData) => void;
 }
 
 export default function PersonalInfoStep({
   data,
   onUpdate,
+  onSnapshot,
 }: PersonalInfoStepProps) {
   // Use React Hook Form
   const {
@@ -38,9 +41,16 @@ export default function PersonalInfoStep({
     handleSubmit,
     setValue,
     formState: { errors },
+    getValues,
   } = useForm<PersonalInfoData>({
     defaultValues: data,
   });
+
+  // Provide a snapshot getter to parent so it can pull latest values on navigation
+  useEffect(() => {
+    onSnapshot?.(() => getValues());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const onSubmit = (formData: PersonalInfoData) => {
     onUpdate(formData);
@@ -159,8 +169,7 @@ export default function PersonalInfoStep({
               <SelectContent>
                 <SelectGroup>
                   <SelectLabel>Resume Types</SelectLabel>
-                  <SelectItem value="normal">Normal</SelectItem>
-                  <SelectItem value="natural">Natural</SelectItem>
+                  <SelectItem value="Standard">Standard</SelectItem>
                 </SelectGroup>
               </SelectContent>
             </Select>
@@ -237,25 +246,25 @@ export default function PersonalInfoStep({
               className="w-full px-6 py-3 border rounded-sm focus:outline-none focus:ring-2 focus:ring-[#5952FF]"
             />
           </div>
-          <div className="md:col-span-2">
+          {/* <div className="md:col-span-2">
             <Label
               htmlFor="summary"
               className="block mb-2 font-medium text-[#1D1F2C]"
             >
-              Professional Summary/Objective
+              Professional Summary/Objective (optional)
             </Label>
             <input
               id="websiteUrl"
-              {...register("websiteUrl")}
+              {...register('websiteUrl')}
               className="w-full px-6 py-3 border rounded-sm focus:outline-none focus:ring-2 focus:ring-[#5952FF]"
             />
-          </div>
+          </div> */}
           <div className="md:col-span-2">
             <Label
               htmlFor="summary"
               className="block mb-2 font-medium text-[#1D1F2C]"
             >
-              Professional Summary/Objective
+              Professional Summary/Objective (optional)
             </Label>
             <textarea
               id="summary"

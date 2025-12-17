@@ -1,38 +1,38 @@
-"use client";
-import { Check, Crown, Rocket } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { MdArrowOutward } from "react-icons/md";
-import Button from "../reusable/Button";
+'use client';
+import { Check, Crown } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { MdArrowOutward } from 'react-icons/md';
+import Button from '../reusable/Button';
 
 export default function PricingSection() {
   const router = useRouter();
   const plans = [
+    // {
+    //   name: "Basic Package",
+    //   price: "$3",
+    //   period: "One Time",
+    //   icon: <Rocket />,
+    //   features: [
+    //     "1 CV optimization",
+    //     "Basic ATS score",
+    //     "Standard templates",
+    //     "Email support",
+    //   ],
+    //   buttonText: "Choose Starter",
+    //   featured: false,
+    // },
     {
-      name: "Basic Package",
-      price: "$3",
-      period: "One Time",
-      icon: <Rocket />,
-      features: [
-        "1 CV optimization",
-        "Basic ATS score",
-        "Standard templates",
-        "Email support",
-      ],
-      buttonText: "Choose Starter",
-      featured: false,
-    },
-    {
-      name: "Premium Package",
-      price: "$19",
-      period: "One Time",
+      name: 'Premium Package',
+      price: '$20',
+      period: 'One Time',
       icon: <Crown />,
       features: [
-        "Unlimited tailor credits",
-        "Up to 10 PDF downloads",
-        "1 Page Fit (Coming soon)",
-        "AI Bullet Rewrite (Coming Soon)",
+        'Unlimited tailor credits',
+        'Upon receiving your $20 payment, your resume will be immediately assigned to a writer on our team. If any clarifications are needed, one of our team members will reach out to you.',
+        '1 Page Fit (Coming soon)',
+        'AI Bullet Rewrite (Coming Soon)',
       ],
-      buttonText: "Choose Pro",
+      buttonText: 'Pay Now',
       featured: true,
     },
   ];
@@ -52,11 +52,11 @@ export default function PricingSection() {
           </div>
 
           {/* Pricing Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-12">
+          <div className="flex justify-center max-w-[400px] w-full mx-auto">
             {plans.map((plan, index) => (
               <div
                 key={index}
-                className={`rounded-2xl p-8 sm:p-10 transition-all duration-300 card-Shadow border hover:border hover:border-[#5952FF]`}
+                className={`rounded-2xl p-5 md:p-6  transition-all duration-300 card-Shadow border hover:border border-[#5952FF]`}
               >
                 {/* Plan Name */}
                 <div className="flex items-center gap-3 mb-4">
@@ -95,7 +95,7 @@ export default function PricingSection() {
                     <MdArrowOutward className="w-5 h-5 transition-transform duration-200" />
                   }
                   className="w-full items-center justify-center"
-                  onClick={() => router.push("/payment")}
+                  onClick={() => router.push('/payment')}
                 >
                   {plan.buttonText}
                 </Button>

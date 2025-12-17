@@ -2,7 +2,7 @@
 
 import { Checkbox } from "@/components/ui/checkbox";
 import { Plus } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface SkillTag {
   id: string;
@@ -20,9 +20,19 @@ interface SkillsSectionProps {
     softSkills: string[];
     languages: string[];
   }) => void;
+  onSnapshot?: (
+    getter: () => {
+      hardSkills: string[];
+      softSkills: string[];
+      languages: string[];
+    }
+  ) => void;
 }
 
-export default function SkillsSection({ data, onUpdate }: SkillsSectionProps) {
+export default function SkillsSection({
+
+  onSnapshot,
+}: SkillsSectionProps) {
   const [hardSkills, setHardSkills] = useState<SkillTag[]>([
     { id: "1", name: "Microsoft Word" },
     { id: "2", name: "Microsoft Excel" },
@@ -54,9 +64,24 @@ export default function SkillsSection({ data, onUpdate }: SkillsSectionProps) {
 
   const [selectedHardSkills, setSelectedHardSkills] = useState<string[]>([]);
 
-  const [newNote, setNewNote] = useState<string>("");
-  const [nextId, setNextId] = useState<number>(hardSkills.length + 1);
-  const [isInputVisible, setIsInputVisible] = useState<boolean>(false);
+  // Hard Skills state
+  const [newHardSkill, setNewHardSkill] = useState<string>("");
+  const [isHardSkillInputVisible, setIsHardSkillInputVisible] =
+    useState<boolean>(false);
+
+  // Soft Skills state
+  const [newSoftSkill, setNewSoftSkill] = useState<string>("");
+  const [isSoftSkillInputVisible, setIsSoftSkillInputVisible] =
+    useState<boolean>(false);
+
+  // Languages state
+  const [newLanguage, setNewLanguage] = useState<string>("");
+  const [isLanguageInputVisible, setIsLanguageInputVisible] =
+    useState<boolean>(false);
+
+  const [nextId, setNextId] = useState<number>(
+    Math.max(hardSkills.length, softSkills.length, languages.length) + 1
+  );
 
   const selectHardSkill = (id: string) => {
     setSelectedHardSkills((prev) =>
@@ -67,43 +92,61 @@ export default function SkillsSection({ data, onUpdate }: SkillsSectionProps) {
   };
 
   const handleHardSkillsSubmit = () => {
-    if (newNote.trim()) {
+    if (newHardSkill.trim()) {
       const newSkill = {
         id: String(nextId),
-        name: newNote,
+        name: newHardSkill,
       };
       setHardSkills((prevSkills) => [...prevSkills, newSkill]);
-      setNewNote("");
+      setNewHardSkill("");
       setNextId(nextId + 1);
-      setIsInputVisible(false);
+      setIsHardSkillInputVisible(false);
     }
   };
 
   const handleSoftSkillsSubmit = () => {
-    if (newNote.trim()) {
+    if (newSoftSkill.trim()) {
       const newSkill = {
         id: String(nextId),
-        name: newNote,
+        name: newSoftSkill,
       };
       setSoftSkills((prevSkills) => [...prevSkills, newSkill]);
-      setNewNote("");
+      setNewSoftSkill("");
       setNextId(nextId + 1);
-      setIsInputVisible(false);
+      setIsSoftSkillInputVisible(false);
     }
   };
 
   const handleLanguagesSubmit = () => {
-    if (newNote.trim()) {
+    if (newLanguage.trim()) {
       const newSkill = {
         id: String(nextId),
-        name: newNote,
+        name: newLanguage,
       };
       setLanguages((prevSkills) => [...prevSkills, newSkill]);
-      setNewNote("");
+      setNewLanguage("");
       setNextId(nextId + 1);
-      setIsInputVisible(false);
+      setIsLanguageInputVisible(false);
     }
   };
+
+  // Register snapshot getter so parent can pull values on navigation
+  useEffect(() => {
+    const getSnapshot = () => {
+      const hardSelectedNames = hardSkills
+        .filter((s) => selectedHardSkills.includes(s.id))
+        .map((s) => s.name);
+      const softNames = softSkills.map((s) => s.name);
+      const languageNames = languages.map((l) => l.name);
+      return {
+        hardSkills: hardSelectedNames,
+        softSkills: softNames,
+        languages: languageNames,
+      };
+    };
+    onSnapshot?.(getSnapshot);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hardSkills, softSkills, languages, selectedHardSkills]);
 
   return (
     <main>
@@ -129,7 +172,7 @@ export default function SkillsSection({ data, onUpdate }: SkillsSectionProps) {
               </div>
             ))}
             <button
-              onClick={() => setIsInputVisible(true)}
+              onClick={() => setIsHardSkillInputVisible(true)}
               className="inline-flex items-center gap-2 md:p-8 p-4 border border-[#5952FF] rounded-sm cursor-pointer text-[#1D1F2C]"
             >
               <Plus size={18} />
@@ -138,7 +181,7 @@ export default function SkillsSection({ data, onUpdate }: SkillsSectionProps) {
           </div>
         </div>
 
-        {isInputVisible && (
+        {isHardSkillInputVisible && (
           <div className="fixed inset-0 bg-opacity-10 flex justify-center items-center">
             <div className="bg-white p-8 rounded-lg shadow-lg w-96">
               <h3 className="text-xl font-semibold mb-4">
@@ -146,8 +189,8 @@ export default function SkillsSection({ data, onUpdate }: SkillsSectionProps) {
               </h3>
               <input
                 type="text"
-                value={newNote}
-                onChange={(e) => setNewNote(e.target.value)}
+                value={newHardSkill}
+                onChange={(e) => setNewHardSkill(e.target.value)}
                 className="p-2 border border-[#5952FF] rounded-sm w-full mb-4"
                 placeholder="Enter a new hard skill..."
               />
@@ -159,7 +202,7 @@ export default function SkillsSection({ data, onUpdate }: SkillsSectionProps) {
                   Add
                 </button>
                 <button
-                  onClick={() => setIsInputVisible(false)}
+                  onClick={() => setIsHardSkillInputVisible(false)}
                   className="bg-gray-300 text-gray-700 px-4 py-2 rounded-sm cursor-pointer"
                 >
                   Cancel
@@ -185,14 +228,14 @@ export default function SkillsSection({ data, onUpdate }: SkillsSectionProps) {
             ))}
           </div>
           <button
-            onClick={() => setIsInputVisible(true)}
+            onClick={() => setIsSoftSkillInputVisible(true)}
             className="inline-flex items-center gap-2 border border-[#5952FF] rounded-sm cursor-pointer text-[#1D1F2C] px-4 py-2"
           >
             <Plus size={18} />
             <span>Add your own Skill</span>
           </button>
 
-          {isInputVisible && (
+          {isSoftSkillInputVisible && (
             <div className="fixed inset-0 bg-opacity-10 flex justify-center items-center">
               <div className="bg-white p-8 rounded-lg shadow-lg w-96">
                 <h3 className="text-xl font-semibold mb-4">
@@ -200,8 +243,8 @@ export default function SkillsSection({ data, onUpdate }: SkillsSectionProps) {
                 </h3>
                 <input
                   type="text"
-                  value={newNote}
-                  onChange={(e) => setNewNote(e.target.value)}
+                  value={newSoftSkill}
+                  onChange={(e) => setNewSoftSkill(e.target.value)}
                   className="p-2 border border-[#5952FF] rounded-sm w-full mb-4"
                   placeholder="Enter a new soft skill..."
                 />
@@ -213,7 +256,7 @@ export default function SkillsSection({ data, onUpdate }: SkillsSectionProps) {
                     Add
                   </button>
                   <button
-                    onClick={() => setIsInputVisible(false)}
+                    onClick={() => setIsSoftSkillInputVisible(false)}
                     className="bg-gray-300 text-gray-700 px-4 py-2 rounded-sm cursor-pointer"
                   >
                     Cancel
@@ -240,14 +283,14 @@ export default function SkillsSection({ data, onUpdate }: SkillsSectionProps) {
             ))}
           </div>
           <button
-            onClick={() => setIsInputVisible(true)}
+            onClick={() => setIsLanguageInputVisible(true)}
             className="inline-flex items-center gap-2 border border-[#5952FF] rounded-sm cursor-pointer text-[#1D1F2C] px-4 py-2"
           >
             <Plus size={18} />
             <span>Add languages</span>
           </button>
 
-          {isInputVisible && (
+          {isLanguageInputVisible && (
             <div className="fixed inset-0 bg-opacity-10 flex justify-center items-center">
               <div className="bg-white p-8 rounded-lg shadow-lg w-96">
                 <h3 className="text-xl font-semibold mb-4">
@@ -255,8 +298,8 @@ export default function SkillsSection({ data, onUpdate }: SkillsSectionProps) {
                 </h3>
                 <input
                   type="text"
-                  value={newNote}
-                  onChange={(e) => setNewNote(e.target.value)}
+                  value={newLanguage}
+                  onChange={(e) => setNewLanguage(e.target.value)}
                   className="p-2 border border-[#5952FF] rounded-sm w-full mb-4"
                   placeholder="Enter a new language..."
                 />
@@ -268,7 +311,7 @@ export default function SkillsSection({ data, onUpdate }: SkillsSectionProps) {
                     Add
                   </button>
                   <button
-                    onClick={() => setIsInputVisible(false)}
+                    onClick={() => setIsLanguageInputVisible(false)}
                     className="bg-gray-300 text-gray-700 px-4 py-2 rounded-sm cursor-pointer"
                   >
                     Cancel
