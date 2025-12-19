@@ -14,6 +14,7 @@ import {
   AlertCircle,
 } from "lucide-react";
 import { useParams } from "next/navigation";
+import { useGetSubmissionsByIdQuery } from "@/src/redux/features/submissions";
 
 interface SubmissionDetails {
   id: string;
@@ -35,22 +36,89 @@ export default function SubmissionDetailsPage() {
   const params = useParams();
   const id = params.id as string;
 
-  // Sample data - replace with actual API call
+  const { data: submissionData, isLoading } = useGetSubmissionsByIdQuery(id);
+
+  console.log(submissionData);
+
+  const apiItem = submissionData?.data?.[0];
+  const submissionInfo = apiItem?.submission;
+
+  const personalInfo = submissionInfo?.personalInfo;
+  const workExperiences = submissionInfo?.workExperiences ?? [];
+  const educations = submissionInfo?.educations ?? [];
+  const skills = submissionInfo?.skills ?? [];
+
+  // Format date helper
+  const formatDate = (dateString: string) => {
+    if (!dateString) return "N/A";
+    const date = new Date(dateString);
+    return (
+      date.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      }) +
+      " " +
+      date.toLocaleTimeString("en-US", {
+        hour: "2-digit",
+        minute: "2-digit",
+      })
+    );
+  };
+
+  // Calculate years of experience
+  const calculateYearsOfExperience = () => {
+    if (workExperiences.length === 0) return "0 years";
+
+    let totalMonths = 0;
+    workExperiences.forEach(
+      (exp: { startDate: string; endDate: string | null }) => {
+        const startDate = new Date(exp.startDate);
+        const endDate = exp.endDate ? new Date(exp.endDate) : new Date();
+        const months =
+          (endDate.getFullYear() - startDate.getFullYear()) * 12 +
+          (endDate.getMonth() - startDate.getMonth());
+        totalMonths += months;
+      }
+    );
+
+    const years = Math.floor(totalMonths / 12);
+    return years > 0 ? `${years} years` : "Less than 1 year";
+  };
+
+  // Format skills array to string
+  const formatSkills = () => {
+    if (skills.length === 0) return "No skills listed";
+    return skills.map((skill: { name: string }) => skill.name).join(", ");
+  };
+
+  // Map status from API to UI format
+  const mapStatus = (status: string) => {
+    if (!status) return "Pending";
+    const statusMap: Record<string, "Approve" | "Pending" | "Revision"> = {
+      APPROVED: "Approve",
+      PENDING: "Pending",
+      REVISION: "Revision",
+    };
+    return statusMap[status.toUpperCase()] || "Pending";
+  };
+
+  // Build submission object from API data
   const submission: SubmissionDetails = {
-    id: id || "1",
-    fullName: "John Doe",
-    email: "john@example.com",
-    phone: "+1234567890",
-    location: "New York, USA",
-    submitted: "2024-11-27 10:30",
-    template: "Modern Pro",
-    position: "Senior Software Engineer",
-    education: "Master of Computer Science",
-    yearsOfExperience: "8 years",
-    skills: "React, TypeScript, Node.js, Python, AWS",
+    id: apiItem?.id || id,
+    fullName: personalInfo?.fullName || "N/A",
+    email: personalInfo?.email || "N/A",
+    phone: personalInfo?.phoneNumber || "N/A",
+    location: personalInfo?.city_and_state || "N/A",
+    submitted: formatDate(apiItem?.createdAt || ""),
+    template: apiItem?.templateId ?? "Not assigned",
+    position: workExperiences[0]?.jobTitle || "N/A",
+    education: educations[0]?.degreeOrCertificate || "N/A",
+    yearsOfExperience: calculateYearsOfExperience(),
+    skills: formatSkills(),
     professionalSummary:
-      "Experienced software engineer with a passion for building scalable web applications...",
-    status: "Pending",
+      personalInfo?.professionalSummary || "No summary provided",
+    status: mapStatus(apiItem?.status || ""),
   };
 
   const handleApprove = () => {
@@ -77,6 +145,34 @@ export default function SubmissionDetailsPage() {
     console.log("Edit submission:", id);
     // Implement edit logic
   };
+
+  // Loading state
+  if (isLoading) {
+    return (
+      <div className="p-6 bg-gray-50 min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#5952FF] mx-auto mb-4"></div>
+          <p className="text-[#4a4c56]">Loading submission details...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Error/No data state
+  // if (!apiData || !submissionInfo) {
+  //   return (
+  //     <div className="p-6 bg-gray-50 min-h-screen">
+  //       <div className="mb-6">
+  //         <h1 className="text-2xl font-semibold text-[#4a4c56]">
+  //           Submission Details
+  //         </h1>
+  //       </div>
+  //       <div className="bg-white rounded-lg p-6 shadow-sm">
+  //         <p className="text-[#4a4c56]">No submission data found.</p>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
@@ -227,12 +323,20 @@ export default function SubmissionDetailsPage() {
               </div>
 
               <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <p className="text-xs text-[#A1A1A1] mb-1">Education</p>
-                  <p className="text-sm font-medium text-[#4a4c56]">
-                    {submission.education}
-                  </p>
-                </div>
+                {educations.map((edu) => (
+                  <div key={edu.id}>
+                    <p className="font-medium mb-2">
+                      {edu.degreeOrCertificate}
+                    </p>
+                    <p className="text-sm text-gray-600">
+                      {edu.institutionName}
+                    </p>
+                    <p className="text-xs text-gray-400">
+                      Passing Year: {edu.passingYear}
+                    </p>
+                  </div>
+                ))}
+
                 <div className="text-right">
                   <p className="text-xs text-[#A1A1A1] mb-1">
                     Years of Experience
@@ -246,7 +350,11 @@ export default function SubmissionDetailsPage() {
               <div>
                 <p className="text-xs text-[#A1A1A1] mb-1">Skills</p>
                 <p className="text-sm font-medium text-[#4a4c56]">
-                  {submission.skills}
+                  {skills.map((skill) => (
+                    <span key={skill.id} className="mr-2">
+                      {skill.name},
+                    </span>
+                  ))}
                 </p>
               </div>
 

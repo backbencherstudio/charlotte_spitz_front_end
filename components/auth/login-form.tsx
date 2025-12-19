@@ -1,6 +1,8 @@
 "use client";
+import { useLoginMutation } from "@/src/redux/features/(auth)/auth";
 import { Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -14,6 +16,8 @@ interface LoginFormData {
 
 const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [login, { isLoading }] = useLoginMutation();
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -26,8 +30,16 @@ const LoginForm = () => {
     },
   });
 
-  const onSubmit = (data: LoginFormData) => {
+  const onSubmit = async (data: LoginFormData) => {
     console.log("Form submitted:", data);
+    try {
+      const response = await login(data);
+      if (response?.data?.success) {
+        router.push("/dashboard");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <div className="bg-white rounded-[10px] p-8">

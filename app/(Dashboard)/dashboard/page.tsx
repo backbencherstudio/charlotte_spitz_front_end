@@ -1,79 +1,21 @@
-import React from "react";
+"use client";
+
 import DashboardCard, {
   DashboardCardData,
 } from "@/components/reusable/DashboardCard";
-import { FileText, LayoutTemplate, Users, DollarSign } from "lucide-react";
-import RecentActivities, {
-  ActivityData,
-} from "@/components/reusable/RecentActivities";
+import {
+  FileText,
+  LayoutTemplate,
+  Users,
+  DollarSign,
+  User,
+} from "lucide-react";
+import RecentActivities from "@/components/reusable/RecentActivities";
 import MostUsedTemplates, {
   TemplateData,
 } from "@/components/reusable/MostUsedTemplates";
 import { DashboardChart } from "@/components/reusable/DashboardChart";
-
-// JSON data for dashboard cards
-const dashboardCardsData: DashboardCardData[] = [
-  {
-    id: "1",
-    title: "Total Submissions",
-    value: "8,589",
-    icon: FileText,
-    iconBgColor: "bg-purple-500",
-    updateDate: "July 20, 2025",
-  },
-  {
-    id: "2",
-    title: "Active Templates",
-    value: "03",
-    icon: LayoutTemplate,
-    iconBgColor: "bg-purple-500",
-    updateDate: "July 20, 2025",
-  },
-  {
-    id: "3",
-    title: "Active Subscribers",
-    value: "10,589",
-    icon: Users,
-    iconBgColor: "bg-purple-500",
-    updateDate: "July 20, 2025",
-  },
-  {
-    id: "4",
-    title: "Monthly Revenue",
-    value: "$10,589",
-    icon: DollarSign,
-    iconBgColor: "bg-purple-500",
-    updateDate: "July 20, 2025",
-  },
-];
-
-// JSON data for recent activities
-const recentActivitiesData: ActivityData[] = [
-  {
-    id: "1",
-    title: "Approved submission",
-    detail: "John Doe",
-    timestamp: "12 Min Ago",
-  },
-  {
-    id: "2",
-    title: "New subscription",
-    detail: "Premium Plan",
-    timestamp: "12 Min Ago",
-  },
-  {
-    id: "3",
-    title: "Payment received",
-    detail: "$99.00",
-    timestamp: "12 Min Ago",
-  },
-  {
-    id: "4",
-    title: "Template activated",
-    detail: "Modern Executive",
-    timestamp: "12 Min Ago",
-  },
-];
+import { useGetAllOverviewQuery } from "@/src/redux/features/dashboard";
 
 // JSON data for most used templates
 const mostUsedTemplatesData: TemplateData[] = [
@@ -98,6 +40,9 @@ const mostUsedTemplatesData: TemplateData[] = [
 ];
 
 export default function page() {
+  const { data: dashboardData } = useGetAllOverviewQuery();
+  // console.log(dashboardData?.data?.monthlyRevenue);
+  // console.log(dashboardData?.data?.recentActivities);
   return (
     <div className="p-4 sm:p-6 bg-gray-50 min-h-screen">
       <div className="mb-6">
@@ -108,16 +53,37 @@ export default function page() {
         </p>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {dashboardCardsData.map((card) => (
-          <DashboardCard key={card.id} data={card} />
-        ))}
+        {/* {dashboardCardsData.map((card) => (
+        ))} */}
+        <DashboardCard
+          title={"Total Packages"}
+          icon={FileText}
+          number={dashboardData?.data?.totalPackages}
+        />
+        <DashboardCard
+          title={"Total User"}
+          icon={User}
+          number={dashboardData?.data?.totalUsers}
+        />
+        <DashboardCard
+          title={"Total Submissions"}
+          icon={LayoutTemplate}
+          number={dashboardData?.data?.totalSubmissions}
+        />
+        <DashboardCard
+          title={"Total Revenue"}
+          icon={DollarSign}
+          number={dashboardData?.data?.totalRevenue}
+        />
       </div>
       <div className="mt-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center justify-center">
         <div className="lg:col-span-8">
-          <DashboardChart />
+          <DashboardChart chartdata={dashboardData?.data?.monthlyRevenue} />
         </div>
         <div className="lg:col-span-4 h-full">
-          <RecentActivities activities={recentActivitiesData} />
+          <RecentActivities
+            activities={dashboardData?.data?.recentActivities}
+          />
         </div>
       </div>
       <div className="mt-6">

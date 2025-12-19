@@ -1,18 +1,19 @@
 "use client";
+import { useForgotPasswordMutation } from "@/src/redux/features/(auth)/auth";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 interface ForgotPssFormData {
-  name: string;
   email: string;
-  phone: string;
-  password: string;
-  terms: boolean;
 }
 
 const ForgotPssForm = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [forgotPassword] = useForgotPasswordMutation();
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
@@ -21,12 +22,24 @@ const ForgotPssForm = () => {
     mode: "onBlur",
     defaultValues: {
       email: "",
-      password: "",
     },
   });
 
-  const onSubmit = (data: ForgotPssFormData) => {
+  const onSubmit = async (data: ForgotPssFormData) => {
     console.log("Form submitted:", data);
+    try {
+      const response = await forgotPassword(data);
+      // console.log(response?.data?.success);
+      if (response?.data?.success) {
+        router.push(`/reset-password?email=${data.email}`);
+        // toast.success(response.message);
+      }
+      // else {
+      //   toast.error(response.message);
+      // }
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <div className="bg-white rounded-[10px] p-8">
@@ -53,11 +66,7 @@ const ForgotPssForm = () => {
                 message: "Invalid email format",
               },
             })}
-            className={`w-full px-2.5 py-[11px] border rounded-xl outline-none transition-colors mb-2 ${
-              errors.name
-                ? "border-red-500 focus:ring-2 focus:ring-red-500"
-                : "border-gray-300 focus:ring-2 focus:ring-primaryColor"
-            }`}
+            className={`w-full px-2.5 py-[11px] border rounded-xl outline-none transition-colors mb-2`}
           />
           {errors.email && (
             <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>

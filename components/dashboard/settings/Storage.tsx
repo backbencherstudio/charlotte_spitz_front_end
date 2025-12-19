@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   CardHeader,
   CardTitle,
@@ -16,8 +16,33 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
+import { useUpdateSettingsMutation } from "@/src/redux/features/setting";
 
 export default function Storage() {
+  const [storageProvider, setStorageProvider] = useState("local");
+  const [s3BucketName, setS3BucketName] = useState("");
+  const [s3AccessKeyId, setS3AccessKeyId] = useState("");
+  const [s3SecretAccessKey, setS3SecretAccessKey] = useState("");
+  const [s3Region, setS3Region] = useState("");
+
+  const [updateSettings, { isLoading }] = useUpdateSettingsMutation();
+
+  const handleSave = async () => {
+    const data = {
+      storageProvider,
+      s3BucketName,
+      s3AccessKeyId,
+      s3SecretAccessKey,
+      s3Region,
+    };
+    try {
+      await updateSettings(data);
+      // toast.success("Settings updated successfully");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <>
       <CardHeader className="pt-5">
@@ -33,7 +58,7 @@ export default function Storage() {
         {/* Storage Provider */}
         <div className="space-y-2">
           <Label htmlFor="storage-provider">Storage Provider</Label>
-          <Select defaultValue="local">
+          <Select value={storageProvider} onValueChange={setStorageProvider}>
             <SelectTrigger
               id="storage-provider"
               className="w-full bg-background"
@@ -63,12 +88,24 @@ export default function Storage() {
         <div className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="s3-bucket">AWS S3 Bucket Name</Label>
-            <Input id="s3-bucket" placeholder="my-bucket-name" type="text" />
+            <Input
+              id="s3-bucket"
+              placeholder="my-bucket-name"
+              type="text"
+              value={s3BucketName}
+              onChange={(e) => setS3BucketName(e.target.value)}
+            />
           </div>
 
           <div className="space-y-2">
             <Label htmlFor="aws-access-key">AWS Access Key</Label>
-            <Input id="aws-access-key" placeholder="AKIA..." type="text" />
+            <Input
+              id="aws-access-key"
+              placeholder="AKIA..."
+              type="text"
+              value={s3AccessKeyId}
+              onChange={(e) => setS3AccessKeyId(e.target.value)}
+            />
           </div>
 
           <div className="space-y-2">
@@ -77,15 +114,28 @@ export default function Storage() {
               id="aws-secret-key"
               placeholder="Enter secret key"
               type="password"
+              value={s3SecretAccessKey}
+              onChange={(e) => setS3SecretAccessKey(e.target.value)}
             />
           </div>
 
           <div className="space-y-2">
             <Label htmlFor="aws-region">Region</Label>
-            <Input id="aws-region" placeholder="us-east-1" type="text" />
+            <Input
+              id="aws-region"
+              placeholder="us-east-1"
+              type="text"
+              value={s3Region}
+              onChange={(e) => setS3Region(e.target.value)}
+            />
           </div>
           <CardFooter className="flex justify-end py-4">
-            <Button className="px-8 bg-[#5952FF] text-white">Save</Button>
+            <Button
+              className="px-8 bg-[#5952FF] text-white"
+              onClick={handleSave}
+            >
+              Save
+            </Button>
           </CardFooter>
         </div>
       </CardContent>

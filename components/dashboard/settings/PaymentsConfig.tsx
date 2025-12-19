@@ -13,10 +13,36 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Key } from "lucide-react";
+import { useUpdateSettingsMutation } from "@/src/redux/features/setting";
 
 export default function PaymentsConfig() {
-  const [autoRenew, setAutoRenew] = useState(true);
+  const [primaryPaymentGateway, setPrimaryPaymentGateway] = useState("");
+  const [stripePublishableKey, setStripePublishableKey] = useState("");
+  const [stripeSecretKey, setStripeSecretKey] = useState("");
+  const [currency, setCurrency] = useState("");
+  const [billingFromName, setBillingFromName] = useState("");
+  const [autoRenewSubscription, setAutoRenewSubscription] = useState(true);
   const [invoiceGeneration, setInvoiceGeneration] = useState(true);
+
+  const [updateSettings, { isLoading }] = useUpdateSettingsMutation();
+
+  const handleUpdateSettings = async () => {
+    const data = {
+      primaryPaymentGateway,
+      stripePublishableKey,
+      stripeSecretKey,
+      currency,
+      billingFromName,
+      autoRenewSubscription,
+      invoiceGeneration,
+    };
+    try {
+      await updateSettings(data);
+      // toast.success("Settings updated successfully");
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <>
@@ -37,6 +63,8 @@ export default function PaymentsConfig() {
             id="primary-gateway"
             placeholder="Enter primary payment gateway"
             type="text"
+            value={primaryPaymentGateway}
+            onChange={(e) => setPrimaryPaymentGateway(e.target.value)}
           />
         </div>
 
@@ -48,8 +76,9 @@ export default function PaymentsConfig() {
                 id="stripe-publishable"
                 placeholder="pk_live_..."
                 type="text"
-                defaultValue="pk_live_..."
                 className="pl-10"
+                value={stripePublishableKey}
+                onChange={(e) => setStripePublishableKey(e.target.value)}
               />
               <Key className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             </div>
@@ -62,8 +91,9 @@ export default function PaymentsConfig() {
                 id="stripe-secret"
                 placeholder="pk_live_..."
                 type="password"
-                defaultValue="pk_live_..."
                 className="pl-10"
+                value={stripeSecretKey}
+                onChange={(e) => setStripeSecretKey(e.target.value)}
               />
               <Key className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             </div>
@@ -72,7 +102,13 @@ export default function PaymentsConfig() {
 
         <div className="space-y-2">
           <Label htmlFor="currency">Currency</Label>
-          <Input id="currency" placeholder="Enter currency" type="text" />
+          <Input
+            id="currency"
+            placeholder="Enter currency"
+            type="text"
+            value={currency}
+            onChange={(e) => setCurrency(e.target.value)}
+          />
         </div>
 
         <div className="space-y-2">
@@ -81,7 +117,8 @@ export default function PaymentsConfig() {
             id="from-name"
             placeholder="Admin Panel"
             type="text"
-            defaultValue="Admin Panel"
+            value={billingFromName}
+            onChange={(e) => setBillingFromName(e.target.value)}
           />
         </div>
 
@@ -97,8 +134,8 @@ export default function PaymentsConfig() {
             </div>
             <Switch
               id="auto-renew"
-              checked={autoRenew}
-              onCheckedChange={setAutoRenew}
+              checked={autoRenewSubscription}
+              onCheckedChange={setAutoRenewSubscription}
             />
           </div>
 
@@ -115,7 +152,7 @@ export default function PaymentsConfig() {
               </p>
             </div>
             <Switch
-              id="invoice-generation cursor-pointer"
+              id="invoice-generation"
               checked={invoiceGeneration}
               onCheckedChange={setInvoiceGeneration}
             />
@@ -123,7 +160,13 @@ export default function PaymentsConfig() {
         </div>
       </CardContent>
       <CardFooter className="flex justify-end border-t py-4">
-        <Button className="px-8 bg-[#5952FF] text-white">Save</Button>
+        <Button
+          className="px-8 bg-[#5952FF] text-white"
+          onClick={handleUpdateSettings}
+          disabled={isLoading}
+        >
+          {isLoading ? "Saving..." : "Save"}
+        </Button>
       </CardFooter>
     </>
   );

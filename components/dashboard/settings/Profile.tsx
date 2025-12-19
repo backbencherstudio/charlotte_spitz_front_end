@@ -13,44 +13,65 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Pencil, User } from "lucide-react";
-import Image from "next/image";
+import { useUpdateProfileMutation } from "@/src/redux/features/(auth)/profile";
 
 export default function Profile() {
-  const [isEditing, setIsEditing] = useState(true);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [updateProfile] = useUpdateProfileMutation();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [formData, setFormData] = useState({
-    firstName: "Jhon",
-    lastName: "",
-    email: "example@gmail.com",
-    phone: "089318298493",
-    designation: "Admin",
-    languages: "English",
+    first_name: "",
+    last_name: "",
+    email: "",
+    phoneNumber: "",
+    designation: "",
+    language: "",
+    image: "",
   });
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleSave = () => {
-    setIsEditing(false);
-    // Here you would typically save the data to your backend
+  const handleSave = async () => {
+    const payload = new FormData();
+
+    payload.append("first_name", formData.first_name);
+    payload.append("last_name", formData.last_name);
+    payload.append("email", formData.email);
+    payload.append("phoneNumber", formData.phoneNumber);
+    payload.append("designation", formData.designation);
+    payload.append("language", formData.language);
+
+    if (formData.image) {
+      payload.append("image", formData.image);
+    }
+
+    // Check FormData values
+    // for (const [key, value] of payload.entries()) {
+    //   console.log(key, value);
+    // }
+
+    try {
+      await updateProfile(payload); // send FormData
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleImageClick = () => {
     fileInputRef.current?.click();
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
+  // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const file = e.target.files?.[0];
+  //   if (file) {
+  //     const reader = new FileReader();
+  //     reader.onloadend = () => {
+  //       setImagePreview(reader.result as string);
+  //     };
+  //     reader.readAsDataURL(file);
+  //   }
+  // };
 
   return (
     <div>
@@ -67,7 +88,7 @@ export default function Profile() {
                 </div>
               </div>
               <div className="mt-4 text-center">
-                <h3 className="text-xl font-bold">{formData.firstName}</h3>
+                <h3 className="text-xl font-bold">{formData.first_name}</h3>
                 <p className="text-sm text-muted-foreground mt-1">
                   {formData.designation}
                 </p>
@@ -82,7 +103,7 @@ export default function Profile() {
                 <div className="flex justify-between items-center py-2">
                   <span className="text-muted-foreground text-sm">Name:</span>
                   <span className="font-bold text-sm">
-                    {formData.firstName} {formData.lastName || ""}
+                    {formData.first_name} {formData.last_name || ""}
                   </span>
                 </div>
                 <div className="flex justify-between items-center py-2">
@@ -95,7 +116,9 @@ export default function Profile() {
                   <span className="text-muted-foreground text-sm">
                     Phone Number:
                   </span>
-                  <span className="font-bold text-sm">{formData.phone}</span>
+                  <span className="font-bold text-sm">
+                    {formData.phoneNumber}
+                  </span>
                 </div>
                 <div className="flex justify-between items-center py-2">
                   <span className="text-muted-foreground text-sm">
@@ -109,9 +132,7 @@ export default function Profile() {
                   <span className="text-muted-foreground text-sm">
                     Languages:
                   </span>
-                  <span className="font-bold text-sm">
-                    {formData.languages}
-                  </span>
+                  <span className="font-bold text-sm">{formData.language}</span>
                 </div>
               </div>
             </div>
@@ -124,7 +145,7 @@ export default function Profile() {
             <div className="flex items-center gap-2 justify-between">
               <Button
                 variant="outline"
-                onClick={() => setIsEditing(!isEditing)}
+                // onClick={() => setIsEditing(!isEditing)}
                 className="bg-[#E2DEFF] text-[#5952FF]"
               >
                 Edit profile
@@ -140,7 +161,8 @@ export default function Profile() {
               <h4 className="font-bold text-lg">Profile Image</h4>
               <div className="relative inline-block">
                 <div className="size-24 rounded-full bg-muted flex items-center justify-center overflow-hidden border border-[#5952FF]">
-                  {imagePreview ? (
+                  <User className="size-12 text-muted-foreground" />
+                  {/* {imagePreview ? (
                     <Image
                       src={imagePreview}
                       alt="Profile preview"
@@ -148,7 +170,7 @@ export default function Profile() {
                     />
                   ) : (
                     <User className="size-12 text-muted-foreground" />
-                  )}
+                  )} */}
                 </div>
                 <button
                   type="button"
@@ -161,7 +183,8 @@ export default function Profile() {
                   ref={fileInputRef}
                   type="file"
                   accept="image/*"
-                  onChange={handleFileChange}
+                  onChange={(e) => handleInputChange("image", e.target.value)}
+                  // onChange={handleFileChange}
                   className="hidden"
                 />
               </div>
@@ -170,32 +193,32 @@ export default function Profile() {
             {/* Form Fields */}
             <div className="grid gap-6 md:grid-cols-2">
               <div className="space-y-2">
-                <Label htmlFor="firstName" className="font-bold">
+                <Label htmlFor="first_name" className="font-bold">
                   First Name
                 </Label>
                 <Input
-                  id="firstName"
+                  id="first_name"
                   placeholder="Enter your name"
-                  value={formData.firstName}
+                  value={formData.first_name}
                   onChange={(e) =>
-                    handleInputChange("firstName", e.target.value)
+                    handleInputChange("first_name", e.target.value)
                   }
-                  disabled={!isEditing}
+                  // disabled={!isEditing}
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="lastName" className="font-bold">
+                <Label htmlFor="last_name" className="font-bold">
                   Last Name
                 </Label>
                 <Input
-                  id="lastName"
+                  id="last_name"
                   placeholder="Enter your last name"
-                  value={formData.lastName}
+                  value={formData.last_name}
                   onChange={(e) =>
-                    handleInputChange("lastName", e.target.value)
+                    handleInputChange("last_name", e.target.value)
                   }
-                  disabled={!isEditing}
+                  // disabled={!isEditing}
                 />
               </div>
 
@@ -209,21 +232,23 @@ export default function Profile() {
                   placeholder="Enter your email"
                   value={formData.email}
                   onChange={(e) => handleInputChange("email", e.target.value)}
-                  disabled={!isEditing}
+                  // disabled={!isEditing}
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="phone" className="font-bold">
+                <Label htmlFor="phoneNumber" className="font-bold">
                   Phone Number
                 </Label>
                 <Input
-                  id="phone"
+                  id="phoneNumber"
                   type="tel"
                   placeholder="Enter your number"
-                  value={formData.phone}
-                  onChange={(e) => handleInputChange("phone", e.target.value)}
-                  disabled={!isEditing}
+                  value={formData.phoneNumber}
+                  onChange={(e) =>
+                    handleInputChange("phoneNumber", e.target.value)
+                  }
+                  // disabled={!isEditing}
                 />
               </div>
 
@@ -236,7 +261,7 @@ export default function Profile() {
                   onValueChange={(value) =>
                     handleInputChange("designation", value)
                   }
-                  disabled={!isEditing}
+                  // disabled={!isEditing}
                 >
                   <SelectTrigger id="designation" className="w-full">
                     <SelectValue placeholder="Select your Designation" />
@@ -255,11 +280,11 @@ export default function Profile() {
                   Languages
                 </Label>
                 <Select
-                  value={formData.languages}
+                  value={formData.language}
                   onValueChange={(value) =>
-                    handleInputChange("languages", value)
+                    handleInputChange("language", value)
                   }
-                  disabled={!isEditing}
+                  // disabled={!isEditing}
                 >
                   <SelectTrigger id="languages" className="w-full">
                     <SelectValue placeholder="Select your Languages" />

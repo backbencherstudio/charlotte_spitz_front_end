@@ -1,19 +1,24 @@
 "use client";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useSignUpMutation } from "@/src/redux/features/(auth)/auth";
 import { Eye, EyeOff } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 interface SignupFormData {
-  name: string;
+  first_name: string;
+  last_name: string;
   email: string;
-  phone: string;
+  phone_number: string;
   password: string;
-  terms: boolean;
+  termsAccepted: boolean;
 }
 
 const SignUpForm = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const router = useRouter();
+  const [signUp, { isLoading }] = useSignUpMutation();
   const {
     register,
     handleSubmit,
@@ -21,16 +26,34 @@ const SignUpForm = () => {
   } = useForm<SignupFormData>({
     mode: "onBlur",
     defaultValues: {
-      name: "",
+      first_name: "",
+      last_name: "",
       email: "",
-      phone: "",
+      phone_number: "",
       password: "",
-      terms: false,
+      termsAccepted: false,
     },
   });
 
-  const onSubmit = (data: SignupFormData) => {
+  const onSubmit = async (data: SignupFormData) => {
     console.log("Form submitted:", data);
+    const payload = {
+      ...data,
+      role: "USER",
+    };
+    try {
+      const response = await signUp(payload);
+      // console.log(response?.data?.success);
+      if (response?.data?.success) {
+        router.push(`/otp?email=${data.email}`);
+        // toast.success(response.message);
+      }
+      // else {
+      //   toast.error(response.message);
+      // }
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <div className="bg-white rounded-[10px] p-8">
@@ -41,12 +64,12 @@ const SignUpForm = () => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
           <label className="block text-[16px] font-medium text-[#101010] mb-2">
-            Name
+            First Name
           </label>
           <input
             type="text"
             placeholder="Enter your name"
-            {...register("name", {
+            {...register("first_name", {
               required: "Name is required",
               minLength: {
                 value: 2,
@@ -54,13 +77,42 @@ const SignUpForm = () => {
               },
             })}
             className={`w-full px-2.5 py-[11px] border rounded-xl outline-none transition-colors mb-2 ${
-              errors.name
+              errors.first_name
                 ? "border-red-500 focus:ring-2 focus:ring-red-500"
                 : "border-gray-300 focus:ring-2 focus:ring-primaryColor"
             }`}
           />
-          {errors.name && (
-            <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>
+          {errors.first_name && (
+            <p className="text-red-500 text-xs mt-1">
+              {errors.first_name.message}
+            </p>
+          )}
+        </div>
+        {/* Last Name Field */}
+        <div>
+          <label className="block text-[16px] font-medium text-[#101010] mb-2">
+            Last Name
+          </label>
+          <input
+            type="text"
+            placeholder="Enter your last name"
+            {...register("last_name", {
+              required: "Name is required",
+              minLength: {
+                value: 2,
+                message: "Name must be at least 2 characters",
+              },
+            })}
+            className={`w-full px-2.5 py-[11px] border rounded-xl outline-none transition-colors mb-2 ${
+              errors.last_name
+                ? "border-red-500 focus:ring-2 focus:ring-red-500"
+                : "border-gray-300 focus:ring-2 focus:ring-primaryColor"
+            }`}
+          />
+          {errors.last_name && (
+            <p className="text-red-500 text-xs mt-1">
+              {errors.last_name.message}
+            </p>
           )}
         </div>
 
@@ -80,7 +132,7 @@ const SignUpForm = () => {
               },
             })}
             className={`w-full px-2.5 py-[11px] border rounded-xl outline-none transition-colors mb-2 ${
-              errors.name
+              errors.first_name
                 ? "border-red-500 focus:ring-2 focus:ring-red-500"
                 : "border-gray-300 focus:ring-2 focus:ring-primaryColor"
             }`}
@@ -98,7 +150,7 @@ const SignUpForm = () => {
           <input
             type="tel"
             placeholder="Enter your phone number"
-            {...register("phone", {
+            {...register("phone_number", {
               required: "Phone number is required",
               pattern: {
                 value: /^[\d\s\-+$$$$]+$/,
@@ -106,13 +158,15 @@ const SignUpForm = () => {
               },
             })}
             className={`w-full px-2.5 py-[11px] border rounded-xl outline-none transition-colors mb-2 ${
-              errors.name
+              errors.first_name
                 ? "border-red-500 focus:ring-2 focus:ring-red-500"
                 : "border-gray-300 focus:ring-2 focus:ring-primaryColor"
             }`}
           />
-          {errors.phone && (
-            <p className="text-red-500 text-xs mt-1">{errors.phone.message}</p>
+          {errors.phone_number && (
+            <p className="text-red-500 text-xs mt-1">
+              {errors.phone_number.message}
+            </p>
           )}
         </div>
 
@@ -133,7 +187,7 @@ const SignUpForm = () => {
                 },
               })}
               className={`w-full px-2.5 py-[11px] border rounded-xl outline-none transition-colors mb-2 ${
-                errors.name
+                errors.first_name
                   ? "border-red-500 focus:ring-2 focus:ring-red-500"
                   : "border-gray-300 focus:ring-2 focus:ring-primaryColor"
               }`}
@@ -155,7 +209,7 @@ const SignUpForm = () => {
 
         <div className="flex items-start space-x-1.5 my-4">
           <Checkbox className="cursor-pointer h-4 w-4 data-[state=checked]:bg-[#5952FF] data-[state=checked]:border-[#5952FF]" />
-          <label htmlFor="terms" className="text-sm text-gray-600">
+          <label htmlFor="termsAccepted" className="text-sm text-gray-600">
             I agree to the{" "}
             <a
               href="#"
@@ -165,8 +219,8 @@ const SignUpForm = () => {
             </a>
           </label>
         </div>
-        {errors.terms && (
-          <p className="text-red-500 text-xs">{errors.terms.message}</p>
+        {errors.termsAccepted && (
+          <p className="text-red-500 text-xs">{errors.termsAccepted.message}</p>
         )}
 
         {/* Submit Button */}

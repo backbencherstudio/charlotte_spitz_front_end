@@ -1,42 +1,61 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, startTransition } from "react";
 import { ChevronDown, Plus, X } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import {
+  useGetSubscriptionByIdQuery,
+  useUpdateSubscriptionMutation,
+} from "@/src/redux/features/subscriptions";
 
 export default function SubscriptionFormPage() {
-  const params = useParams();
-  const id = params.id as string;
-  const isEdit = id !== "new";
+  const { id } = useParams();
+  const subscriptionId = Array.isArray(id) ? id[0] : id || "new";
+  const isEdit = subscriptionId !== "new";
+
+  const { data: subscription, isLoading } = useGetSubscriptionByIdQuery(id);
+
+  const [updateSubscription, { isLoading: isUpdating }] =
+    useUpdateSubscriptionMutation();
 
   const [formData, setFormData] = useState({
-    planDuration: "",
-    price: "",
-    cvOpt: "",
-    numberOfCV: "",
-    benefitInput: "",
+    type: subscription?.data?.type || "",
+    price: subscription?.data?.price || 0,
+    // cvOpt: subscription?.data?.cvOpt || "",
+    maxCVs: subscription?.data?.maxCVs || "",
+    benefits: "",
   });
 
-  const [benefits, setBenefits] = useState<string[]>([
-    "1 CV optimization",
-    "Basic ATS score",
-    "Standard templates",
-    "Email support",
-  ]);
+  const [benefits, setBenefits] = useState<string[]>(
+    subscription?.data?.benefits || []
+  );
 
   const [showPlanDurationDropdown, setShowPlanDurationDropdown] =
     useState(false);
-  const [showCvOptDropdown, setShowCvOptDropdown] = useState(false);
+  // const [showCvOptDropdown, setShowCvOptDropdown] = useState(false);
   const planDurationRef = useRef<HTMLDivElement>(null);
-  const cvOptRef = useRef<HTMLDivElement>(null);
+  const dataInitializedRef = useRef(false);
 
-  const planDurationOptions = ["One Time", "Monthly", "Yearly", "Lifetime"];
-  const cvOptOptions = [
-    "1 CV optimization",
-    "Unlimited CV optimization",
-    "Basic ATS score",
-  ];
+  const packageTypeOptions = ["BASIC", "PREMIUM"];
+
+  // Update form data when subscription data loads
+  useEffect(() => {
+    if (subscription?.data && isEdit && !dataInitializedRef.current) {
+      const subscriptionData = subscription.data;
+      // Necessary to sync form state with async-loaded subscription data
+      startTransition(() => {
+        setFormData({
+          type: subscriptionData.type || "",
+          price: subscriptionData.price || 0,
+          maxCVs: subscriptionData.maxCVs || "",
+          benefits: "",
+        });
+        setBenefits(subscriptionData.benefits || []);
+      });
+      dataInitializedRef.current = true;
+    }
+  }, [subscription?.data, isEdit]);
 
   // Close dropdowns when clicking outside
   useEffect(() => {
@@ -47,12 +66,6 @@ export default function SubscriptionFormPage() {
       ) {
         setShowPlanDurationDropdown(false);
       }
-      if (
-        cvOptRef.current &&
-        !cvOptRef.current.contains(event.target as Node)
-      ) {
-        setShowCvOptDropdown(false);
-      }
     };
 
     document.addEventListener("mousedown", handleClickOutside);
@@ -61,14 +74,17 @@ export default function SubscriptionFormPage() {
     };
   }, []);
 
-  const handleInputChange = (field: string, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
+  const handleInputChange = (field: string, value: string | number) => {
+    setFormData((prev) => ({
+      ...prev,
+      [field]: field === "price" ? (value === "" ? 0 : Number(value)) : value,
+    }));
   };
 
   const handleAddBenefit = () => {
-    if (formData.benefitInput.trim()) {
-      setBenefits((prev) => [...prev, formData.benefitInput.trim()]);
-      setFormData((prev) => ({ ...prev, benefitInput: "" }));
+    if (formData.benefits.trim()) {
+      setBenefits((prev) => [...prev, formData.benefits.trim()]);
+      setFormData((prev) => ({ ...prev, benefits: "" }));
     }
   };
 
@@ -76,10 +92,28 @@ export default function SubscriptionFormPage() {
     setBenefits((prev) => prev.filter((_, i) => i !== index));
   };
 
-  const handleSave = () => {
-    console.log("Saving subscription:", { ...formData, benefits });
+  const handleSave = async () => {
+    const data = {
+      ...formData,
+      price: Number(formData.price),
+      benefits,
+    };
+
+    await updateSubscription({ data, id });
+    // console.log("Saving subscription:", { ...formData, benefits });
     // Implement save logic here
   };
+
+  if (isLoading) {
+    return (
+      <div className="p-6 bg-gray-50 min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-[#5952FF]"></div>
+          <p className="mt-4 text-[#4a4c56]">Loading subscription...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
@@ -105,39 +139,37 @@ export default function SubscriptionFormPage() {
       <div className="bg-white rounded-lg p-6 shadow-sm ">
         <div className="space-y-6">
           <div className="flex flex-col md:flex-row gap-4">
-            {/* Plan Duration */}
+            {/* Package Type */}
             <div className="flex-1">
               <label className="block text-sm font-medium text-[#4a4c56] mb-2">
-                Plan Duration
+                Package Type
               </label>
               <div className="relative" ref={planDurationRef}>
                 <button
                   type="button"
                   onClick={() => {
                     setShowPlanDurationDropdown(!showPlanDurationDropdown);
-                    setShowCvOptDropdown(false);
+                    // setShowCvOptDropdown(false);
                   }}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg text-left flex items-center justify-between bg-white hover:border-gray-400 transition-colors"
                 >
                   <span
                     className={
-                      formData.planDuration
-                        ? "text-[#4a4c56]"
-                        : "text-[#A1A1A1]"
+                      formData.type ? "text-[#4a4c56]" : "text-[#A1A1A1]"
                     }
                   >
-                    {formData.planDuration || "Select Duration"}
+                    {formData.type || "Select Package Type"}
                   </span>
                   <ChevronDown className="w-5 h-5 text-[#777980]" />
                 </button>
                 {showPlanDurationDropdown && (
                   <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg">
-                    {planDurationOptions.map((option) => (
+                    {packageTypeOptions?.map((option: string) => (
                       <button
                         key={option}
                         type="button"
                         onClick={() => {
-                          handleInputChange("planDuration", option);
+                          handleInputChange("type", option);
                           setShowPlanDurationDropdown(false);
                         }}
                         className="w-full text-left px-4 py-3 hover:bg-gray-50 first:rounded-t-lg last:rounded-b-lg text-sm text-[#4a4c56]"
@@ -156,7 +188,7 @@ export default function SubscriptionFormPage() {
                 Price
               </label>
               <input
-                type="text"
+                type="number"
                 value={formData.price}
                 onChange={(e) => handleInputChange("price", e.target.value)}
                 placeholder="Enter your price"
@@ -166,7 +198,7 @@ export default function SubscriptionFormPage() {
           </div>
 
           {/* CV Opt */}
-          <div>
+          {/* <div>
             <label className="block text-sm font-medium text-[#4a4c56] mb-2">
               CV Opt
             </label>
@@ -206,7 +238,7 @@ export default function SubscriptionFormPage() {
                 </div>
               )}
             </div>
-          </div>
+          </div> */}
 
           {/* Number of CV */}
           <div>
@@ -215,8 +247,8 @@ export default function SubscriptionFormPage() {
             </label>
             <input
               type="text"
-              value={formData.numberOfCV}
-              onChange={(e) => handleInputChange("numberOfCV", e.target.value)}
+              value={formData.maxCVs}
+              onChange={(e) => handleInputChange("maxCVs", e.target.value)}
               placeholder="Enter your price"
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#5952FF] focus:border-transparent"
             />
@@ -230,10 +262,8 @@ export default function SubscriptionFormPage() {
             <div className="relative mb-3">
               <input
                 type="text"
-                value={formData.benefitInput}
-                onChange={(e) =>
-                  handleInputChange("benefitInput", e.target.value)
-                }
+                value={formData.benefits}
+                onChange={(e) => handleInputChange("benefits", e.target.value)}
                 onKeyPress={(e) => {
                   if (e.key === "Enter") {
                     e.preventDefault();
@@ -279,9 +309,17 @@ export default function SubscriptionFormPage() {
             <button
               type="button"
               onClick={handleSave}
-              className="bg-[#5952FF] text-white font-medium py-3 px-6 rounded-lg transition-colors"
+              disabled={isUpdating}
+              className="bg-[#5952FF] text-white font-medium py-3 px-6 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
             >
-              Save
+              {isUpdating ? (
+                <>
+                  <div className="inline-block animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                  Saving...
+                </>
+              ) : (
+                "Save"
+              )}
             </button>
           </div>
         </div>

@@ -20,54 +20,67 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-export const description = "An interactive area chart";
+/* ================= TYPES ================= */
 
-const chartData = [
-  { date: "2024-04-01", visitors: 372 },
-  { date: "2024-04-02", visitors: 277 },
-  { date: "2024-04-03", visitors: 287 },
-  { date: "2024-04-04", visitors: 502 },
-  { date: "2024-04-05", visitors: 663 },
-  { date: "2024-04-06", visitors: 641 },
-  { date: "2024-06-24", visitors: 312 },
-  { date: "2024-06-25", visitors: 331 },
-  { date: "2024-06-26", visitors: 814 },
-  { date: "2024-06-27", visitors: 938 },
-  { date: "2024-06-28", visitors: 349 },
-  { date: "2024-06-29", visitors: 263 },
-  { date: "2024-06-30", visitors: 846 },
-];
+type MonthlyRevenue = {
+  year: number;
+  month: number; // 1-12
+  total: number;
+};
+
+type DashboardChartProps = {
+  chartdata: MonthlyRevenue[];
+};
+
+/* ================= CONFIG ================= */
 
 const chartConfig = {
   visitors: {
-    label: "Visitors",
+    label: "Revenue",
     color: "#5952FF",
   },
 } satisfies ChartConfig;
 
-export function DashboardChart() {
+/* ================= COMPONENT ================= */
+
+export function DashboardChart({ chartdata }: DashboardChartProps) {
   const [timeRange, setTimeRange] = React.useState("90d");
 
-  const filteredData = chartData.filter((item) => {
-    const date = new Date(item.date);
-    const referenceDate = new Date("2024-06-30");
-    let daysToSubtract = 90;
-    if (timeRange === "30d") {
-      daysToSubtract = 30;
-    } else if (timeRange === "7d") {
-      daysToSubtract = 7;
-    }
-    const startDate = new Date(referenceDate);
-    startDate.setDate(startDate.getDate() - daysToSubtract);
-    return date >= startDate;
-  });
+  /* ---------- FORMAT API DATA ---------- */
+  const formattedData = React.useMemo(() => {
+    if (!chartdata?.length) return [];
+
+    return chartdata.map((item) => ({
+      date: `${item.year}-${String(item.month).padStart(2, "0")}-01`,
+      visitors: item.total,
+    }));
+  }, [chartdata]);
+
+  /* ---------- FILTER BY RANGE ---------- */
+  const filteredData = React.useMemo(() => {
+    if (!formattedData.length) return [];
+
+    const now = new Date();
+    let monthsBack = 3;
+
+    if (timeRange === "30d") monthsBack = 1;
+    if (timeRange === "7d") monthsBack = 0;
+
+    const startDate = new Date();
+    startDate.setMonth(now.getMonth() - monthsBack);
+
+    return formattedData.filter((item) => new Date(item.date) >= startDate);
+  }, [formattedData, timeRange]);
+
+  /* ================= RENDER ================= */
 
   return (
     <Card className="pt-0">
       <CardHeader className="flex items-center gap-2 space-y-0 border-b py-5 sm:flex-row">
         <div className="grid flex-1 gap-1">
-          <CardTitle className="text-2xl font-bold">Total revenue</CardTitle>
+          <CardTitle className="text-2xl font-bold">Total Revenue</CardTitle>
         </div>
+
         <Select value={timeRange} onValueChange={setTimeRange}>
           <SelectTrigger
             className="hidden w-[160px] rounded-lg sm:ml-auto sm:flex"
@@ -75,19 +88,15 @@ export function DashboardChart() {
           >
             <SelectValue placeholder="Last 3 months" />
           </SelectTrigger>
+
           <SelectContent className="rounded-xl">
-            <SelectItem value="90d" className="rounded-lg">
-              Last 3 months
-            </SelectItem>
-            <SelectItem value="30d" className="rounded-lg">
-              Last 30 days
-            </SelectItem>
-            <SelectItem value="7d" className="rounded-lg">
-              Last 7 days
-            </SelectItem>
+            <SelectItem value="90d">Last 3 months</SelectItem>
+            <SelectItem value="30d">Last 30 days</SelectItem>
+            <SelectItem value="7d">Last 7 days</SelectItem>
           </SelectContent>
         </Select>
       </CardHeader>
+
       <CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">
         <ChartContainer
           config={chartConfig}
@@ -108,41 +117,43 @@ export function DashboardChart() {
                 />
               </linearGradient>
             </defs>
+
             <CartesianGrid vertical={false} />
+
             <XAxis
               dataKey="date"
               tickLine={false}
               axisLine={false}
               tickMargin={8}
-              minTickGap={32}
-              tickFormatter={(value) => {
-                const date = new Date(value);
-                return date.toLocaleDateString("en-US", {
+              tickFormatter={(value) =>
+                new Date(value).toLocaleDateString("en-US", {
                   month: "short",
-                  day: "numeric",
-                });
-              }}
+                })
+              }
             />
+
             <ChartTooltip
               cursor={false}
               content={
                 <ChartTooltipContent
-                  labelFormatter={(value) => {
-                    return new Date(value).toLocaleDateString("en-US", {
-                      month: "short",
-                      day: "numeric",
-                    });
-                  }}
                   indicator="dot"
+                  labelFormatter={(value) =>
+                    new Date(value).toLocaleDateString("en-US", {
+                      month: "long",
+                      year: "numeric",
+                    })
+                  }
                 />
               }
             />
+
             <Area
-              dataKey="visitors"
               type="natural"
+              dataKey="visitors"
               fill="url(#fillVisitors)"
               stroke="var(--color-visitors)"
             />
+
             <ChartLegend content={<ChartLegendContent />} />
           </AreaChart>
         </ChartContainer>
