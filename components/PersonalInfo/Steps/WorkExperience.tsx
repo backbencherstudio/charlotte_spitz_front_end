@@ -3,8 +3,7 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Plus, X } from "lucide-react";
-import { useEffect, useRef } from "react";
-import { useFieldArray, useForm } from "react-hook-form";
+import { useEffect, useState } from "react";
 
 interface WorkExperienceData {
   jobTitle: string;
@@ -14,7 +13,7 @@ interface WorkExperienceData {
   location: string;
   responsibilities: string;
   achievements: string;
-  currentlyWorking?: boolean;
+  isCurrentRole?: boolean;
 }
 
 interface WorkExperienceStepProps {
@@ -28,57 +27,44 @@ export default function WorkExperienceStep({
   onUpdate,
   onSnapshot,
 }: WorkExperienceStepProps) {
-  // Use React Hook Form
-  const {
-    register,
-    handleSubmit,
-    control,
-    formState: { errors },
-    getValues,
-    watch,
-  } = useForm<{ experiences: WorkExperienceData[] }>({
-    defaultValues: { experiences: data },
-  });
-
-  const { fields, append, remove } = useFieldArray({
-    control,
-    name: "experiences",
-  });
-
-  const watchedExperiences = watch("experiences");
-
-  const getErrorMessage = (
-    idx: number,
-    key: keyof WorkExperienceData
-  ): string | undefined => {
-    const exErrors = (
-      errors as unknown as {
-        experiences?: Array<
-          Partial<Record<keyof WorkExperienceData, { message?: string }>>
-        >;
-      }
-    ).experiences;
-    const msg = exErrors?.[idx]?.[key]?.message;
-    return typeof msg === "string" ? msg : undefined;
-  };
-
-  const onSubmit = (formData: { experiences: WorkExperienceData[] }) => {
-    onUpdate(formData.experiences);
-  };
+  const [experiences, setExperiences] = useState<WorkExperienceData[]>(
+    data.length > 0
+      ? data
+      : [
+          {
+            jobTitle: "",
+            companyName: "",
+            startDate: "",
+            endDate: "",
+            location: "",
+            responsibilities: "",
+            achievements: "",
+            isCurrentRole: false,
+          },
+        ]
+  );
 
   // Register snapshot getter for parent
   useEffect(() => {
-    onSnapshot?.(() => getValues().experiences);
+    onSnapshot?.(() => experiences);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [experiences]);
 
-  // Ensure at least one experience block shows by default
-  const ensuredOnceRef = useRef(false);
-  useEffect(() => {
-    if (ensuredOnceRef.current) return;
-    const current = getValues().experiences || [];
-    if (!current.length) {
-      append({
+  const handleFieldChange = (
+    index: number,
+    field: keyof WorkExperienceData,
+    value: string | boolean
+  ) => {
+    const updated = [...experiences];
+    updated[index] = { ...updated[index], [field]: value };
+    setExperiences(updated);
+    onUpdate(updated);
+  };
+
+  const addExperience = () => {
+    setExperiences([
+      ...experiences,
+      {
         jobTitle: "",
         companyName: "",
         startDate: "",
@@ -86,11 +72,18 @@ export default function WorkExperienceStep({
         location: "",
         responsibilities: "",
         achievements: "",
-        currentlyWorking: false,
-      });
+        isCurrentRole: false,
+      },
+    ]);
+  };
+
+  const removeExperience = (index: number) => {
+    if (experiences.length > 1) {
+      const updated = experiences.filter((_, i) => i !== index);
+      setExperiences(updated);
+      onUpdate(updated);
     }
-    ensuredOnceRef.current = true;
-  }, [append, getValues]);
+  };
 
   return (
     <div>
@@ -98,21 +91,21 @@ export default function WorkExperienceStep({
         Your Work Experience
       </h2>
 
-      <form onSubmit={handleSubmit(onSubmit)}>
-        {fields.map((field, index) => (
+      <div>
+        {experiences.map((experience, index) => (
           <div
-            key={field.id}
+            key={index}
             className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6"
           >
             <div className="col-span-2 flex items-center justify-between">
-              <h3 className="text-lg font-semibold text-[#1D1F2C]">
+              <h3 className="text-lg font-semibold text-headerColor">
                 Experience {index + 1}
               </h3>
-              {fields.length > 1 && (
+              {experiences.length > 1 && (
                 <button
                   type="button"
-                  onClick={() => remove(index)}
-                  className="inline-flex items-center justify-center h-8 w-8 border border-[#5952FF] text-[#5952FF] rounded-sm cursor-pointer hover:bg-[#5952FF]/10"
+                  onClick={() => removeExperience(index)}
+                  className="inline-flex items-center justify-center h-8 w-8 border border-primaryColor text-primaryColor rounded-sm cursor-pointer hover:bg-primaryColor/10"
                   aria-label="Remove experience"
                   title="Remove experience"
                 >
@@ -122,82 +115,71 @@ export default function WorkExperienceStep({
             </div>
             <div className="col-span-1">
               <Label
-                htmlFor="jobTitle"
-                className="block mb-2 font-medium text-[#1D1F2C]"
+                htmlFor={`jobTitle-${index}`}
+                className="block mb-2 font-medium text-headerColor"
               >
                 Job Title
               </Label>
               <input
-                id="jobTitle"
-                className="w-full px-6 py-3 border rounded-sm focus:outline-none focus:ring-2 focus:ring-[#5952FF]"
+                id={`jobTitle-${index}`}
+                className="w-full px-6 py-3 border rounded-sm focus:outline-none focus:ring-2 focus:ring-primaryColor"
                 placeholder="Enter job title"
-                {...register(`experiences.${index}.jobTitle` as const, {
-                  required: "Job title is required",
-                })}
+                value={experience.jobTitle}
+                onChange={(e) =>
+                  handleFieldChange(index, "jobTitle", e.target.value)
+                }
               />
-              {getErrorMessage(index, "jobTitle") && (
-                <span className="text-red-600 text-sm">
-                  {getErrorMessage(index, "jobTitle")}
-                </span>
-              )}
             </div>
 
-            <div className=" col-span-1 ">
+            <div className="col-span-1">
               <Label
-                htmlFor="companyName"
-                className="block mb-2 font-medium text-[#1D1F2C]"
+                htmlFor={`companyName-${index}`}
+                className="block mb-2 font-medium text-headerColor"
               >
                 Company Name
               </Label>
               <input
-                id="companyName"
-                className="w-full px-6 py-3 border rounded-sm focus:outline-none focus:ring-2 focus:ring-[#5952FF]"
+                id={`companyName-${index}`}
+                className="w-full px-6 py-3 border rounded-sm focus:outline-none focus:ring-2 focus:ring-primaryColor"
                 placeholder="Enter company name"
-                {...register(`experiences.${index}.companyName` as const, {
-                  required: "Company name is required",
-                })}
+                value={experience.companyName}
+                onChange={(e) =>
+                  handleFieldChange(index, "companyName", e.target.value)
+                }
               />
-              {getErrorMessage(index, "companyName") && (
-                <span className="text-red-600 text-sm">
-                  {getErrorMessage(index, "companyName")}
-                </span>
-              )}
             </div>
-            <div className=" col-span-2  grid gap-3  justify-center h-full items-center grid-cols-1 md:grid-cols-3 ">
+            <div className="col-span-2 grid gap-3 justify-center h-full items-center grid-cols-1 md:grid-cols-3">
               <div>
                 <Label
-                  htmlFor="startDate"
-                  className="block mb-2 font-medium text-[#1D1F2C]"
+                  htmlFor={`startDate-${index}`}
+                  className="block mb-2 font-medium text-headerColor"
                 >
                   Start Date
                 </Label>
                 <input
-                  id="startDate"
+                  id={`startDate-${index}`}
                   type="date"
                   placeholder="Enter start date"
-                  className="w-full px-6 py-3 border rounded-sm focus:outline-none focus:ring-2 focus:ring-[#5952FF]"
-                  {...register(`experiences.${index}.startDate` as const, {
-                    required: "Start date is required",
-                  })}
+                  className="w-full px-6 py-3 border rounded-sm focus:outline-none focus:ring-2 focus:ring-primaryColor"
+                  value={experience.startDate}
+                  onChange={(e) =>
+                    handleFieldChange(index, "startDate", e.target.value)
+                  }
                 />
-                {getErrorMessage(index, "startDate") && (
-                  <span className="text-red-600 text-sm">
-                    {getErrorMessage(index, "startDate")}
-                  </span>
-                )}
               </div>
               <div>
-                <div className="flex items-center justify-start lg:justify-center h-full md:mt-4  gap-4">
+                <div className="flex items-center justify-start lg:justify-center h-full md:mt-4 gap-4">
                   <Checkbox
-                    id="currentlyWorking"
-                    className="cursor-pointer rounded-sm h-5 w-5 data-[state=checked]:bg-[#5952FF] data-[state=checked]:border-[#5952FF]"
-                    {...register(
-                      `experiences.${index}.currentlyWorking` as const
-                    )}
+                    id={`isCurrentRole-${index}`}
+                    className="cursor-pointer rounded-sm h-5 w-5 data-[state=checked]:bg-primaryColor data-[state=checked]:border-primaryColor"
+                    checked={experience.isCurrentRole}
+                    onCheckedChange={(checked) =>
+                      handleFieldChange(index,  "isCurrentRole", !!checked)
+                    }
                   />
                   <Label
-                    htmlFor="currentlyWorking"
-                    className="font-medium text-[#1D1F2C] cursor-pointer"
+                    htmlFor={`isCurrentRole-${index}`}
+                    className="font-medium text-headerColor cursor-pointer"
                   >
                     Currently Working Here
                   </Label>
@@ -205,87 +187,77 @@ export default function WorkExperienceStep({
               </div>
               <div>
                 <Label
-                  htmlFor="endDate"
-                  className="block mb-2 font-medium text-[#1D1F2C]"
+                  htmlFor={`endDate-${index}`}
+                  className="block mb-2 font-medium text-headerColor"
                 >
                   End Date
                 </Label>
                 <input
-                  id="endDate"
+                  id={`endDate-${index}`}
                   type="date"
                   placeholder="Enter end date"
-                  disabled={watchedExperiences?.[index]?.currentlyWorking}
-                  className="w-full px-6 py-3 border rounded-sm focus:outline-none focus:ring-2 focus:ring-[#5952FF] disabled:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-60"
-                  {...register(`experiences.${index}.endDate` as const, {
-                    validate: (value) => {
-                      if (
-                        !watchedExperiences?.[index]?.currentlyWorking &&
-                        !value
-                      ) {
-                        return "End date is required";
-                      }
-                      return true;
-                    },
-                  })}
+                  disabled={experience.isCurrentRole}
+                  className="w-full px-6 py-3 border rounded-sm focus:outline-none focus:ring-2 focus:ring-primaryColor disabled:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-60"
+                  value={experience.endDate}
+                  onChange={(e) =>
+                    handleFieldChange(index, "endDate", e.target.value)
+                  }
                 />
-                {getErrorMessage(index, "endDate") && (
-                  <span className="text-red-600 text-sm">
-                    {getErrorMessage(index, "endDate")}
-                  </span>
-                )}
               </div>
             </div>
 
-            <div className="col-span-2 ">
+            <div className="col-span-2">
               <Label
-                htmlFor="location"
-                className="block mb-2 font-medium text-[#1D1F2C]"
+                htmlFor={`location-${index}`}
+                className="block mb-2 font-medium text-headerColor"
               >
                 Location
               </Label>
               <input
-                id="location"
+                id={`location-${index}`}
                 type="text"
                 placeholder="Enter location"
-                className="w-full px-6 py-3 border rounded-sm focus:outline-none focus:ring-2 focus:ring-[#5952FF]"
-                {...register(`experiences.${index}.location` as const, {
-                  required: "Location is required",
-                })}
+                className="w-full px-6 py-3 border rounded-sm focus:outline-none focus:ring-2 focus:ring-primaryColor"
+                value={experience.location}
+                onChange={(e) =>
+                  handleFieldChange(index, "location", e.target.value)
+                }
               />
-              {getErrorMessage(index, "location") && (
-                <span className="text-red-600 text-sm">
-                  {getErrorMessage(index, "location")}
-                </span>
-              )}
             </div>
             <div className="col-span-2">
               <Label
-                htmlFor="responsibilities"
-                className="block mb-2 font-medium text-[#1D1F2C]"
+                htmlFor={`responsibilities-${index}`}
+                className="block mb-2 font-medium text-headerColor"
               >
                 List your responsibilities
               </Label>
               <textarea
-                id="responsibilities"
+                id={`responsibilities-${index}`}
                 placeholder="List your responsibilities in this role."
-                className="w-full px-6 py-3 border rounded-sm focus:outline-none focus:ring-2 focus:ring-[#5952FF]"
+                className="w-full px-6 py-3 border rounded-sm focus:outline-none focus:ring-2 focus:ring-primaryColor"
                 rows={4}
-                {...register(`experiences.${index}.responsibilities` as const)}
+                value={experience.responsibilities}
+                onChange={(e) =>
+                  handleFieldChange(index, "responsibilities", e.target.value)
+                }
               />
             </div>
             <div className="col-span-2">
               <Label
-                htmlFor="achievements"
-                className="block mb-2 font-medium text-[#1D1F2C]"
+                htmlFor={`achievements-${index}`}
+                className="block mb-2 font-medium text-headerColor"
               >
                 List your achievements
               </Label>
               <textarea
-                id="achievements"
+                id={`achievements-${index}`}
                 placeholder="List your achievements in this role."
-                className="w-full px-6 py-3 border rounded-sm focus:outline-none focus:ring-2 focus:ring-[#5952FF]"
+                className="w-full px-6 py-3 border rounded-sm focus:outline-none focus:ring-2 focus:ring-primaryColor"
                 rows={4}
-                {...register(`experiences.${index}.achievements` as const)}
+                value={experience.achievements}
+                onChange={(e) =>
+                  handleFieldChange(index, "achievements", e.target.value)
+                }
               />
             </div>
           </div>
@@ -293,25 +265,14 @@ export default function WorkExperienceStep({
         <div>
           <button
             type="button"
-            onClick={() =>
-              append({
-                jobTitle: "",
-                companyName: "",
-                startDate: "",
-                endDate: "",
-                location: "",
-                responsibilities: "",
-                achievements: "",
-                currentlyWorking: false,
-              })
-            }
-            className="px-5 py-3 text-[#5952FF] border border-[#5952FF] rounded-sm flex items-center gap-2 font-semibold cursor-pointer"
+            onClick={addExperience}
+            className="px-5 py-3 text-primaryColor border border-primaryColor rounded-sm flex items-center gap-2 font-semibold cursor-pointer"
           >
             <Plus size={18} />
             <span>Add another experience</span>
           </button>
         </div>
-      </form>
+      </div>
     </div>
   );
 }

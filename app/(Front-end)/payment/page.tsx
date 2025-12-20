@@ -46,8 +46,14 @@ interface Plan {
 const Payment = () => {
   const router = useRouter();
   const { data, isLoading, error } = useGetAllPackageQuery();
+  const localData = localStorage.getItem("multiStepFormData");
 
   console.log(data, "data", isLoading, error);
+  console.log(JSON.parse(localData || "{}"), "localData");
+  const handlePayment = () => {
+    
+    router.push("/payment-gateway");
+  };
 
   return (
     <section className="py-15 md:py-20">
@@ -139,7 +145,7 @@ const Payment = () => {
                       <MdArrowOutward className="w-5 h-5 transition-transform duration-200" />
                     }
                     className="w-full items-center justify-center"
-                    onClick={() => router.push("/success")}
+                    onClick={handlePayment}
                   >
                     Pay Now
                   </Button>

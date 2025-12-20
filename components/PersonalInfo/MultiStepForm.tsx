@@ -41,21 +41,26 @@ const STEPS = [
   },
 ];
 
+interface FormattedSkill {
+  name: string;
+  type: "HARD" | "SOFT" | "LANGUAGE";
+  isCustom: boolean;
+}
+
 interface FormData {
   personalInfo: {
     fullName: string;
     phoneNumber: string;
     email: string;
-    cityState: string;
+    city_and_state: string;
     resumeType: string;
     linkedinUrl: string;
+    includeFullAddress: boolean;
     websiteUrl: string;
     professionalSummary: string;
   };
   skills: {
-    hardSkills: string[];
-    softSkills: string[];
-    languages: string[];
+    skills: FormattedSkill[];
   };
   workExperience: {
     jobTitle: string;
@@ -109,16 +114,15 @@ export default function MultiStepForm() {
         fullName: "",
         phoneNumber: "",
         email: "",
-        cityState: "",
+        city_and_state: "",
         resumeType: "",
         linkedinUrl: "",
         websiteUrl: "",
         professionalSummary: "",
+        includeFullAddress: true,
       },
       skills: {
-        hardSkills: [],
-        softSkills: [],
-        languages: [],
+        skills: [],
       },
       workExperience: [
         {
@@ -331,7 +335,7 @@ export default function MultiStepForm() {
               data={formData.skills}
               onUpdate={(data: any) => handleUpdateFormData("skills", data)}
               onSnapshot={(getter) => {
-                skillsGetterRef.current = getter as () => FormData["skills"];
+                skillsGetterRef.current = getter;
               }}
             />
           )}

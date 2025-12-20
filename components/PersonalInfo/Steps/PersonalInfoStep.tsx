@@ -17,13 +17,13 @@ interface PersonalInfoData {
   fullName: string;
   phoneNumber: string;
   email: string;
-  cityState: string;
+  city_and_state: string;
   resumeType: string;
   linkedinUrl: string;
   websiteUrl: string;
   professionalSummary: string;
+  includeFullAddress: boolean;
 }
-
 interface PersonalInfoStepProps {
   data: PersonalInfoData;
   onUpdate: (data: PersonalInfoData) => void;
@@ -144,13 +144,13 @@ export default function PersonalInfoStep({
               id="cityState"
               placeholder="Bangladesh"
               className="w-full px-6 py-3 border rounded-sm focus:outline-none focus:ring-2 focus:ring-[#5952FF]"
-              {...register("cityState", {
+              {...register("city_and_state", {
                 required: "City & State is required",
               })}
             />
-            {errors.cityState && (
+            {errors.city_and_state && (
               <span className="text-red-600 text-sm">
-                {errors.cityState.message}
+                {errors.city_and_state.message}
               </span>
             )}
           </div>
@@ -173,9 +173,9 @@ export default function PersonalInfoStep({
                 </SelectGroup>
               </SelectContent>
             </Select>
-            {errors.cityState && (
+            {errors.city_and_state && (
               <span className="text-red-600 text-sm">
-                {errors.cityState.message}
+                {errors.city_and_state.message}
               </span>
             )}
           </div>
@@ -186,21 +186,25 @@ export default function PersonalInfoStep({
             >
               Do you want your full address on your resume? (Yes/No)
             </Label>
-            <Select onValueChange={(value) => setValue("resumeType", value)}>
+            <Select
+              onValueChange={(value) =>
+                setValue("includeFullAddress", value === "true")
+              }
+            >
               <SelectTrigger className="w-full border rounded-sm focus:outline-none focus:ring-2 focus:ring-[#5952FF] cursor-pointer py-6 px-6">
                 <SelectValue placeholder="Select" />
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
                   <SelectLabel>Select</SelectLabel>
-                  <SelectItem value="normal">Yes</SelectItem>
-                  <SelectItem value="natural">No</SelectItem>
+                  <SelectItem value="true">Yes</SelectItem>
+                  <SelectItem value="false">No</SelectItem>
                 </SelectGroup>
               </SelectContent>
             </Select>
-            {errors.cityState && (
+            {errors.includeFullAddress && (
               <span className="text-red-600 text-sm">
-                {errors.cityState.message}
+                {errors.includeFullAddress.message}
               </span>
             )}
           </div>
@@ -233,7 +237,7 @@ export default function PersonalInfoStep({
             />
           </div>
 
-          <div className="md:col-span-2">
+          {/* <div className="md:col-span-2">
             <Label
               htmlFor="summary"
               className="block mb-2 font-medium text-[#1D1F2C]"
@@ -245,7 +249,7 @@ export default function PersonalInfoStep({
               {...register("websiteUrl")}
               className="w-full px-6 py-3 border rounded-sm focus:outline-none focus:ring-2 focus:ring-[#5952FF]"
             />
-          </div>
+          </div> */}
           {/* <div className="md:col-span-2">
             <Label
               htmlFor="summary"

@@ -7,62 +7,60 @@ import { useEffect, useState } from "react";
 interface SkillTag {
   id: string;
   name: string;
+  isCustom: boolean;
+}
+
+interface FormattedSkill {
+  name: string;
+  type: "HARD" | "SOFT" | "LANGUAGE";
+  isCustom: boolean;
 }
 
 interface SkillsSectionProps {
   data: {
-    hardSkills: string[];
-    softSkills: string[];
-    languages: string[];
+    skills: FormattedSkill[];
   };
-  onUpdate: (data: {
-    hardSkills: string[];
-    softSkills: string[];
-    languages: string[];
-  }) => void;
+  onUpdate: (data: { skills: FormattedSkill[] }) => void;
   onSnapshot?: (
     getter: () => {
-      hardSkills: string[];
-      softSkills: string[];
-      languages: string[];
+      skills: FormattedSkill[];
     }
   ) => void;
 }
 
-export default function SkillsSection({
-
-  onSnapshot,
-}: SkillsSectionProps) {
+export default function SkillsSection({ onSnapshot }: SkillsSectionProps) {
   const [hardSkills, setHardSkills] = useState<SkillTag[]>([
-    { id: "1", name: "Microsoft Word" },
-    { id: "2", name: "Microsoft Excel" },
-    { id: "3", name: "Customer Service" },
-    { id: "4", name: "Data Entry" },
-    { id: "5", name: "QuickBooks" },
-    { id: "6", name: "Billing" },
-    { id: "7", name: "Medical Office Skills" },
-    { id: "8", name: "Computer Skills" },
+    { id: "1", name: "Microsoft Word", isCustom: false },
+    { id: "2", name: "Microsoft Excel", isCustom: false },
+    { id: "3", name: "Customer Service", isCustom: false },
+    { id: "4", name: "Data Entry", isCustom: false },
+    { id: "5", name: "QuickBooks", isCustom: false },
+    { id: "6", name: "Billing", isCustom: false },
+    { id: "7", name: "Medical Office Skills", isCustom: false },
+    { id: "8", name: "Computer Skills", isCustom: false },
   ]);
 
   const [softSkills, setSoftSkills] = useState<SkillTag[]>([
-    { id: "1", name: "Communication" },
-    { id: "2", name: "Time Management" },
-    { id: "3", name: "Leadership" },
-    { id: "4", name: "Teamwork" },
-    { id: "5", name: "Detail-Oriented" },
-    { id: "6", name: "Multitasking" },
+    { id: "1", name: "Communication", isCustom: false },
+    { id: "2", name: "Time Management", isCustom: false },
+    { id: "3", name: "Leadership", isCustom: false },
+    { id: "4", name: "Teamwork", isCustom: false },
+    { id: "5", name: "Detail-Oriented", isCustom: false },
+    { id: "6", name: "Multitasking", isCustom: false },
   ]);
 
   const [languages, setLanguages] = useState<SkillTag[]>([
-    { id: "1", name: "Bangla" },
-    { id: "2", name: "English" },
-    { id: "3", name: "Hindi" },
-    { id: "4", name: "Spanish" },
-    { id: "5", name: "French" },
-    { id: "6", name: "German" },
+    { id: "1", name: "Bangla", isCustom: false },
+    { id: "2", name: "English", isCustom: false },
+    { id: "3", name: "Hindi", isCustom: false },
+    { id: "4", name: "Spanish", isCustom: false },
+    { id: "5", name: "French", isCustom: false },
+    { id: "6", name: "German", isCustom: false },
   ]);
 
   const [selectedHardSkills, setSelectedHardSkills] = useState<string[]>([]);
+  const [selectedSoftSkills, setSelectedSoftSkills] = useState<string[]>([]);
+  const [selectedLanguages, setSelectedLanguages] = useState<string[]>([]);
 
   // Hard Skills state
   const [newHardSkill, setNewHardSkill] = useState<string>("");
@@ -91,13 +89,29 @@ export default function SkillsSection({
     );
   };
 
+  const selectSoftSkill = (id: string) => {
+    setSelectedSoftSkills((prev) =>
+      prev.includes(id)
+        ? prev.filter((skillId) => skillId !== id)
+        : [...prev, id]
+    );
+  };
+
+  const selectLanguage = (id: string) => {
+    setSelectedLanguages((prev) =>
+      prev.includes(id) ? prev.filter((langId) => langId !== id) : [...prev, id]
+    );
+  };
+
   const handleHardSkillsSubmit = () => {
     if (newHardSkill.trim()) {
       const newSkill = {
         id: String(nextId),
         name: newHardSkill,
+        isCustom: true,
       };
       setHardSkills((prevSkills) => [...prevSkills, newSkill]);
+      setSelectedHardSkills((prev) => [...prev, String(nextId)]);
       setNewHardSkill("");
       setNextId(nextId + 1);
       setIsHardSkillInputVisible(false);
@@ -109,8 +123,10 @@ export default function SkillsSection({
       const newSkill = {
         id: String(nextId),
         name: newSoftSkill,
+        isCustom: true,
       };
       setSoftSkills((prevSkills) => [...prevSkills, newSkill]);
+      setSelectedSoftSkills((prev) => [...prev, String(nextId)]);
       setNewSoftSkill("");
       setNextId(nextId + 1);
       setIsSoftSkillInputVisible(false);
@@ -122,8 +138,10 @@ export default function SkillsSection({
       const newSkill = {
         id: String(nextId),
         name: newLanguage,
+        isCustom: true,
       };
       setLanguages((prevSkills) => [...prevSkills, newSkill]);
+      setSelectedLanguages((prev) => [...prev, String(nextId)]);
       setNewLanguage("");
       setNextId(nextId + 1);
       setIsLanguageInputVisible(false);
@@ -133,20 +151,55 @@ export default function SkillsSection({
   // Register snapshot getter so parent can pull values on navigation
   useEffect(() => {
     const getSnapshot = () => {
-      const hardSelectedNames = hardSkills
+      const formattedSkills: FormattedSkill[] = [];
+
+      // Add selected hard skills
+      hardSkills
         .filter((s) => selectedHardSkills.includes(s.id))
-        .map((s) => s.name);
-      const softNames = softSkills.map((s) => s.name);
-      const languageNames = languages.map((l) => l.name);
+        .forEach((s) => {
+          formattedSkills.push({
+            name: s.name,
+            type: "HARD",
+            isCustom: s.isCustom,
+          });
+        });
+
+      // Add selected soft skills
+      softSkills
+        .filter((s) => selectedSoftSkills.includes(s.id))
+        .forEach((s) => {
+          formattedSkills.push({
+            name: s.name,
+            type: "SOFT",
+            isCustom: s.isCustom,
+          });
+        });
+
+      // Add selected languages
+      languages
+        .filter((l) => selectedLanguages.includes(l.id))
+        .forEach((l) => {
+          formattedSkills.push({
+            name: l.name,
+            type: "LANGUAGE",
+            isCustom: l.isCustom,
+          });
+        });
+
       return {
-        hardSkills: hardSelectedNames,
-        softSkills: softNames,
-        languages: languageNames,
+        skills: formattedSkills,
       };
     };
     onSnapshot?.(getSnapshot);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [hardSkills, softSkills, languages, selectedHardSkills]);
+  }, [
+    hardSkills,
+    softSkills,
+    languages,
+    selectedHardSkills,
+    selectedSoftSkills,
+    selectedLanguages,
+  ]);
 
   return (
     <main>
@@ -163,17 +216,25 @@ export default function SkillsSection({
               <div
                 key={skill.id}
                 onClick={() => selectHardSkill(skill.id)}
-                className="inline-flex items-center gap-2 md:p-8 p-4 border border-[#5952FF] rounded-sm relative"
+                className={
+                  `inline-flex cursor-pointer items-center hover:bg-primaryColor/15 gap-2 md:px-6 md:py-5 px-4 py-2 border border-primaryColor rounded-sm relative` +
+                  (selectedHardSkills.includes(skill.id)
+                    ? " bg-primaryColor/15 text-headerColor border-primaryColor"
+                    : " text-headerColor border-primaryColor")
+                }
               >
-                <span className="text-[#1D1F2C]">{skill.name}</span>
-                <div className="absolute top-0.5 right-0.5 md:right-2 md:top-2">
-                  <Checkbox className="cursor-pointer rounded-full h-4 w-4 md:h-5 md:w-5 data-[state=checked]:bg-[#5952FF] data-[state=checked]:border-[#5952FF]" />
+                <span className="text-headerColor">{skill.name}</span>
+                <div className="absolute top-0.5 right-0.5 md:right-1 md:top-1">
+                  <Checkbox
+                    checked={selectedHardSkills.includes(skill.id)}
+                    className="cursor-pointer rounded-full h-4 w-4 md:h-5 md:w-5 data-[state=checked]:bg-primaryColor data-[state=checked]:border-primaryColor"
+                  />
                 </div>
               </div>
             ))}
             <button
               onClick={() => setIsHardSkillInputVisible(true)}
-              className="inline-flex items-center gap-2 md:p-8 p-4 border border-[#5952FF] rounded-sm cursor-pointer text-[#1D1F2C]"
+              className="inline-flex items-center gap-2 md:px-6 md:py-5 px-4 py-2 border border-[#5952FF] rounded-sm cursor-pointer text-headerColor"
             >
               <Plus size={18} />
               <span>Add</span>
@@ -221,7 +282,12 @@ export default function SkillsSection({
             {softSkills.map((skill) => (
               <div
                 key={skill.id}
-                className="inline-flex items-center gap-2 px-4 py-2 border border-[#5952FF] rounded-lg text-[#1D1F2C]"
+                onClick={() => selectSoftSkill(skill.id)}
+                className={`inline-flex items-center gap-2 px-2 py-1 hover:bg-primaryColor hover:text-white duration-200 md:px-4 md:py-2.5 border rounded-sm cursor-pointer transition-all ${
+                  selectedSoftSkills.includes(skill.id)
+                    ? "bg-primaryColor text-white border-primaryColor"
+                    : "border-primaryColor text-headerColor"
+                }`}
               >
                 <span>{skill.name}</span>
               </div>
@@ -229,10 +295,10 @@ export default function SkillsSection({
           </div>
           <button
             onClick={() => setIsSoftSkillInputVisible(true)}
-            className="inline-flex items-center gap-2 border border-[#5952FF] rounded-sm cursor-pointer text-[#1D1F2C] px-4 py-2"
+            className="inline-flex items-center gap-2 border border-[#5952FF] rounded-sm cursor-pointer text-headerColor px-4 py-2 md:py-2.5"
           >
             <Plus size={18} />
-            <span>Add your own Skill</span>
+            <span>Add your own Skill </span>
           </button>
 
           {isSoftSkillInputVisible && (
@@ -276,7 +342,12 @@ export default function SkillsSection({
             {languages.map((lang) => (
               <div
                 key={lang.id}
-                className="inline-flex items-center gap-2 px-4 py-2 border border-[#5952FF] rounded-lg text-[#1D1F2C]"
+                onClick={() => selectLanguage(lang.id)}
+                className={`inline-flex items-center gap-2 px-2 py-1 hover:bg-primaryColor hover:text-white duration-200  md:px-4 md:py-2.5 border rounded-sm cursor-pointer transition-all ${
+                  selectedLanguages.includes(lang.id)
+                    ? "bg-primaryColor text-white border-primaryColor"
+                    : "border-primaryColor text-headerColor"
+                }`}
               >
                 <span>{lang.name}</span>
               </div>
@@ -284,7 +355,7 @@ export default function SkillsSection({
           </div>
           <button
             onClick={() => setIsLanguageInputVisible(true)}
-            className="inline-flex items-center gap-2 border border-[#5952FF] rounded-sm cursor-pointer text-[#1D1F2C] px-4 py-2"
+            className="inline-flex items-center gap-2 border border-[#5952FF] rounded-sm cursor-pointer text-headerColor px-4 py-2 md:py-2.5"
           >
             <Plus size={18} />
             <span>Add languages</span>
