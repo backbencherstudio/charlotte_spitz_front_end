@@ -2,14 +2,12 @@
 
 import { Label } from "@/components/ui/label";
 import { Plus, X } from "lucide-react";
-import { useEffect, useRef } from "react";
-import { useFieldArray, useForm } from "react-hook-form";
+import { useEffect, useMemo, useState } from "react";
 
 interface CertificateData {
   certificateName: string;
-  organization: string;
-  result: string;
-  expiration: string;
+  issuingOrganization: string;
+  expirationYear: string;
   certificateId: string;
 }
 
@@ -24,61 +22,65 @@ export default function CertificateStep({
   onUpdate,
   onSnapshot,
 }: CertificateStepProps) {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    getValues,
-    control,
-  } = useForm<{ certificates: CertificateData[] }>({
-    defaultValues: { certificates: data },
-  });
+  const normalizedInitial = useMemo(() => {
+    if (!data || !data.length) {
+      return [
+        {
+          certificateName: "",
+          issuingOrganization: "",
+          expirationYear: "",
+          certificateId: "",
+        },
+      ];
+    }
 
-  const { fields, append, remove } = useFieldArray({
-    control,
-    name: "certificates",
-  });
+    return data.map((item: CertificateData) => ({
+      certificateName: item.certificateName ?? item.certificateName ?? "",
+      issuingOrganization:
+        item.issuingOrganization ?? item.issuingOrganization ?? "",
+      expirationYear: item.expirationYear ?? item.expirationYear ?? "",
+      certificateId: item.certificateId ?? "",
+    }));
+  }, [data]);
 
-  const getErrorMessage = (
-    idx: number,
-    key: keyof CertificateData
-  ): string | undefined => {
-    const ceErrors = (
-      errors as unknown as {
-        certificates?: Array<
-          Partial<Record<keyof CertificateData, { message?: string }>>
-        >;
-      }
-    ).certificates;
-    const msg = ceErrors?.[idx]?.[key]?.message;
-    return typeof msg === "string" ? msg : undefined;
+  const [certificates, setCertificates] =
+    useState<CertificateData[]>(normalizedInitial);
+
+  // Register snapshot getter for parent so it can pull latest values
+  useEffect(() => {
+    onSnapshot?.(() => certificates);
+  }, [certificates, onSnapshot]);
+
+  const handleFieldChange = (
+    index: number,
+    field: keyof CertificateData,
+    value: string
+  ) => {
+    const updated = [...certificates];
+    updated[index] = { ...updated[index], [field]: value };
+    setCertificates(updated);
+    onUpdate(updated);
   };
 
-  // Register snapshot getter for parent
-  useEffect(() => {
-    onSnapshot?.(() => getValues().certificates);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  // Ensure at least one certificate block exists
-  const ensuredOnceRef = useRef(false);
-  useEffect(() => {
-    if (ensuredOnceRef.current) return;
-    const current = getValues().certificates || [];
-    if (!current.length) {
-      append({
+  const addCertificate = () => {
+    setCertificates((prev) => [
+      ...prev,
+      {
         certificateName: "",
-        organization: "",
+        issuingOrganization: "",
         result: "",
-        expiration: "",
+        expirationYear: "",
         certificateId: "",
-      });
-    }
-    ensuredOnceRef.current = true;
-  }, [append, getValues]);
+      },
+    ]);
+  };
 
-  const onSubmit = (formData: { certificates: CertificateData[] }) => {
-    onUpdate(formData.certificates);
+  const removeCertificate = (index: number) => {
+    if (certificates.length > 1) {
+      const updated = certificates.filter((_, i) => i !== index);
+      setCertificates(updated);
+      onUpdate(updated);
+    }
   };
 
   return (
@@ -87,20 +89,20 @@ export default function CertificateStep({
         Your Certifications
       </h2>
 
-      <form onSubmit={handleSubmit(onSubmit)}>
-        {fields.map((field, index) => (
+      <div>
+        {certificates.map((certificate, index) => (
           <div
-            key={field.id}
+            key={index}
             className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6"
           >
             <div className="col-span-2 flex items-center justify-between">
-              <h3 className="text-lg font-semibold text-[#1D1F2C]">
+              <h3 className="text-lg font-semibold text-headerColor">
                 Certificate {index + 1}
               </h3>
-              {fields.length > 1 && (
+              {certificates.length > 1 && (
                 <button
                   type="button"
-                  onClick={() => remove(index)}
+                  onClick={() => removeCertificate(index)}
                   className="inline-flex items-center justify-center h-8 w-8 border border-[#5952FF] text-[#5952FF] rounded-sm cursor-pointer hover:bg-[#5952FF]/10"
                   aria-label="Remove certificate"
                   title="Remove certificate"
@@ -113,7 +115,7 @@ export default function CertificateStep({
             <div>
               <Label
                 htmlFor={`certificateName-${index}`}
-                className="block mb-2 font-medium text-[#1D1F2C]"
+                className="block mb-2 font-medium text-headerColor"
               >
                 Certificate Name
               </Label>
@@ -121,21 +123,18 @@ export default function CertificateStep({
                 id={`certificateName-${index}`}
                 className="w-full px-6 py-3 border rounded-sm focus:outline-none focus:ring-2 focus:ring-[#5952FF]"
                 placeholder="Enter certificate name"
-                {...register(`certificates.${index}.certificateName` as const, {
-                  required: "Certificate name is required",
-                })}
+                required
+                value={certificate.certificateName}
+                onChange={(e) =>
+                  handleFieldChange(index, "certificateName", e.target.value)
+                }
               />
-              {getErrorMessage(index, "certificateName") && (
-                <span className="text-red-600 text-sm">
-                  {getErrorMessage(index, "certificateName")}
-                </span>
-              )}
             </div>
 
             <div>
               <Label
                 htmlFor={`organization-${index}`}
-                className="block mb-2 font-medium text-[#1D1F2C]"
+                className="block mb-2 font-medium text-headerColor"
               >
                 Issuing Organization
               </Label>
@@ -143,21 +142,22 @@ export default function CertificateStep({
                 id={`organization-${index}`}
                 className="w-full px-6 py-3 border rounded-sm focus:outline-none focus:ring-2 focus:ring-[#5952FF]"
                 placeholder="Enter organization name"
-                {...register(`certificates.${index}.organization` as const, {
-                  required: "Organization name is required",
-                })}
+                required
+                value={certificate.issuingOrganization}
+                onChange={(e) =>
+                  handleFieldChange(
+                    index,
+                    "issuingOrganization",
+                    e.target.value
+                  )
+                }
               />
-              {getErrorMessage(index, "organization") && (
-                <span className="text-red-600 text-sm">
-                  {getErrorMessage(index, "organization")}
-                </span>
-              )}
             </div>
 
             <div>
               <Label
                 htmlFor={`expiration-${index}`}
-                className="block mb-2 font-medium text-[#1D1F2C]"
+                className="block mb-2 font-medium text-headerColor"
               >
                 Year/Expiration
               </Label>
@@ -166,21 +166,18 @@ export default function CertificateStep({
                 type="date"
                 placeholder="Enter expiration date"
                 className="w-full px-6 py-3 border rounded-sm focus:outline-none focus:ring-2 focus:ring-[#5952FF]"
-                {...register(`certificates.${index}.expiration` as const, {
-                  required: "Expiration date is required",
-                })}
+                required
+                value={certificate.expirationYear}
+                onChange={(e) =>
+                  handleFieldChange(index, "expirationYear", e.target.value)
+                }
               />
-              {getErrorMessage(index, "expiration") && (
-                <span className="text-red-600 text-sm">
-                  {getErrorMessage(index, "expiration")}
-                </span>
-              )}
             </div>
 
             <div>
               <Label
                 htmlFor={`certificateId-${index}`}
-                className="block mb-2 font-medium text-[#1D1F2C]"
+                className="block mb-2 font-medium text-headerColor"
               >
                 Certificate ID (Optional)
               </Label>
@@ -189,35 +186,25 @@ export default function CertificateStep({
                 type="text"
                 placeholder="Enter certificate ID"
                 className="w-full px-6 py-3 border rounded-sm focus:outline-none focus:ring-2 focus:ring-[#5952FF]"
-                {...register(`certificates.${index}.certificateId` as const)}
+                value={certificate.certificateId}
+                onChange={(e) =>
+                  handleFieldChange(index, "certificateId", e.target.value)
+                }
               />
-              {getErrorMessage(index, "certificateId") && (
-                <span className="text-red-600 text-sm">
-                  {getErrorMessage(index, "certificateId")}
-                </span>
-              )}
             </div>
           </div>
         ))}
         <div>
           <button
             type="button"
-            onClick={() =>
-              append({
-                certificateName: "",
-                organization: "",
-                result: "",
-                expiration: "",
-                certificateId: "",
-              })
-            }
+            onClick={addCertificate}
             className="px-5 py-3 text-[#5952FF] border border-[#5952FF] rounded-sm flex items-center gap-2 font-semibold cursor-pointer"
           >
             <Plus size={18} />
             <span>Add more</span>
           </button>
         </div>
-      </form>
+      </div>
     </div>
   );
 }
