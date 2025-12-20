@@ -1,15 +1,7 @@
 "use client";
 
-import DashboardCard, {
-  DashboardCardData,
-} from "@/components/reusable/DashboardCard";
-import {
-  FileText,
-  LayoutTemplate,
-  Users,
-  DollarSign,
-  User,
-} from "lucide-react";
+import DashboardCard from "@/components/reusable/DashboardCard";
+import { FileText, LayoutTemplate, DollarSign, User } from "lucide-react";
 import RecentActivities from "@/components/reusable/RecentActivities";
 import MostUsedTemplates, {
   TemplateData,
@@ -39,8 +31,8 @@ const mostUsedTemplatesData: TemplateData[] = [
   },
 ];
 
-export default function page() {
-  const { data: dashboardData } = useGetAllOverviewQuery();
+export default function DashboardPage() {
+  const { data: dashboardData } = useGetAllOverviewQuery({});
   // console.log(dashboardData?.data?.monthlyRevenue);
   // console.log(dashboardData?.data?.recentActivities);
   return (

@@ -1,5 +1,6 @@
 import ResetPsswordForm from "@/components/auth/reset-password";
 import Image from "next/image";
+import { Suspense } from "react";
 
 const ResetPassword = () => {
   return (
@@ -16,7 +17,9 @@ const ResetPassword = () => {
             />
           </div>
           <div>
-            <ResetPsswordForm />
+            <Suspense>
+              <ResetPsswordForm />
+            </Suspense>
           </div>
         </div>
       </div>

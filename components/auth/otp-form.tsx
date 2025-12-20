@@ -10,6 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useVerifyEmailMutation } from "@/src/redux/features/(auth)/auth";
 import { useRouter, useSearchParams } from "next/navigation";
+import { toast } from "sonner";
 
 export default function OtpForm() {
   const searchParams = useSearchParams();
@@ -27,6 +28,7 @@ export default function OtpForm() {
     try {
       const response = await verifyEmail(payload);
       if (response?.data?.success) {
+        toast.success("Email Verify successfully.");
         router.push("/login");
       }
     } catch (error) {

@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/select";
 import { Pencil, User } from "lucide-react";
 import { useUpdateProfileMutation } from "@/src/redux/features/(auth)/profile";
+import { toast } from "sonner";
 
 export default function Profile() {
   const [updateProfile] = useUpdateProfileMutation();
@@ -52,7 +53,10 @@ export default function Profile() {
     // }
 
     try {
-      await updateProfile(payload); // send FormData
+      const res = await updateProfile(payload);
+      if (res?.data?.success) {
+        toast.success(res?.data?.message);
+      }
     } catch (error) {
       console.log(error);
     }

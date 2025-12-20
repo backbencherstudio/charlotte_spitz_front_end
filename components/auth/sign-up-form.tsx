@@ -5,6 +5,7 @@ import { Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 interface SignupFormData {
   first_name: string;
@@ -43,10 +44,10 @@ const SignUpForm = () => {
     };
     try {
       const response = await signUp(payload);
-      // console.log(response?.data?.success);
+      console.log(response?.data);
       if (response?.data?.success) {
         router.push(`/otp?email=${data.email}`);
-        // toast.success(response.message);
+        toast.success(response?.data?.message || "Check your email for otp.");
       }
       // else {
       //   toast.error(response.message);

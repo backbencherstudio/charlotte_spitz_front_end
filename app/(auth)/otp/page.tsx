@@ -1,6 +1,7 @@
 import LoginForm from "@/components/auth/login-form";
 import OtpForm from "@/components/auth/otp-form";
 import Image from "next/image";
+import { Suspense } from "react";
 
 function OtpPage() {
   return (
@@ -17,7 +18,9 @@ function OtpPage() {
             />
           </div>
           <div>
-            <OtpForm />
+            <Suspense>
+              <OtpForm />
+            </Suspense>
           </div>
         </div>
       </div>

@@ -41,6 +41,13 @@ const submissionsApi = baseApi.injectEndpoints({
         method: "GET",
       }),
     }),
+    submissionStatus: builder.mutation({
+      query: ({ id, data }) => ({
+        url: `submissions/${id}/status`,
+        method: "PATCH",
+        body: data,
+      }),
+    }),
     createSubmissions: builder.mutation({
       query: (data) => ({
         url: "submissions",
@@ -60,6 +67,7 @@ const submissionsApi = baseApi.injectEndpoints({
 export const {
   useGetAllSubmissionsQuery,
   useGetSubmissionsByIdQuery,
+  useSubmissionStatusMutation,
   useCreateSubmissionsMutation,
   useDeleteSubmissionsMutation,
 } = submissionsApi;

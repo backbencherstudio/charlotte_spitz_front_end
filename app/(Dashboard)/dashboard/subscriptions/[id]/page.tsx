@@ -8,6 +8,7 @@ import {
   useGetSubscriptionByIdQuery,
   useUpdateSubscriptionMutation,
 } from "@/src/redux/features/subscriptions";
+import { toast } from "sonner";
 
 export default function SubscriptionFormPage() {
   const { id } = useParams();
@@ -99,9 +100,10 @@ export default function SubscriptionFormPage() {
       benefits,
     };
 
-    await updateSubscription({ data, id });
-    // console.log("Saving subscription:", { ...formData, benefits });
-    // Implement save logic here
+    const res = await updateSubscription({ data, id });
+    if (res?.data?.success) {
+      toast.success(res?.data?.message);
+    }
   };
 
   if (isLoading) {

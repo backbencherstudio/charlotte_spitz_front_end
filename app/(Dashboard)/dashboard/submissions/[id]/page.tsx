@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import React from "react";
@@ -14,7 +15,11 @@ import {
   AlertCircle,
 } from "lucide-react";
 import { useParams } from "next/navigation";
-import { useGetSubmissionsByIdQuery } from "@/src/redux/features/submissions";
+import {
+  useGetSubmissionsByIdQuery,
+  useSubmissionStatusMutation,
+} from "@/src/redux/features/submissions";
+import { toast } from "sonner";
 
 interface SubmissionDetails {
   id: string;
@@ -37,8 +42,9 @@ export default function SubmissionDetailsPage() {
   const id = params.id as string;
 
   const { data: submissionData, isLoading } = useGetSubmissionsByIdQuery(id);
+  const [submissionStatus] = useSubmissionStatusMutation();
 
-  console.log(submissionData);
+  // console.log(submissionData);
 
   const apiItem = submissionData?.data?.[0];
   const submissionInfo = apiItem?.submission;
@@ -121,24 +127,38 @@ export default function SubmissionDetailsPage() {
     status: mapStatus(apiItem?.status || ""),
   };
 
-  const handleApprove = () => {
-    console.log("Approve submission:", id);
-    // Implement approval logic
+  const handleApprove = async () => {
+    const res = await submissionStatus({
+      id,
+      status: "APPROVED",
+    });
+    if (res?.data?.success) {
+      toast.success("Submission status approved");
+    }
   };
 
-  const handlePending = () => {
-    console.log("Set to pending:", id);
-    // Implement pending logic
+  const handlePending = async () => {
+    const res = await submissionStatus({
+      id,
+      status: "PENDING",
+    });
+    if (res?.data?.success) {
+      toast.success("Submission status pending");
+    }
   };
 
-  const handleRevision = () => {
-    console.log("Request revision:", id);
-    // Implement revision logic
+  const handleRevision = async () => {
+    const res = await submissionStatus({
+      id,
+      status: "REVISION",
+    });
+    if (res?.data?.success) {
+      toast.success("Submission status revision");
+    }
   };
 
   const handleDownloadPDF = () => {
     console.log("Download PDF:", id);
-    // Implement PDF download logic
   };
 
   const handleEdit = () => {
@@ -323,7 +343,7 @@ export default function SubmissionDetailsPage() {
               </div>
 
               <div className="grid grid-cols-2 gap-4">
-                {educations.map((edu) => (
+                {educations.map((edu: any) => (
                   <div key={edu.id}>
                     <p className="font-medium mb-2">
                       {edu.degreeOrCertificate}
@@ -350,7 +370,7 @@ export default function SubmissionDetailsPage() {
               <div>
                 <p className="text-xs text-[#A1A1A1] mb-1">Skills</p>
                 <p className="text-sm font-medium text-[#4a4c56]">
-                  {skills.map((skill) => (
+                  {skills.map((skill: any) => (
                     <span key={skill.id} className="mr-2">
                       {skill.name},
                     </span>

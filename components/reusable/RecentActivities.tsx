@@ -30,7 +30,7 @@ export default function RecentActivities({
         <CardTitle className="text-lg font-bold">{title}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-3">
-        {activities?.map((activity) => (
+        {activities?.slice(0, 3)?.map((activity) => (
           <div
             key={activity.id}
             className="bg-gray-100 rounded-lg p-4 flex items-center justify-between"

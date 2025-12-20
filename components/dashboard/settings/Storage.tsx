@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { useUpdateSettingsMutation } from "@/src/redux/features/setting";
+import { toast } from "sonner";
 
 export default function Storage() {
   const [storageProvider, setStorageProvider] = useState("local");
@@ -36,8 +37,10 @@ export default function Storage() {
       s3Region,
     };
     try {
-      await updateSettings(data);
-      // toast.success("Settings updated successfully");
+      const res = await updateSettings(data);
+      if (res?.data?.success) {
+        toast.success(res?.data?.message);
+      }
     } catch (error) {
       console.error(error);
     }

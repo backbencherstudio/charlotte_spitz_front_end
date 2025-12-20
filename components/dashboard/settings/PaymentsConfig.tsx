@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Key } from "lucide-react";
 import { useUpdateSettingsMutation } from "@/src/redux/features/setting";
+import { toast } from "sonner";
 
 export default function PaymentsConfig() {
   const [primaryPaymentGateway, setPrimaryPaymentGateway] = useState("");
@@ -37,8 +38,10 @@ export default function PaymentsConfig() {
       invoiceGeneration,
     };
     try {
-      await updateSettings(data);
-      // toast.success("Settings updated successfully");
+      const res = await updateSettings(data);
+      if (res?.data?.success) {
+        toast.success(res?.data?.message);
+      }
     } catch (error) {
       console.error(error);
     }

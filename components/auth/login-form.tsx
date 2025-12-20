@@ -5,6 +5,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import SetCookies from "./token";
 
 interface LoginFormData {
   name: string;
@@ -31,10 +33,13 @@ const LoginForm = () => {
   });
 
   const onSubmit = async (data: LoginFormData) => {
-    console.log("Form submitted:", data);
+    // console.log("Form submitted:", data);
     try {
       const response = await login(data);
+      // console.log(response?.data?.data?.accessToken);
       if (response?.data?.success) {
+        SetCookies(response?.data?.data?.accessToken);
+        toast.success(response?.data?.message || "Login successfully");
         router.push("/dashboard");
       }
     } catch (error) {
