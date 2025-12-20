@@ -17,12 +17,16 @@ export default function SubmissionsPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [selectedFilter, setSelectedFilter] = useState("All");
+  const [searchQuery, setSearchQuery] = useState("");
 
-  const { data: submissionsData, isLoading, error, refetch } = useGetAllSubmissionsQuery();
+  const { data: submissionsData, isLoading } = useGetAllSubmissionsQuery({
+    page: currentPage,
+    limit: itemsPerPage,
+    status: selectedFilter,
+    search: searchQuery,
+  });
 
   console.log("submissions -->", submissionsData);
-
-
 
   const columns = [
     {
@@ -117,6 +121,8 @@ export default function SubmissionsPage() {
         data={submissionsData?.data as unknown as Record<string, unknown>[]}
         currentPage={currentPage}
         itemsPerPage={itemsPerPage}
+        totalPages={submissionsData?.totalPages || 1}
+        totalRecords={submissionsData?.total || 0}
         onPageChange={handlePageChange}
         onItemsPerPageChange={handleItemsPerPageChange}
         onView={handleView}
@@ -124,8 +130,16 @@ export default function SubmissionsPage() {
         noDataMessage="No submissions found."
         searchPlaceholder="search users..."
         filterOptions={filterOptions}
-        onFilterChange={setSelectedFilter}
+        onFilterChange={(value) => {
+          setSelectedFilter(value);
+          setCurrentPage(1);
+        }}
         selectedFilter={selectedFilter}
+        onSearchChange={(value) => {
+          setSearchQuery(value);
+          setCurrentPage(1);
+        }}
+        isLoading={isLoading}
       />
     </div>
   );

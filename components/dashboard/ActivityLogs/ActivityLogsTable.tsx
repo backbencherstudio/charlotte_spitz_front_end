@@ -37,7 +37,7 @@ interface DynamicTableProps {
   isLoading?: boolean;
 }
 
-export default function SubmissionTable({
+export default function ActivityLogsTable({
   columns,
   data,
   currentPage,
@@ -66,7 +66,8 @@ export default function SubmissionTable({
 
   const itemsPerPageOptions = [10, 20, 50, 100];
 
-  console.log("data -->", data);
+  // const firstName = data?.user?.userProfile?.firstName ?? "";
+  // const lastName = data?.user?.userProfile?.lastName ?? "";
 
   // Calculate pagination display values
   const startRecord =
@@ -226,11 +227,11 @@ export default function SubmissionTable({
                   {col.label}
                 </th>
               ))}
-              {(onView || onMore) && (
+              {/* {(onView || onMore) && (
                 <th className="px-2 sm:px-3 lg:px-4 py-2 sm:py-3 text-xs sm:text-sm font-medium text-[#4a4c56]">
                   Action
                 </th>
-              )}
+              )} */}
             </tr>
           </thead>
           <tbody>
@@ -247,67 +248,14 @@ export default function SubmissionTable({
               data?.map((row: Record<string, unknown>, i: number) => (
                 <tr key={i} className="border-t hover:bg-gray-50">
                   <td className="px-2 sm:px-3 lg:px-4 py-2 sm:py-3 font-semibold text-sm text-[#070707]">
-                    {String(row?.id ?? "")}
+                    {String(row?.action ?? "")}
                   </td>
                   <td className="px-2 sm:px-3 lg:px-4 py-2 sm:py-3 font-semibold text-sm text-[#070707]">
-                    {String(row?.customerName ?? "")}
+                    {String(row?.actionType ?? "")}
                   </td>
                   <td className="px-2 sm:px-3 lg:px-4 py-2 sm:py-3 font-semibold text-sm text-[#070707]">
-                    {row?.submissionDate
-                      ? new Date(
-                          row.submissionDate as string | number | Date
-                        ).toLocaleDateString("en-US", {
-                          year: "numeric",
-                          month: "long",
-                          day: "numeric",
-                        })
-                      : "N/A"}
+                    {String(row?.description ?? "-")}
                   </td>
-                  <td className="px-2 sm:px-3 lg:px-4 py-2 sm:py-3 font-semibold text-sm text-[#070707]">
-                    {String(row?.template ?? "-")}
-                  </td>
-                  <td>
-                    <span
-                      className={`px-4 py-1.5 rounded-full text-xs font-medium ${
-                        statusColors[
-                          row?.status as keyof typeof statusColors
-                        ] || ""
-                      }`}
-                    >
-                      {" "}
-                      {String(row?.status ?? "-")}
-                    </span>
-                  </td>
-                  {/* {columns.map((col, idx) => (
-                    <td
-                      key={idx}
-                      className="px-2 sm:px-3 lg:px-4 py-2 sm:py-3 text-xs text-descriptionColor"
-                    >
-                      {col.formatter
-                        ? col.formatter(row[col.accessor], row)
-                        : String(row[col.accessor] ?? "")}
-                    </td>
-                  ))} */}
-                  {(onView || onMore) && (
-                    <td className="px-2 sm:px-3 lg:px-4 py-2 sm:py-3">
-                      <div className="flex items-center gap-2 sm:gap-3">
-                        {onView && (
-                          <Link
-                            href={`/dashboard/submissions/${row.id}`}
-                            className="w-4 h-4 text-descriptionColor hover:text-[#0068ef] cursor-pointer"
-                          >
-                            <Eye className="w-4 h-4" />
-                          </Link>
-                        )}
-                        {onMore && (
-                          <MoreVertical
-                            className="w-4 h-4 text-descriptionColor hover:text-[#0068ef] cursor-pointer"
-                            onClick={() => onMore(row)}
-                          />
-                        )}
-                      </div>
-                    </td>
-                  )}
                 </tr>
               ))
             ) : (

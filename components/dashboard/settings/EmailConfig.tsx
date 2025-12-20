@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import { useState } from "react";
 import {
   CardHeader,
   CardTitle,
@@ -18,8 +18,38 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
+import { useUpdateSettingsMutation } from "@/src/redux/features/setting";
+import { toast } from "sonner";
 
 export default function EmailConfig() {
+  const [smtpProvider, setSmtpProvider] = useState("");
+  const [smtpPort, setSmtpPort] = useState("");
+  const [smtpHost, setSmtpHost] = useState("");
+  const [smtpEncryption, setSmtpEncryption] = useState("");
+  const [smtpFromEmail, setSmtpFromEmail] = useState("");
+  const [smtpFromName, setSmtpFromName] = useState("");
+
+  const [updateSettings, { isLoading }] = useUpdateSettingsMutation();
+
+  const handleSave = async () => {
+    const data = {
+      smtpProvider,
+      smtpPort: Number(smtpPort),
+      smtpHost,
+      smtpEncryption,
+      smtpFromEmail,
+      smtpFromName,
+    };
+    try {
+      const res = await updateSettings(data);
+      if (res?.data?.success) {
+        toast.success(res?.data?.message);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <>
       <CardHeader className="pt-5">
@@ -38,12 +68,12 @@ export default function EmailConfig() {
           <div className="space-y-6">
             <div className="space-y-2">
               <Label htmlFor="smtp-provider">SMTP Provider</Label>
-              <Select>
+              <Select value={smtpProvider} onValueChange={setSmtpProvider}>
                 <SelectTrigger
                   id="smtp-provider"
                   className="w-full bg-background"
                 >
-                  <SelectValue placeholder="Select Duration" />
+                  <SelectValue placeholder="Select Provider" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="gmail">Gmail</SelectItem>
@@ -59,8 +89,10 @@ export default function EmailConfig() {
               <Label htmlFor="smtp-port">SMTP Port</Label>
               <Input
                 id="smtp-port"
-                placeholder="Enter your price"
+                placeholder="Enter SMTP port"
                 type="text"
+                value={smtpPort}
+                onChange={(e) => setSmtpPort(e.target.value)}
               />
             </div>
           </div>
@@ -72,15 +104,19 @@ export default function EmailConfig() {
               <Input
                 id="smtp-host"
                 type="text"
-                defaultValue="smtp.example.com"
+                value={smtpHost}
+                onChange={(e) => setSmtpHost(e.target.value)}
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="encryption">Encryption</Label>
-              <Select>
-                <SelectTrigger id="encryption" className="w-full bg-background">
-                  <SelectValue placeholder="Enter your price" />
+              <Label htmlFor="smtpEncryption">smtpEncryption</Label>
+              <Select value={smtpEncryption} onValueChange={setSmtpEncryption}>
+                <SelectTrigger
+                  id="smtpEncryption"
+                  className="w-full bg-background"
+                >
+                  <SelectValue placeholder="Select smtpEncryption" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="none">None</SelectItem>
@@ -98,18 +134,30 @@ export default function EmailConfig() {
             <Input
               id="from-email"
               type="email"
-              defaultValue="noreply@example.com"
+              value={smtpFromEmail}
+              onChange={(e) => setSmtpFromEmail(e.target.value)}
             />
           </div>
 
           <div className="space-y-2 w-full">
             <Label htmlFor="from-name">From Name</Label>
-            <Input id="from-name" type="text" defaultValue="Admin Panel" />
+            <Input
+              id="from-name"
+              type="text"
+              value={smtpFromName}
+              onChange={(e) => setSmtpFromName(e.target.value)}
+            />
           </div>
         </div>
       </CardContent>
       <CardFooter className="flex justify-end py-4">
-        <Button className="px-8 bg-[#5952FF] text-white">Save</Button>
+        <Button
+          className="px-8 bg-[#5952FF] text-white"
+          onClick={handleSave}
+          disabled={isLoading}
+        >
+          {isLoading ? "Saving..." : "Save"}
+        </Button>
       </CardFooter>
     </>
   );

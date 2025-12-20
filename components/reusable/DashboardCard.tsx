@@ -13,15 +13,20 @@ export interface DashboardCardData {
 }
 
 interface DashboardCardProps {
-  data: DashboardCardData;
-  className?: string;
+  title: string;
+  icon: LucideIcon;
+  number: number;
 }
 
-export default function DashboardCard({ data, className }: DashboardCardProps) {
-  const IconComponent = data.icon;
+export default function DashboardCard({
+  title,
+  icon,
+  number,
+}: DashboardCardProps) {
+  const IconComponent = icon;
 
   return (
-    <Card className={cn("shadow-sm", className)}>
+    <Card className={cn("shadow-sm")}>
       <CardContent className="py-5">
         <div className="flex items-start justify-between">
           <div className="flex-1">
@@ -30,14 +35,12 @@ export default function DashboardCard({ data, className }: DashboardCardProps) {
                 <IconComponent className="w-6 h-6 text-white" />
               </div>
               <h3 className="text-sm font-medium text-foreground mb-2">
-                {data.title}
+                {title}
               </h3>
             </div>
-            <p className="text-3xl font-bold text-foreground mb-2">
-              {data.value}
-            </p>
+            <p className="text-3xl font-bold text-foreground mb-2">{number}</p>
             <p className="text-sm text-muted-foreground">
-              Update: {data.updateDate}
+              Update: {"July 20, 2025"}
             </p>
           </div>
         </div>
