@@ -41,21 +41,26 @@ const STEPS = [
   },
 ];
 
+interface FormattedSkill {
+  name: string;
+  type: "HARD" | "SOFT" | "LANGUAGE";
+  isCustom: boolean;
+}
+
 interface FormData {
   personalInfo: {
     fullName: string;
     phoneNumber: string;
     email: string;
-    cityState: string;
+    city_and_state: string;
     resumeType: string;
     linkedinUrl: string;
+    includeFullAddress: boolean;
     websiteUrl: string;
     professionalSummary: string;
   };
   skills: {
-    hardSkills: string[];
-    softSkills: string[];
-    languages: string[];
+    skills: FormattedSkill[];
   };
   workExperience: {
     jobTitle: string;
@@ -68,17 +73,16 @@ interface FormData {
     currentlyWorking?: boolean;
   }[];
   education: {
-    degree: string;
-    institution: string;
-    result: string;
+    degreeOrCertificate: string;
+    institutionName: string;
+    resultOrCGPA: string;
     passingYear: string;
     location: string;
   }[];
   certifications: {
     certificateName: string;
-    organization: string;
-    result: string;
-    expiration: string;
+    issuingOrganization: string;
+    expirationYear : string;
     certificateId: string;
   }[];
 }
@@ -109,16 +113,15 @@ export default function MultiStepForm() {
         fullName: "",
         phoneNumber: "",
         email: "",
-        cityState: "",
+        city_and_state: "",
         resumeType: "",
         linkedinUrl: "",
         websiteUrl: "",
         professionalSummary: "",
+        includeFullAddress: true,
       },
       skills: {
-        hardSkills: [],
-        softSkills: [],
-        languages: [],
+        skills: [],
       },
       workExperience: [
         {
@@ -134,9 +137,9 @@ export default function MultiStepForm() {
       ],
       education: [
         {
-          degree: "",
-          institution: "",
-          result: "",
+          degreeOrCertificate: "",
+          institutionName: "",
+          resultOrCGPA: "",
           passingYear: "",
           location: "",
         },
@@ -144,9 +147,9 @@ export default function MultiStepForm() {
       certifications: [
         {
           certificateName: "",
-          organization: "",
-          result: "",
-          expiration: "",
+          issuingOrganization: "",
+
+          expirationYear: "",
           certificateId: "",
         },
       ],
@@ -331,7 +334,7 @@ export default function MultiStepForm() {
               data={formData.skills}
               onUpdate={(data: any) => handleUpdateFormData("skills", data)}
               onSnapshot={(getter) => {
-                skillsGetterRef.current = getter as () => FormData["skills"];
+                skillsGetterRef.current = getter;
               }}
             />
           )}

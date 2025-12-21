@@ -20,6 +20,7 @@ scroll-behavior: smooth;
 
 @theme inline {
   --color-descriptionColor: #777980;
+  --color-headerColor: #1D1F2C;
   --color-grayColor: #64748b;
   --color-primaryColor: #5952ff;
   --color-background: var(--background);
