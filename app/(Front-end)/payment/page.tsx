@@ -111,7 +111,6 @@ const Payment = () => {
                       {plan?.name}
                     </h3>
                   </div>
-
                   {/* Price */}
                   <div className="mb-6">
                     <div className="flex items-baseline gap-2">
