@@ -2,11 +2,14 @@
 
 import Button from "@/components/reusable/Button";
 import { useGetAllPackageQuery } from "@/src/redux/features/resumeInfo";
+
+import { useCreateSubmissionsMutation } from "@/src/redux/features/setting";
 import { Check, Crown } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { MdArrowOutward } from "react-icons/md";
 
 interface Plan {
+  id: string;
   name: string;
   price: number;
   benefits: string[];
@@ -47,12 +50,26 @@ const Payment = () => {
   const router = useRouter();
   const { data, isLoading, error } = useGetAllPackageQuery();
   const localData = localStorage.getItem("multiStepFormData");
-
+  const [createSubmissions]= useCreateSubmissionsMutation()
   console.log(data, "data", isLoading, error);
   console.log(JSON.parse(localData || "{}"), "localData");
-  const handlePayment = () => {
+
+  const handlePayment = async  (id: string) => {
+    const perchLocData = JSON.parse(localData || "{}");
+    const formData={
+      packageId:id,
+      ...perchLocData
+    }
+    try {
+    const response = await createSubmissions(formData);
+    console.log("response createSubmissions", response);
     
-    router.push("/payment-gateway");
+    } catch (error) {
+      console.error("Error parsing form data:", error);
+    }
+    
+
+    // router.push("/payment-gateway");
   };
 
   return (
@@ -72,7 +89,7 @@ const Payment = () => {
             {[1, 2].map((i) => (
               <div
                 key={i}
-                className="rounded-2xl border p-5 md:p-6 w-full max-w-[400px] animate-pulse"
+                className="rounded-2xl border p-5 md:p-6 w-full max-w-100 animate-pulse"
               >
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-8 h-8 bg-gray-300 rounded"></div>
@@ -100,7 +117,7 @@ const Payment = () => {
               (plan: Plan, index: number) => (
                 <div
                   key={index}
-                  className={`rounded-2xl p-5 md:p-6 w-full max-w-[400px] transition-all duration-300 card-Shadow border hover:border border-[#5952FF]`}
+                  className={`rounded-2xl p-5 md:p-6 w-full max-w-100 transition-all duration-300 card-Shadow border hover:border border-[#5952FF]`}
                 >
                   {/* Plan Name */}
                   <div className="flex items-center gap-3 mb-4">
@@ -145,7 +162,7 @@ const Payment = () => {
                       <MdArrowOutward className="w-5 h-5 transition-transform duration-200" />
                     }
                     className="w-full items-center justify-center"
-                    onClick={handlePayment}
+                    onClick={() => handlePayment(plan?.id)}
                   >
                     Pay Now
                   </Button>

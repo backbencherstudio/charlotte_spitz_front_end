@@ -1,8 +1,8 @@
-import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 
 // Define protected routes
-const protectedRoutes = ["/dashboard"]; // add your protected paths
+const protectedRoutes = ["/dashboard", "/payment"]; // add your protected paths
 const publicRoutes = ["/login", "/", "/signup", "/email-verify"];
 
 export function middleware(request: NextRequest) {

@@ -17,15 +17,10 @@ interface FormattedSkill {
 }
 
 interface SkillsSectionProps {
-  data: {
-    skills: FormattedSkill[];
-  };
-  onUpdate: (data: { skills: FormattedSkill[] }) => void;
-  onSnapshot?: (
-    getter: () => {
-      skills: FormattedSkill[];
-    }
-  ) => void;
+  data: FormattedSkill[];
+
+  onUpdate: (data: FormattedSkill[]) => void;
+  onSnapshot?: (getter: () => FormattedSkill[]) => void;
 }
 
 export default function SkillsSection({ onSnapshot }: SkillsSectionProps) {
@@ -150,7 +145,7 @@ export default function SkillsSection({ onSnapshot }: SkillsSectionProps) {
 
   // Register snapshot getter so parent can pull values on navigation
   useEffect(() => {
-    const getSnapshot = () => {
+    const getSnapshot = (): FormattedSkill[] => {
       const formattedSkills: FormattedSkill[] = [];
 
       // Add selected hard skills
@@ -186,9 +181,7 @@ export default function SkillsSection({ onSnapshot }: SkillsSectionProps) {
           });
         });
 
-      return {
-        skills: formattedSkills,
-      };
+      return formattedSkills;
     };
     onSnapshot?.(getSnapshot);
     // eslint-disable-next-line react-hooks/exhaustive-deps
