@@ -72,7 +72,7 @@ const Payment = () => {
             {[1, 2].map((i) => (
               <div
                 key={i}
-                className="rounded-2xl border p-5 md:p-6 w-full max-w-[400px] animate-pulse"
+                className="rounded-2xl border p-5 md:p-6 w-full max-w-100 animate-pulse"
               >
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-8 h-8 bg-gray-300 rounded"></div>
@@ -100,7 +100,7 @@ const Payment = () => {
               (plan: Plan, index: number) => (
                 <div
                   key={index}
-                  className={`rounded-2xl p-5 md:p-6 w-full max-w-[400px] transition-all duration-300 card-Shadow border hover:border border-[#5952FF]`}
+                  className={`rounded-2xl p-5 md:p-6 w-full max-w-100 transition-all duration-300 card-Shadow border hover:border border-[#5952FF]`}
                 >
                   {/* Plan Name */}
                   <div className="flex items-center gap-3 mb-4">
