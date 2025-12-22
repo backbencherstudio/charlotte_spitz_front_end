@@ -1,12 +1,39 @@
 "use client";
-
+import { cn } from "@/lib/utils";
+import { useGetLoggedUserQuery } from "@/src/redux/features/resumeInfo";
+import { LogOut } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import {  useState } from "react";
 import { HiOutlineMenu, HiX } from "react-icons/hi";
-
-import { cn } from "@/lib/utils";
-
+import { removeToken } from "./auth/token";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
+type User = {
+  id: string;
+  email: string;
+  isEmailVerified: boolean;
+  termsAccepted: boolean;
+  role: "USER" | "ADMIN";
+  createdAt: string;
+  updatedAt: string;
+  userProfile: {
+    id: string;
+    userId: string;
+    firstName: string;
+    lastName: string;
+    phoneNumber: string;
+    designation: string | null;
+    language: string | null;
+    avatar: string | null;
+    createdAt: string;
+    updatedAt: string;
+  };
+};
 const menuItems = [
   { label: "How it works", href: "#how-it-works" },
   { label: "Pricing ", href: "#pricing" },
@@ -16,6 +43,26 @@ const menuItems = [
 export default function Navbar() {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [userData, setUserData] = useState<User | null>(null);
+
+
+
+
+  // Only call API if token exists
+  const { data } = useGetLoggedUserQuery() as {
+    data?: { data?: User };
+    isLoading: boolean;
+  };
+
+  if (data?.data && !userData) {
+    setUserData(data.data);
+  }
+
+  const hanldeLogout = async () => {
+    await removeToken();
+    setUserData(null);
+    window.location.href = "/";
+  };
 
   return (
     <header className="bg-[#000000] py-5">
@@ -45,33 +92,82 @@ export default function Navbar() {
         </nav>
 
         {/* Right: Language, Auth Buttons */}
-        <div className="hidden md:flex items-center space-x-3.5">
-          <Link
-            href="/login"
-            className="flex items-center gap-2 
+        {!userData ? (
+          <div className="hidden md:flex items-center space-x-3.5">
+            <Link
+              href="/login?redirect=/"
+              className="flex items-center gap-2 
         bg-transparent text-white 
         font-semibold px-6 py-2 rounded-full 
         border border-white hover:scale-105 
         hover:shadow-lg hover:shadow-primaryColor/80 
         transition-all duration-300 cursor-pointer group text-lg  justify-center"
-          >
-            Login
-          </Link>
-          <Link
-            href="/signup"
-            className="flex items-center gap-2 
+            >
+              Login
+            </Link>
+            <Link
+              href="/signup"
+              className="flex items-center gap-2 
         bg-primaryColor text-white 
         font-semibold px-6 py-2 rounded-full 
         hover:bg-primaryColor/90 hover:scale-105 
         hover:shadow-lg hover:shadow-primaryColor/80 
         transition-all duration-300 cursor-pointer group text-lg  justify-center"
-          >
-            Sign up
-          </Link>
-        </div>
+            >
+              Sign up
+            </Link>
+          </div>
+        ) : (
+          <DropdownMenu>
+            <DropdownMenuTrigger className="flex justify-start items-center gap-3 cursor-pointer hover:opacity-90">
+              <div className="px-4 py-2 rounded-full border shadow-lg shadow-primaryColor/80 border-primaryColor bg-white hidden md:flex items-center justify-center ">
+                <span className="text-primaryColor font-semibold  text-base mr-4">
+                  Welcome, {userData?.userProfile?.firstName}
+                </span>
+              </div>
+
+              {/* <IoIosArrowDown size={24} className="text-whiteColor" /> */}
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              align="end"
+              className="min-w-35 bg-red-300 border-0"
+            >
+              <DropdownMenuItem
+                onClick={hanldeLogout}
+                className="cursor-pointer text-white hover:bg-red-200! hover:text-red-600! font-semibold text-lg"
+              >
+                <LogOut className="text-blackColor" /> Log out
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
 
         {/* Mobile Menu Toggle */}
-        <div className="md:hidden">
+        <div className="md:hidden flex items-center gap-2">
+          {userData && (
+            <DropdownMenu>
+              <DropdownMenuTrigger className="flex justify-start items-center gap-3 cursor-pointer hover:opacity-90">
+                <div className="px-3 py-1.5 rounded-full border shadow-lg shadow-primaryColor/80 border-primaryColor bg-white  md:hidden items-center justify-center ">
+                  <span className="text-primaryColor font-semibold  text-center text-sm md:text-base ">
+                    Welcome, {userData?.userProfile?.firstName}
+                  </span>
+                </div>
+
+                {/* <IoIosArrowDown size={24} className="text-whiteColor" /> */}
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                align="end"
+                className="min-w-35 bg-red-300 border-0"
+              >
+                <DropdownMenuItem
+                  onClick={hanldeLogout}
+                  className="cursor-pointer text-white hover:bg-red-200! hover:text-red-600! font-semibold text-lg"
+                >
+                  <LogOut className="text-blackColor" /> Log out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
             className="text-white text-2xl"
@@ -99,17 +195,19 @@ export default function Navbar() {
           ))}
 
           {/* Language Dropdown (Mobile) */}
-          <div className=" flex  items-center justify-between">
-            <Link href="/login" className="text-white text-base">
-              Login
-            </Link>
-            <Link
-              href="/signup"
-              className=" text-white font-medium cursor-pointer  text-base px-6 py-2 rounded-full bg-[#5952FF]"
-            >
-              Sign up
-            </Link>
-          </div>
+          {!userData && (
+            <div className=" flex  items-center justify-between">
+              <Link href="/login" className="text-white text-base">
+                Login
+              </Link>
+              <Link
+                href="/signup"
+                className=" text-white font-medium cursor-pointer  text-base px-6 py-2 rounded-full bg-[#5952FF]"
+              >
+                Sign up
+              </Link>
+            </div>
+          )}
         </div>
       )}
     </header>

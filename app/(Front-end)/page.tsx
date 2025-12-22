@@ -3,7 +3,7 @@ import HeroSection from "@/components/Home/Hero";
 import HowItWorks from "@/components/Home/HowItWork";
 import PricingSection from "@/components/Home/PricingSection";
 import TestimonialsSlider from "@/components/Home/TestimonialsSlider";
-import Image from "next/image";
+
 
 export default function Home() {
   return (

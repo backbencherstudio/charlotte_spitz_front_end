@@ -1,20 +1,24 @@
+"use client";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-  DialogClose,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
 import { LogOut } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { removeToken } from "../auth/token";
 
 export default function LogoutModal() {
+  const router = useRouter();
   const handleLogout = async () => {
     await removeToken();
+    router.push("/login");
   };
 
   return (

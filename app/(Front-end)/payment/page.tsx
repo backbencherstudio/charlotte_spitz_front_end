@@ -2,13 +2,13 @@
 
 import Button from "@/components/reusable/Button";
 import { useGetAllPackageQuery } from "@/src/redux/features/resumeInfo";
-
 import { useCreateSubmissionsMutation } from "@/src/redux/features/setting";
 import { Check, Crown } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 import { MdArrowOutward } from "react-icons/md";
 
-interface Plan {
+export interface Plan {
   id: string;
   name: string;
   price: number;
@@ -48,27 +48,52 @@ interface Plan {
 
 const Payment = () => {
   const router = useRouter();
-  const { data, isLoading, error } = useGetAllPackageQuery();
-  const localData = localStorage.getItem("multiStepFormData");
-  const [createSubmissions]= useCreateSubmissionsMutation()
-  console.log(data, "data", isLoading, error);
-  console.log(JSON.parse(localData || "{}"), "localData");
+  const { data, isLoading } = useGetAllPackageQuery();
+  // Avoid accessing localStorage during SSR/prerender
+  const localDataRef = useRef<string | null>(null);
+  const [isCreating, setIsCreating] = useState("");
+  const [createSubmissions, { isLoading: isCreatingPayment }] =
+    useCreateSubmissionsMutation();
 
-  const handlePayment = async  (id: string) => {
-    const perchLocData = JSON.parse(localData || "{}");
-    const formData={
-      packageId:id,
-      ...perchLocData
-    }
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const data = window.localStorage.getItem("multiStepFormData");
+    localDataRef.current = data;
+    if (!data) router.push("/personal-info");
+  }, [router]);
+
+  const handlePayment = async (id: string) => {
+    const raw =
+      localDataRef.current ??
+      (typeof window !== "undefined"
+        ? window.localStorage.getItem("multiStepFormData")
+        : null);
+    let perchLocData: Record<string, unknown> = {};
     try {
-    const response = await createSubmissions(formData);
-    console.log("response createSubmissions", response);
-    
+      perchLocData = JSON.parse(raw || "{}");
+    } catch {
+      router.push("/personal-info");
+      return;
+    }
+    setIsCreating(id);
+    const formData = {
+      packageId: id,
+      ...perchLocData,
+    };
+    try {
+      const response = await createSubmissions(formData);
+      console.log("response createSubmissions", response);
+      if (response.data?.success) {
+        router.push(response.data?.data?.paymentUrl);
+        setIsCreating("");
+        if (typeof window !== "undefined") {
+          window.localStorage.removeItem("multiStepFormData");
+          window.localStorage.removeItem("multiStepCurrentStep");
+        }
+      }
     } catch (error) {
       console.error("Error parsing form data:", error);
     }
-    
-
     // router.push("/payment-gateway");
   };
 
@@ -117,44 +142,45 @@ const Payment = () => {
               (plan: Plan, index: number) => (
                 <div
                   key={index}
-                  className={`rounded-2xl p-5 md:p-6 w-full max-w-100 transition-all duration-300 card-Shadow border hover:border border-[#5952FF]`}
+                  className={`rounded-2xl p-5 md:p-6 w-full max-w-100 transition-all duration-300 card-Shadow border flex flex-col  justify-between  hover:border border-[#5952FF]`}
                 >
-                  {/* Plan Name */}
-                  <div className="flex items-center gap-3 mb-4">
-                    <span className="text-2xl">
-                      <Crown />
-                    </span>
-                    <h3 className="text-xl font-bold text-[#4A4C56]">
-                      {plan?.name}
-                    </h3>
-                  </div>
-
-                  {/* Price */}
-                  <div className="mb-6">
-                    <div className="flex items-baseline gap-2">
-                      <span className="text-4xl font-bold text-[#5952FF]">
-                        ${plan?.price}
+                  <div>
+                    {/* Plan Name */}
+                    <div className="flex items-center gap-3 mb-4">
+                      <span className="text-2xl">
+                        <Crown />
                       </span>
-                      <span className="text-[#A5A5AB]">/One Time</span>
+                      <h3 className="text-xl font-bold text-[#4A4C56]">
+                        {plan?.name}
+                      </h3>
                     </div>
-                  </div>
+                    {/* Price */}
+                    <div className="mb-6">
+                      <div className="flex items-baseline gap-2">
+                        <span className="text-4xl font-bold text-[#5952FF]">
+                          ${plan?.price}
+                        </span>
+                        <span className="text-[#A5A5AB]">/One Time</span>
+                      </div>
+                    </div>
 
-                  {/* Features List */}
-                  <ul className="space-y-4 mb-8">
-                    {plan?.benefits?.map(
-                      (feature: string, featureIndex: number) => (
-                        <li
-                          key={featureIndex}
-                          className="flex items-start gap-3 text-[#4A4C56]"
-                        >
-                          <Check className="w-5 h-5 text-[#5952FF] shrink-0 mt-0.5" />
-                          <span className="text-sm sm:text-base">
-                            {feature}
-                          </span>
-                        </li>
-                      )
-                    )}
-                  </ul>
+                    {/* Features List */}
+                    <ul className="space-y-4 mb-8">
+                      {plan?.benefits?.map(
+                        (feature: string, featureIndex: number) => (
+                          <li
+                            key={featureIndex}
+                            className="flex items-start gap-3 text-[#4A4C56]"
+                          >
+                            <Check className="w-5 h-5 text-[#5952FF] shrink-0 mt-0.5" />
+                            <span className="text-sm sm:text-base">
+                              {feature}
+                            </span>
+                          </li>
+                        )
+                      )}
+                    </ul>
+                  </div>
 
                   {/* Button */}
                   <Button
@@ -163,8 +189,9 @@ const Payment = () => {
                     }
                     className="w-full items-center justify-center"
                     onClick={() => handlePayment(plan?.id)}
+                    disabled={isCreating === plan?.id && isCreatingPayment}
                   >
-                    Pay Now
+                    {isCreating === plan?.id ? "Processing..." : "Pay Now"}
                   </Button>
                 </div>
               )
