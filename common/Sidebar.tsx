@@ -1,18 +1,17 @@
 "use client";
 
-import { X } from "lucide-react";
+import LogoutModal from "@/components/dashboard/LogoutModal";
+import {
+  BarChart3,
+  CreditCard,
+  FileText,
+  FolderOpen,
+  LayoutDashboard,
+  Settings,
+} from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import React from "react";
-import {
-  LayoutDashboard,
-  FileText,
-  FolderOpen,
-  CreditCard,
-  BarChart3,
-  Settings,
-} from "lucide-react";
-import LogoutModal from "@/components/dashboard/LogoutModal";
 
 interface NavItem {
   icon: React.ReactNode;

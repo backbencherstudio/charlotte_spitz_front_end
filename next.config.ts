@@ -1,18 +1,13 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  /* config options here */
   images: {
+    domains: ["gray-junction-arizona-roommate.trycloudflare.com"],
     remotePatterns: [
-      // Allow ANY HTTPS image
       {
         protocol: "https",
-        hostname: "**",
-      },
-      // Allow localhost HTTP (for development)
-      {
-        protocol: "http",
-        hostname: "localhost",
-        port: "7000",
+        hostname: "gray-junction-arizona-roommate.trycloudflare.com",
       },
     ],
   },

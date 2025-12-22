@@ -1,17 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
+import { checkToken } from "@/lib/auth-actions";
 import { BriefcaseBusiness, FileText, GraduationCap } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { BiCertification } from "react-icons/bi";
 import { HiLightBulb } from "react-icons/hi";
 import CertificateStep from "./Steps/Certificate";
+import EducationStep from "./Steps/Education";
 import PersonalInfoStep from "./Steps/PersonalInfoStep";
 import ProgressBar from "./Steps/ProgressBar";
 import SkillsSection from "./Steps/SkillsSection";
 import WorkExperienceStep from "./Steps/WorkExperience";
-import EducationStep from "./Steps/Education";
 
 const STEPS = [
   { id: 1, name: "Personal Info", label: "Personal Info", icon: <FileText /> },
@@ -69,7 +70,7 @@ interface FormData {
     location: string;
     responsibilities: string;
     achievements: string;
-    currentlyWorking?: boolean;
+    isCurrentRole?: boolean;
   }[];
   educations: {
     degreeOrCertificate: string;
@@ -88,6 +89,7 @@ interface FormData {
 
 export default function MultiStepForm() {
   const router = useRouter();
+
   const [currentStep, setCurrentStep] = useState<number>(() => {
     if (typeof window !== "undefined") {
       try {
@@ -120,7 +122,6 @@ export default function MultiStepForm() {
         includeFullAddress: true,
       },
       skills: [],
-
       workExperiences: [
         {
           jobTitle: "",
@@ -130,7 +131,7 @@ export default function MultiStepForm() {
           location: "",
           responsibilities: "",
           achievements: "",
-          currentlyWorking: false,
+          isCurrentRole: false,
         },
       ],
       educations: [
@@ -157,12 +158,11 @@ export default function MultiStepForm() {
         const saved = window.localStorage.getItem("multiStepFormData");
         if (saved) {
           const parsed = JSON.parse(saved) as any;
-          // Migrate older shapes (single object) to arrays
-          if (!Array.isArray(parsed.workExperience)) {
-            parsed.workExperience = parsed.workExperience
-              ? [parsed.workExperience]
-              : [];
+          // Remove old workExperience field if it exists
+          if (parsed.workExperience) {
+            delete parsed.workExperience;
           }
+          // Migrate older shapes (single object) to arrays
           if (!Array.isArray(parsed.educations)) {
             parsed.educations = parsed.educations ? [parsed.educations] : [];
           }
@@ -202,8 +202,12 @@ export default function MultiStepForm() {
     null
   );
   const skillsGetterRef = useRef<(() => FormData["skills"]) | null>(null);
-  const workGetterRef = useRef<(() => FormData["workExperiences"]) | null>(null);
-  const educationsGetterRef = useRef<(() => FormData["educations"]) | null>(null);
+  const workGetterRef = useRef<(() => FormData["workExperiences"]) | null>(
+    null
+  );
+  const educationsGetterRef = useRef<(() => FormData["educations"]) | null>(
+    null
+  );
   const certGetterRef = useRef<(() => FormData["certifications"]) | null>(null);
 
   // LocalStorage keys
@@ -248,6 +252,7 @@ export default function MultiStepForm() {
 
   const handleNext = () => {
     // Pull snapshot for current step so we have the latest values
+
     let updated = formData;
     if (currentStep === 1 && personalInfoGetterRef.current) {
       updated = { ...formData, personalInfo: personalInfoGetterRef.current() };
@@ -271,7 +276,14 @@ export default function MultiStepForm() {
     if (currentStep < STEPS.length) {
       setCurrentStep((s) => Math.min(s + 1, STEPS.length));
     } else {
-      router.push("/payment");
+      // Check if token exists before redirecting to payment
+      checkToken().then((hasToken) => {
+        if (hasToken) {
+          router.push("/payment");
+        } else {
+          router.push("/login?redirect=/payment");
+        }
+      });
     }
   };
 

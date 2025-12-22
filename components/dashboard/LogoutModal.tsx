@@ -1,17 +1,18 @@
+"use client";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-  DialogClose,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
 import { LogOut } from "lucide-react";
-import { removeToken } from "../auth/token";
 import { useRouter } from "next/navigation";
+import { removeToken } from "../auth/token";
 import { toast } from "sonner";
 
 export default function LogoutModal() {

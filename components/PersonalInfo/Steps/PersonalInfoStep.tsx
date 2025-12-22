@@ -164,12 +164,11 @@ export default function PersonalInfoStep({
             </Label>
             <Select onValueChange={(value) => setValue("resumeType", value)}>
               <SelectTrigger className="w-full border rounded-sm focus:outline-none focus:ring-2 focus:ring-[#5952FF] cursor-pointer py-6 px-6">
-                <SelectValue placeholder="Select" />
+                <SelectValue placeholder="Select" defaultValue="STANDARD" />
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
-                  <SelectLabel>Resume Types</SelectLabel>
-                  <SelectItem value="Standard">Standard</SelectItem>
+                  <SelectItem value="STANDARD">Standard</SelectItem>
                 </SelectGroup>
               </SelectContent>
             </Select>
