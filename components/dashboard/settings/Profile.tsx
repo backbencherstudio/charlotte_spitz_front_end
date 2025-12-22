@@ -13,10 +13,15 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Pencil, User } from "lucide-react";
-import { useUpdateProfileMutation } from "@/src/redux/features/(auth)/profile";
+import {
+  useGetProfileQuery,
+  useUpdateProfileMutation,
+} from "@/src/redux/features/(auth)/profile";
 import { toast } from "sonner";
+import Image from "next/image";
 
 export default function Profile() {
+  const { data: profileData } = useGetProfileQuery();
   const [updateProfile] = useUpdateProfileMutation();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [formData, setFormData] = useState({
@@ -47,11 +52,6 @@ export default function Profile() {
       payload.append("image", formData.image);
     }
 
-    // Check FormData values
-    // for (const [key, value] of payload.entries()) {
-    //   console.log(key, value);
-    // }
-
     try {
       const res = await updateProfile(payload);
       if (res?.data?.success) {
@@ -66,17 +66,6 @@ export default function Profile() {
     fileInputRef.current?.click();
   };
 
-  // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const file = e.target.files?.[0];
-  //   if (file) {
-  //     const reader = new FileReader();
-  //     reader.onloadend = () => {
-  //       setImagePreview(reader.result as string);
-  //     };
-  //     reader.readAsDataURL(file);
-  //   }
-  // };
-
   return (
     <div>
       <h1 className="text-2xl font-bold mb-5">Profile</h1>
@@ -87,14 +76,26 @@ export default function Profile() {
             {/* Profile Picture */}
             <div className="flex flex-col items-center">
               <div className="relative">
-                <div className="size-28 rounded-full bg-muted flex items-center justify-center overflow-hidden border border-[#5952FF]">
-                  <User className="size-16 text-muted-foreground" />
+                <div className="size-28 rounded-full bg-muted flex items-center justify-center overflow-hidden">
+                  {profileData?.data?.userProfile?.avatar ? (
+                    <Image
+                      src={profileData?.data?.userProfile?.avatar}
+                      alt="Profile"
+                      width={100}
+                      height={100}
+                    />
+                  ) : (
+                    <User className="size-16 text-muted-foreground" />
+                  )}
                 </div>
               </div>
               <div className="mt-4 text-center">
-                <h3 className="text-xl font-bold">{formData.first_name}</h3>
+                <h3 className="text-xl font-bold">
+                  {profileData?.data?.userProfile?.firstName}{" "}
+                  {profileData?.data?.userProfile?.lastName || ""}
+                </h3>
                 <p className="text-sm text-muted-foreground mt-1">
-                  {formData.designation}
+                  {profileData?.data?.userProfile?.designation || "N/A"}
                 </p>
                 <p className="text-sm font-semibold">Dhaka, Bangladesh</p>
               </div>
@@ -107,21 +108,24 @@ export default function Profile() {
                 <div className="flex justify-between items-center py-2">
                   <span className="text-muted-foreground text-sm">Name:</span>
                   <span className="font-bold text-sm">
-                    {formData.first_name} {formData.last_name || ""}
+                    {profileData?.data?.userProfile?.firstName}{" "}
+                    {profileData?.data?.userProfile?.lastName || ""}
                   </span>
                 </div>
                 <div className="flex justify-between items-center py-2">
                   <span className="text-muted-foreground text-sm">
                     Email Address:
                   </span>
-                  <span className="font-bold text-sm">{formData.email}</span>
+                  <span className="font-bold text-sm">
+                    {profileData?.data?.email}
+                  </span>
                 </div>
                 <div className="flex justify-between items-center py-2">
                   <span className="text-muted-foreground text-sm">
                     Phone Number:
                   </span>
                   <span className="font-bold text-sm">
-                    {formData.phoneNumber}
+                    {profileData?.data?.userProfile?.phoneNumber}
                   </span>
                 </div>
                 <div className="flex justify-between items-center py-2">
@@ -129,14 +133,16 @@ export default function Profile() {
                     Designation:
                   </span>
                   <span className="font-bold text-sm">
-                    {formData.designation}
+                    {profileData?.data?.userProfile?.designation || "N/A"}
                   </span>
                 </div>
                 <div className="flex justify-between items-center py-2">
                   <span className="text-muted-foreground text-sm">
                     Languages:
                   </span>
-                  <span className="font-bold text-sm">{formData.language}</span>
+                  <span className="font-bold text-sm">
+                    {profileData?.data?.userProfile?.language || "N/A"}
+                  </span>
                 </div>
               </div>
             </div>
