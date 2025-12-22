@@ -42,11 +42,17 @@ export default function EmailConfig() {
     };
     try {
       const res = await updateSettings(data);
-      if (res?.data?.success) {
-        toast.success(res?.data?.message);
+      if (res?.data) {
+        toast.success("Email setting update successfully");
+      }
+      else{
+        toast.error("Something wont wrong")
       }
     } catch (error) {
       console.error(error);
+     
+        toast.error("Something wont wrong")
+      
     }
   };
 

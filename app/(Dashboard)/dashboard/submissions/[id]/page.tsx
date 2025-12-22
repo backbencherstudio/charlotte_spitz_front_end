@@ -134,6 +134,8 @@ export default function SubmissionDetailsPage() {
     });
     if (res?.data?.success) {
       toast.success("Submission status approved");
+    } else{
+      toast.error("Something wont wrong")
     }
   };
 
@@ -144,6 +146,8 @@ export default function SubmissionDetailsPage() {
     });
     if (res?.data?.success) {
       toast.success("Submission status pending");
+    } else{
+      toast.error("Something wont wrong")
     }
   };
 
@@ -154,6 +158,9 @@ export default function SubmissionDetailsPage() {
     });
     if (res?.data?.success) {
       toast.success("Submission status revision");
+    }
+    else{
+      toast.error("Something wont wrong")
     }
   };
 
@@ -308,13 +315,13 @@ export default function SubmissionDetailsPage() {
               Revision
             </button>
 
-            <button
+            {/* <button
               onClick={handleDownloadPDF}
               className="w-full border border-gray-300 hover:bg-gray-50 text-[#4a4c56] font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2 cursor-pointer"
             >
               <Download className="w-5 h-5" />
               Download PDF
-            </button>
+            </button> */}
           </div>
         </div>
 
@@ -323,13 +330,13 @@ export default function SubmissionDetailsPage() {
           <div className="bg-white rounded-lg p-6 shadow-sm">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6 gap-4">
               <h2 className="text-lg font-bold ">Resume Form Data</h2>
-              <button
+              {/* <button
                 onClick={handleEdit}
                 className="bg-[#E2DEFF] text-[#5952FF] font-medium py-2 px-4 rounded-lg transition-colors flex items-center gap-2"
               >
                 <Edit className="w-4 h-4" />
                 Edit Submission
-              </button>
+              </button> */}
             </div>
 
             <div className="space-y-4">

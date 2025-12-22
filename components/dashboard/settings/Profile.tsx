@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -34,6 +34,24 @@ export default function Profile() {
     image: "",
   });
 
+  // Set default values when profileData is available
+  useEffect(() => {
+    const func = () => {
+      if (profileData?.data) {
+        setFormData({
+          first_name: profileData.data.userProfile?.firstName || "",
+          last_name: profileData.data.userProfile?.lastName || "",
+          email: profileData.data.email || "",
+          phoneNumber: profileData.data.userProfile?.phoneNumber || "",
+          designation: profileData.data.userProfile?.designation || "",
+          language: profileData.data.userProfile?.language || "",
+          image: profileData.data.userProfile?.avatar || "",
+        });
+      }
+    };
+    func();
+  }, [profileData]);
+
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
@@ -56,9 +74,13 @@ export default function Profile() {
       const res = await updateProfile(payload);
       if (res?.data?.success) {
         toast.success(res?.data?.message);
+      
+      } else {
+        toast.error("Something went wrong");
       }
     } catch (error) {
       console.log(error);
+      toast.error("Something went wrong");
     }
   };
 
@@ -83,6 +105,7 @@ export default function Profile() {
                       alt="Profile"
                       width={100}
                       height={100}
+                      className="object-cover"
                     />
                   ) : (
                     <User className="size-16 text-muted-foreground" />
@@ -153,11 +176,7 @@ export default function Profile() {
         <Card className="bg-card py-6">
           <CardHeader>
             <div className="flex items-center gap-2 justify-between">
-              <Button
-                variant="outline"
-                // onClick={() => setIsEditing(!isEditing)}
-                className="bg-[#E2DEFF] text-[#5952FF]"
-              >
+              <Button variant="outline" className="bg-[#E2DEFF] text-[#5952FF]">
                 Edit profile
               </Button>
               <Button onClick={handleSave} className="bg-[#5952FF] text-white">
@@ -171,16 +190,17 @@ export default function Profile() {
               <h4 className="font-bold text-lg">Profile Image</h4>
               <div className="relative inline-block">
                 <div className="size-24 rounded-full bg-muted flex items-center justify-center overflow-hidden border border-[#5952FF]">
-                  <User className="size-12 text-muted-foreground" />
-                  {/* {imagePreview ? (
+                  {formData.image ? (
                     <Image
-                      src={imagePreview}
-                      alt="Profile preview"
-                      className="w-full h-full object-cover"
+                      src={formData.image}
+                      alt="Profile"
+                      width={100}
+                      height={100}
+                      className="object-cover"
                     />
                   ) : (
-                    <User className="size-12 text-muted-foreground" />
-                  )} */}
+                    <User className="size-16 text-muted-foreground" />
+                  )}
                 </div>
                 <button
                   type="button"
@@ -193,8 +213,15 @@ export default function Profile() {
                   ref={fileInputRef}
                   type="file"
                   accept="image/*"
-                  onChange={(e) => handleInputChange("image", e.target.value)}
-                  // onChange={handleFileChange}
+                  onChange={(e) => {
+                    if (e.target.files && e.target.files[0]) {
+                      handleInputChange(
+                        "image",
+                        URL.createObjectURL(e.target.files[0])
+                      );
+                      // If you need to send the actual file to the backend, you might want to store it differently
+                    }
+                  }}
                   className="hidden"
                 />
               </div>
@@ -213,7 +240,6 @@ export default function Profile() {
                   onChange={(e) =>
                     handleInputChange("first_name", e.target.value)
                   }
-                  // disabled={!isEditing}
                 />
               </div>
 
@@ -228,7 +254,6 @@ export default function Profile() {
                   onChange={(e) =>
                     handleInputChange("last_name", e.target.value)
                   }
-                  // disabled={!isEditing}
                 />
               </div>
 
@@ -242,7 +267,6 @@ export default function Profile() {
                   placeholder="Enter your email"
                   value={formData.email}
                   onChange={(e) => handleInputChange("email", e.target.value)}
-                  // disabled={!isEditing}
                 />
               </div>
 
@@ -258,7 +282,6 @@ export default function Profile() {
                   onChange={(e) =>
                     handleInputChange("phoneNumber", e.target.value)
                   }
-                  // disabled={!isEditing}
                 />
               </div>
 
@@ -271,7 +294,6 @@ export default function Profile() {
                   onValueChange={(value) =>
                     handleInputChange("designation", value)
                   }
-                  // disabled={!isEditing}
                 >
                   <SelectTrigger id="designation" className="w-full">
                     <SelectValue placeholder="Select your Designation" />
@@ -294,7 +316,6 @@ export default function Profile() {
                   onValueChange={(value) =>
                     handleInputChange("language", value)
                   }
-                  // disabled={!isEditing}
                 >
                   <SelectTrigger id="languages" className="w-full">
                     <SelectValue placeholder="Select your Languages" />

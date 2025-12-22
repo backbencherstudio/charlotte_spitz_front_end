@@ -1,6 +1,5 @@
 "use client";
 
-import React, { useEffect } from "react";
 import { Rocket, Crown, Check, Edit } from "lucide-react";
 import Link from "next/link";
 import { useGetAllSubscriptionsQuery } from "@/src/redux/features/subscriptions";
@@ -19,14 +18,21 @@ export default function SubscriptionsPage() {
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
+      {/* Page Header */}
       <div className="mb-8 space-y-1.5">
         <h1 className="text-3xl font-bold">Subscriptions</h1>
-        <h2 className="text-[#A1A1A1]">Create and manage subscription plans</h2>
+        <h2 className="text-[#A1A1A1]">
+          Create and manage subscription plans
+        </h2>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 ">
+      {/* Subscription Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {subscriptions?.data?.map((pkg: Subscription) => (
-          <div key={pkg.id} className="bg-white rounded-lg p-6 shadow-sm">
+          <div
+            key={pkg.id}
+            className="bg-white rounded-lg p-6 shadow-sm flex flex-col"
+          >
             {/* Header */}
             <div className="flex items-center gap-3 mb-4">
               {pkg.type === "BASIC" ? (
@@ -45,7 +51,9 @@ export default function SubscriptionsPage() {
                 <span className="text-4xl font-bold text-[#5952FF]">
                   {pkg.price}
                 </span>
-                <span className="text-sm text-[#A1A1A1]">{"/ One Time"}</span>
+                <span className="text-sm text-[#A1A1A1]">
+                  / One Time
+                </span>
               </div>
             </div>
 
@@ -54,15 +62,17 @@ export default function SubscriptionsPage() {
               {pkg?.benefits?.map((feature: string, index: number) => (
                 <div key={index} className="flex items-center gap-3">
                   <Check className="w-5 h-5 text-[#5952FF] shrink-0" />
-                  <span className="text-sm text-[#4a4c56]">{feature}</span>
+                  <span className="text-sm text-[#4a4c56]">
+                    {feature}
+                  </span>
                 </div>
               ))}
             </div>
 
-            {/* Edit Button */}
+            {/* Edit Button (Always Bottom) */}
             <Link
-              href={`/dashboard/subscriptions/${pkg?.id}`}
-              className="w-full bg-[#5952FF]  text-white font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2"
+              href={`/dashboard/subscriptions/${pkg.id}`}
+              className="mt-auto w-full bg-[#5952FF] text-white font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2 hover:bg-[#4b45e5]"
             >
               <Edit className="w-4 h-4" />
               Edit
