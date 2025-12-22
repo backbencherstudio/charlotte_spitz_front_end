@@ -33,7 +33,7 @@ const LoginForm = () => {
       password: "",
     },
   });
-  // console.log(redirect, "params");
+  console.log(redirect == "/", "params");
   const onSubmit = async (data: LoginFormData) => {
     // console.log("Form submitted:", data);
     try {
@@ -151,6 +151,19 @@ const LoginForm = () => {
         >
           {isLoading ? "Continue..." : "Continue"}
         </button>
+        {redirect == "/" && (
+          <div>
+            <p className="text-center mt-6 text-sm text-[#101010]">
+              Don&#39;t have an account?{" "}
+              <Link
+                href="/signup"
+                className="text-primaryColor font-medium hover:underline"
+              >
+                Sign Up
+              </Link>
+            </p>
+          </div>
+        )}
       </form>
     </div>
   );

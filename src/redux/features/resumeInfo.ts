@@ -8,7 +8,13 @@ const resumeInfo = baseApi.injectEndpoints({
         method: "GET",
       }),
     }),
+    getLoggedUser: builder.query<unknown, void>({
+      query: () => ({
+        url: "users/me",
+        method: "GET",
+      }),
+    }),
   }),
 });
 
-export const { useGetAllPackageQuery } = resumeInfo;
+export const { useGetAllPackageQuery, useGetLoggedUserQuery } = resumeInfo;

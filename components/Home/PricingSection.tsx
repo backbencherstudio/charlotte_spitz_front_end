@@ -10,7 +10,7 @@ import Button from "../reusable/Button";
 
 export default function PricingSection() {
   const router = useRouter();
-  const [isCreating, setIsCreating] = useState(false);
+  const [isCreating, setIsCreating] = useState("");
   // const plans = [
   //   // {
   //   //   name: "Basic Package",
@@ -44,14 +44,14 @@ export default function PricingSection() {
 
   const { data, isLoading } = useGetAllPackageQuery();
   const handlePayment = (id: string) => {
-    setIsCreating(true);
+    setIsCreating(id);
     checkToken().then((hasToken) => {
       if (hasToken) {
         router.push("/personal-info");
-        setIsCreating(false);
+        setIsCreating("");
       } else {
         router.push("/login?redirect=/personal-info");
-        setIsCreating(false);
+        setIsCreating("");
       }
     });
   };
@@ -150,9 +150,9 @@ export default function PricingSection() {
                       }
                       className="w-full items-center justify-center"
                       onClick={() => handlePayment(plan?.id)}
-                      disabled={isCreating}
+                      disabled={isCreating === plan?.id}
                     >
-                      {isCreating ? "Processing..." : "Pay Now"}
+                      {isCreating === plan?.id ? "Processing..." : "Pay Now"}
                     </Button>
                   </div>
                 )
