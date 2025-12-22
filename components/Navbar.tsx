@@ -1,12 +1,10 @@
 "use client";
-
-import { checkToken } from "@/lib/auth-actions";
 import { cn } from "@/lib/utils";
 import { useGetLoggedUserQuery } from "@/src/redux/features/resumeInfo";
 import { LogOut } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import { HiOutlineMenu, HiX } from "react-icons/hi";
 import { removeToken } from "./auth/token";
 import {
@@ -46,19 +44,12 @@ export default function Navbar() {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const [userData, setUserData] = useState<User | null>(null);
-  const [hasToken, setHasToken] = useState(false);
 
-  // Check if token exists
-  useEffect(() => {
-    checkToken().then((tokenExists) => {
-      setHasToken(tokenExists);
-    });
-  }, []);
+
+
 
   // Only call API if token exists
-  const { data } = useGetLoggedUserQuery(undefined, {
-    skip: !hasToken,
-  }) as {
+  const { data } = useGetLoggedUserQuery() as {
     data?: { data?: User };
     isLoading: boolean;
   };
@@ -66,12 +57,10 @@ export default function Navbar() {
   if (data?.data && !userData) {
     setUserData(data.data);
   }
-  console.log(userData, "userData");
 
   const hanldeLogout = async () => {
     await removeToken();
     setUserData(null);
-    setHasToken(false);
     window.location.href = "/";
   };
 
