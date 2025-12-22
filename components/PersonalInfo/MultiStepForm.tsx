@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
+import { checkToken } from "@/lib/auth-actions";
 import { BriefcaseBusiness, FileText, GraduationCap } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -29,8 +30,8 @@ const STEPS = [
   },
   {
     id: 4,
-    name: "Education",
-    label: "Education",
+    name: "educations",
+    label: "educations",
     icon: <GraduationCap />,
   },
   {
@@ -59,10 +60,9 @@ interface FormData {
     websiteUrl: string;
     professionalSummary: string;
   };
-  skills: {
-    skills: FormattedSkill[];
-  };
-  workExperience: {
+  skills: FormattedSkill[];
+
+  workExperiences: {
     jobTitle: string;
     companyName: string;
     startDate: string;
@@ -70,9 +70,9 @@ interface FormData {
     location: string;
     responsibilities: string;
     achievements: string;
-    currentlyWorking?: boolean;
+    isCurrentRole?: boolean;
   }[];
-  education: {
+  educations: {
     degreeOrCertificate: string;
     institutionName: string;
     resultOrCGPA: string;
@@ -82,13 +82,14 @@ interface FormData {
   certifications: {
     certificateName: string;
     issuingOrganization: string;
-    expirationYear : string;
+    expirationYear: string;
     certificateId: string;
   }[];
 }
 
 export default function MultiStepForm() {
   const router = useRouter();
+
   const [currentStep, setCurrentStep] = useState<number>(() => {
     if (typeof window !== "undefined") {
       try {
@@ -120,10 +121,8 @@ export default function MultiStepForm() {
         professionalSummary: "",
         includeFullAddress: true,
       },
-      skills: {
-        skills: [],
-      },
-      workExperience: [
+      skills: [],
+      workExperiences: [
         {
           jobTitle: "",
           companyName: "",
@@ -132,10 +131,10 @@ export default function MultiStepForm() {
           location: "",
           responsibilities: "",
           achievements: "",
-          currentlyWorking: false,
+          isCurrentRole: false,
         },
       ],
-      education: [
+      educations: [
         {
           degreeOrCertificate: "",
           institutionName: "",
@@ -159,14 +158,13 @@ export default function MultiStepForm() {
         const saved = window.localStorage.getItem("multiStepFormData");
         if (saved) {
           const parsed = JSON.parse(saved) as any;
-          // Migrate older shapes (single object) to arrays
-          if (!Array.isArray(parsed.workExperience)) {
-            parsed.workExperience = parsed.workExperience
-              ? [parsed.workExperience]
-              : [];
+          // Remove old workExperience field if it exists
+          if (parsed.workExperience) {
+            delete parsed.workExperience;
           }
-          if (!Array.isArray(parsed.education)) {
-            parsed.education = parsed.education ? [parsed.education] : [];
+          // Migrate older shapes (single object) to arrays
+          if (!Array.isArray(parsed.educations)) {
+            parsed.educations = parsed.educations ? [parsed.educations] : [];
           }
           if (!Array.isArray(parsed.certifications)) {
             parsed.certifications = parsed.certifications
@@ -175,16 +173,16 @@ export default function MultiStepForm() {
           }
           // Ensure at least one blank item exists for each array
           if (
-            Array.isArray(parsed.workExperience) &&
-            parsed.workExperience.length === 0
+            Array.isArray(parsed.workExperiences) &&
+            parsed.workExperiences.length === 0
           ) {
-            parsed.workExperience = initial.workExperience;
+            parsed.workExperiences = initial.workExperiences;
           }
           if (
-            Array.isArray(parsed.education) &&
-            parsed.education.length === 0
+            Array.isArray(parsed.educations) &&
+            parsed.educations.length === 0
           ) {
-            parsed.education = initial.education;
+            parsed.educations = initial.educations;
           }
           if (
             Array.isArray(parsed.certifications) &&
@@ -204,8 +202,12 @@ export default function MultiStepForm() {
     null
   );
   const skillsGetterRef = useRef<(() => FormData["skills"]) | null>(null);
-  const workGetterRef = useRef<(() => FormData["workExperience"]) | null>(null);
-  const educationGetterRef = useRef<(() => FormData["education"]) | null>(null);
+  const workGetterRef = useRef<(() => FormData["workExperiences"]) | null>(
+    null
+  );
+  const educationsGetterRef = useRef<(() => FormData["educations"]) | null>(
+    null
+  );
   const certGetterRef = useRef<(() => FormData["certifications"]) | null>(null);
 
   // LocalStorage keys
@@ -250,15 +252,16 @@ export default function MultiStepForm() {
 
   const handleNext = () => {
     // Pull snapshot for current step so we have the latest values
+
     let updated = formData;
     if (currentStep === 1 && personalInfoGetterRef.current) {
       updated = { ...formData, personalInfo: personalInfoGetterRef.current() };
     } else if (currentStep === 2 && skillsGetterRef.current) {
       updated = { ...formData, skills: skillsGetterRef.current() };
     } else if (currentStep === 3 && workGetterRef.current) {
-      updated = { ...formData, workExperience: workGetterRef.current() };
-    } else if (currentStep === 4 && educationGetterRef.current) {
-      updated = { ...formData, education: educationGetterRef.current() };
+      updated = { ...formData, workExperiences: workGetterRef.current() };
+    } else if (currentStep === 4 && educationsGetterRef.current) {
+      updated = { ...formData, educations: educationsGetterRef.current() };
     } else if (currentStep === 5 && certGetterRef.current) {
       updated = { ...formData, certifications: certGetterRef.current() };
     }
@@ -273,7 +276,14 @@ export default function MultiStepForm() {
     if (currentStep < STEPS.length) {
       setCurrentStep((s) => Math.min(s + 1, STEPS.length));
     } else {
-      router.push("/payment");
+      // Check if token exists before redirecting to payment
+      checkToken().then((hasToken) => {
+        if (hasToken) {
+          router.push("/payment");
+        } else {
+          router.push("/login?redirect=/payment");
+        }
+      });
     }
   };
 
@@ -285,9 +295,9 @@ export default function MultiStepForm() {
     } else if (currentStep === 2 && skillsGetterRef.current) {
       updated = { ...formData, skills: skillsGetterRef.current() };
     } else if (currentStep === 3 && workGetterRef.current) {
-      updated = { ...formData, workExperience: workGetterRef.current() };
-    } else if (currentStep === 4 && educationGetterRef.current) {
-      updated = { ...formData, education: educationGetterRef.current() };
+      updated = { ...formData, workExperiences: workGetterRef.current() };
+    } else if (currentStep === 4 && educationsGetterRef.current) {
+      updated = { ...formData, educations: educationsGetterRef.current() };
     } else if (currentStep === 5 && certGetterRef.current) {
       updated = { ...formData, certifications: certGetterRef.current() };
     }
@@ -340,23 +350,23 @@ export default function MultiStepForm() {
           )}
           {currentStep === 3 && (
             <WorkExperienceStep
-              data={formData.workExperience}
+              data={formData.workExperiences}
               onUpdate={(data: any) =>
-                handleUpdateFormData("workExperience", data)
+                handleUpdateFormData("workExperiences", data)
               }
               onSnapshot={(getter) => {
                 workGetterRef.current =
-                  getter as () => FormData["workExperience"];
+                  getter as () => FormData["workExperiences"];
               }}
             />
           )}
           {currentStep === 4 && (
             <EducationStep
-              data={formData.education}
-              onUpdate={(data: any) => handleUpdateFormData("education", data)}
+              data={formData.educations}
+              onUpdate={(data: any) => handleUpdateFormData("educations", data)}
               onSnapshot={(getter) => {
-                educationGetterRef.current =
-                  getter as () => FormData["education"];
+                educationsGetterRef.current =
+                  getter as () => FormData["educations"];
               }}
             />
           )}

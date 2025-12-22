@@ -2,7 +2,7 @@
 import { useLoginMutation } from "@/src/redux/features/(auth)/auth";
 import { Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -19,6 +19,8 @@ interface LoginFormData {
 const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [login, { isLoading }] = useLoginMutation();
+  const params = useSearchParams();
+  const redirect = params.get("redirect") || null;
   const router = useRouter();
   const {
     register,
@@ -31,16 +33,30 @@ const LoginForm = () => {
       password: "",
     },
   });
-
+  // console.log(redirect, "params");
   const onSubmit = async (data: LoginFormData) => {
     // console.log("Form submitted:", data);
     try {
       const response = await login(data);
       // console.log(response?.data?.data?.accessToken);
+      console.log(response);
+      console.log(response?.data?.user?.role);
+
       if (response?.data?.success) {
-        SetCookies(response?.data?.data?.accessToken);
+        SetCookies(
+          response?.data?.data?.accessToken,
+          response?.data?.data?.user?.role
+        );
+        if (redirect) {
+          router.push(redirect);
+          return;
+        }
         toast.success(response?.data?.message || "Login successfully");
-        router.push("/dashboard");
+        if (response?.data?.data?.user?.role === "ADMIN") {
+          router.push("/dashboard");
+        } else {
+          router.push("/");
+        }
       }
     } catch (error) {
       console.log(error);
@@ -68,7 +84,7 @@ const LoginForm = () => {
                 message: "Invalid email format",
               },
             })}
-            className={`w-full px-2.5 py-[11px] border rounded-xl outline-none transition-colors mb-2 ${
+            className={`w-full px-2.5 py-2.75 border rounded-xl outline-none transition-colors mb-2 ${
               errors.name
                 ? "border-red-500 focus:ring-2 focus:ring-red-500"
                 : "border-gray-300 focus:ring-2 focus:ring-primaryColor"
@@ -95,7 +111,7 @@ const LoginForm = () => {
                   message: "Password must be at least 8 characters",
                 },
               })}
-              className={`w-full px-2.5 py-[11px] border rounded-xl outline-none transition-colors mb-2 ${
+              className={`w-full px-2.5 py-2.75 border rounded-xl outline-none transition-colors mb-2 ${
                 errors.name
                   ? "border-red-500 focus:ring-2 focus:ring-red-500"
                   : "border-gray-300 focus:ring-2 focus:ring-primaryColor"
@@ -128,9 +144,12 @@ const LoginForm = () => {
         {/* Submit Button */}
         <button
           type="submit"
-          className="w-full bg-primaryColor text-white px-5 py-4 font-semibold rounded-2xl cursor-pointer hover:bg-primaryColor/90 mt-4"
+          className={
+            "w-full disabled:bg-gray-400 disabled:cursor-not-allowed bg-primaryColor text-white px-5 py-4 font-semibold rounded-2xl cursor-pointer hover:bg-primaryColor/90 mt-4"
+          }
+          disabled={isLoading}
         >
-          Continue
+          {isLoading ? "Continue..." : "Continue"}
         </button>
       </form>
     </div>

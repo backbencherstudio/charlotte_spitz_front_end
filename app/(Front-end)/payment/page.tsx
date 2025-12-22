@@ -2,11 +2,15 @@
 
 import Button from "@/components/reusable/Button";
 import { useGetAllPackageQuery } from "@/src/redux/features/resumeInfo";
+
+import { useCreateSubmissionsMutation } from "@/src/redux/features/setting";
 import { Check, Crown } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { MdArrowOutward } from "react-icons/md";
 
-interface Plan {
+export interface Plan {
+  id: string;
   name: string;
   price: number;
   benefits: string[];
@@ -45,14 +49,35 @@ interface Plan {
 
 const Payment = () => {
   const router = useRouter();
-  const { data, isLoading, error } = useGetAllPackageQuery();
+  const { data, isLoading } = useGetAllPackageQuery();
   const localData = localStorage.getItem("multiStepFormData");
+  const [createSubmissions, { isLoading: isCreating }] =
+    useCreateSubmissionsMutation();
 
-  console.log(data, "data", isLoading, error);
-  console.log(JSON.parse(localData || "{}"), "localData");
-  const handlePayment = () => {
-    
-    router.push("/payment-gateway");
+  useEffect(() => {
+    if (!localData) {
+      router.push("/personal-info");
+    }
+  }, [localData, router]);
+
+  const handlePayment = async (id: string) => {
+    const perchLocData = JSON.parse(localData || "{}");
+    const formData = {
+      packageId: id,
+      ...perchLocData,
+    };
+    try {
+      const response = await createSubmissions(formData);
+      console.log("response createSubmissions", response);
+      if (response.data?.success) {
+        router.push(response.data?.data?.paymentUrl);
+        localStorage.removeItem("multiStepFormData");
+        localStorage.removeItem("multiStepCurrentStep");
+      }
+    } catch (error) {
+      console.error("Error parsing form data:", error);
+    }
+    // router.push("/payment-gateway");
   };
 
   return (
@@ -144,9 +169,10 @@ const Payment = () => {
                       <MdArrowOutward className="w-5 h-5 transition-transform duration-200" />
                     }
                     className="w-full items-center justify-center"
-                    onClick={handlePayment}
+                    onClick={() => handlePayment(plan?.id)}
+                    disabled={isCreating}
                   >
-                    Pay Now
+                    {isCreating ? "Processing..." : "Pay Now"}
                   </Button>
                 </div>
               )

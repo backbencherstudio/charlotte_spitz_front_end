@@ -1,87 +1,100 @@
-'use client';
+"use client";
 
-import { CheckCheck } from 'lucide-react';
-import Link from 'next/link';
+import { CheckCheck } from "lucide-react";
+import Link from "next/link";
 
 export default function SuccessPage() {
   return (
     <main className="py-20">
-      <div className="container">
-        {/* Blue Checkmark Circle */}
-        <div className="flex justify-center mb-8">
-          <div className="relative w-20 h-20 bg-[#5952FF] rounded-full flex items-center justify-center">
-            <svg
-              className="w-10 h-10 text-white"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+      <div className="max-w-4xl mx-auto px-4">
+        <div className="border rounded-2xl p-4 lg:p-8  ">
+          {/* Blue Checkmark Circle */}
+          <div className="flex justify-center mb-8">
+            <div className="relative w-20 h-20 bg-[#5952FF] shadow-lg shadow-primaryColor/60 rounded-full flex items-center justify-center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="48"
+                height="48"
+                viewBox="0 0 48 48"
+                fill="none"
+              >
+                <g clip-path="url(#clip0_6215_1023)">
+                  <path
+                    d="M19.2005 36.8C18.8854 36.8001 18.5733 36.738 18.2821 36.6173C17.991 36.4967 17.7265 36.3198 17.5037 36.0968L11.1037 29.6968C10.8808 29.4741 10.7039 29.2096 10.5832 28.9184C10.4625 28.6273 10.4004 28.3152 10.4004 28C10.4004 27.6848 10.4625 27.3728 10.5832 27.0816C10.7039 26.7905 10.8808 26.5259 11.1037 26.3032C11.3265 26.0802 11.591 25.9033 11.8821 25.7827C12.1733 25.662 12.4854 25.5999 12.8005 25.5999C13.1157 25.5999 13.4278 25.662 13.7189 25.7827C14.0101 25.9033 14.2746 26.0802 14.4973 26.3032L18.9405 30.7464L31.6797 13.76C32.0667 13.2649 32.6324 12.9412 33.2554 12.8585C33.8783 12.7758 34.5089 12.9406 35.0116 13.3176C35.5144 13.6946 35.8493 14.2537 35.9445 14.8749C36.0396 15.4961 35.8874 16.1298 35.5205 16.64L21.1205 35.84C20.8972 36.1383 20.6074 36.3804 20.2741 36.5471C19.9408 36.7137 19.5732 36.8003 19.2005 36.8Z"
+                    fill="#25FF48"
+                  />
+                  <path
+                    d="M4.8 24.8H0.8C0.587827 24.8 0.384344 24.7157 0.234315 24.5657C0.0842855 24.4157 0 24.2122 0 24C0 23.7878 0.0842855 23.5843 0.234315 23.4343C0.384344 23.2843 0.587827 23.2 0.8 23.2H4.8C5.01217 23.2 5.21566 23.2843 5.36569 23.4343C5.51571 23.5843 5.6 23.7878 5.6 24C5.6 24.2122 5.51571 24.4157 5.36569 24.5657C5.21566 24.7157 5.01217 24.8 4.8 24.8ZM3.9096 36.4C3.73343 36.4002 3.56213 36.3422 3.42229 36.235C3.28245 36.1279 3.18188 35.9776 3.1362 35.8074C3.09052 35.6373 3.10227 35.4568 3.16965 35.2941C3.23702 35.1313 3.35624 34.9953 3.5088 34.9072L6.9728 32.9072C7.15645 32.8028 7.37394 32.7752 7.57781 32.8306C7.78169 32.886 7.95539 33.0197 8.06102 33.2026C8.16665 33.3856 8.19563 33.6029 8.14163 33.8071C8.08763 34.0114 7.95505 34.186 7.7728 34.2928L4.3088 36.2928C4.18754 36.3632 4.0498 36.4002 3.9096 36.4ZM12.3992 44.8912C12.2587 44.8913 12.1207 44.8544 11.9991 44.7842C11.8775 44.714 11.7765 44.6129 11.7063 44.4912C11.6361 44.3696 11.5993 44.2316 11.5994 44.0911C11.5996 43.9506 11.6368 43.8127 11.7072 43.6912L13.7072 40.2272C13.7597 40.1362 13.8297 40.0565 13.913 39.9925C13.9964 39.9286 14.0915 39.8817 14.193 39.8545C14.2944 39.8273 14.4003 39.8204 14.5044 39.8341C14.6086 39.8478 14.709 39.8819 14.8 39.9344C14.891 39.9869 14.9707 40.0569 15.0347 40.1402C15.0986 40.2236 15.1455 40.3187 15.1727 40.4202C15.1999 40.5216 15.2069 40.6275 15.1931 40.7316C15.1794 40.8358 15.1453 40.9362 15.0928 41.0272L13.0928 44.4912C12.944 44.7472 12.676 44.8912 12.3992 44.8912ZM24 48C23.7878 48 23.5843 47.9157 23.4343 47.7657C23.2843 47.6157 23.2 47.4122 23.2 47.2V43.2C23.2 42.9878 23.2843 42.7843 23.4343 42.6343C23.5843 42.4843 23.7878 42.4 24 42.4C24.2122 42.4 24.4157 42.4843 24.5657 42.6343C24.7157 42.7843 24.8 42.9878 24.8 43.2V47.2C24.8 47.4122 24.7157 47.6157 24.5657 47.7657C24.4157 47.9157 24.2122 48 24 48ZM35.6008 44.8912C35.4602 44.8915 35.322 44.8547 35.2002 44.7844C35.0784 44.7142 34.9774 44.613 34.9072 44.4912L32.9072 41.0272C32.8028 40.8436 32.7752 40.6261 32.8306 40.4222C32.886 40.2183 33.0197 40.0446 33.2026 39.939C33.3856 39.8334 33.6029 39.8044 33.8071 39.8584C34.0114 39.9124 34.186 40.045 34.2928 40.2272L36.2928 43.6912C36.363 43.8128 36.3999 43.9506 36.4 44.091C36.4 44.2314 36.3631 44.3693 36.293 44.4908C36.2229 44.6124 36.122 44.7134 36.0005 44.7837C35.879 44.854 35.7412 44.8911 35.6008 44.8912ZM44.0904 36.4C43.9502 36.4002 43.8125 36.3632 43.6912 36.2928L40.2272 34.2928C40.1355 34.2407 40.055 34.1709 39.9903 34.0875C39.9257 34.0041 39.8782 33.9088 39.8506 33.807C39.8229 33.7051 39.8157 33.5989 39.8293 33.4942C39.8429 33.3896 39.877 33.2887 39.9298 33.1973C39.9825 33.106 40.0528 33.0259 40.1367 32.9618C40.2205 32.8978 40.3161 32.8509 40.4181 32.8239C40.5201 32.797 40.6264 32.7904 40.731 32.8047C40.8355 32.819 40.9362 32.8538 41.0272 32.9072L44.4912 34.9072C44.6444 34.9949 44.7642 35.1308 44.8321 35.2938C44.8999 35.4567 44.9118 35.6376 44.866 35.808C44.8203 35.9785 44.7194 36.129 44.579 36.2361C44.4387 36.3432 44.2669 36.4008 44.0904 36.4ZM47.2 24.8H43.2C42.9878 24.8 42.7843 24.7157 42.6343 24.5657C42.4843 24.4157 42.4 24.2122 42.4 24C42.4 23.7878 42.4843 23.5843 42.6343 23.4343C42.7843 23.2843 42.9878 23.2 43.2 23.2H47.2C47.4122 23.2 47.6157 23.2843 47.7657 23.4343C47.9157 23.5843 48 23.7878 48 24C48 24.2122 47.9157 24.4157 47.7657 24.5657C47.6157 24.7157 47.4122 24.8 47.2 24.8ZM40.628 15.2C40.4518 15.2002 40.2805 15.1422 40.1407 15.035C40.0008 14.9279 39.9003 14.7776 39.8546 14.6074C39.8089 14.4373 39.8207 14.2568 39.888 14.0941C39.9554 13.9313 40.0746 13.7953 40.2272 13.7072L43.6912 11.7072C43.8749 11.6011 44.0933 11.5724 44.2982 11.6273C44.5032 11.6822 44.6779 11.8163 44.784 12C44.8901 12.1837 44.9188 12.4021 44.8639 12.607C44.809 12.812 44.6749 12.9867 44.4912 13.0928L41.0272 15.0928C40.9059 15.1632 40.7682 15.2002 40.628 15.2ZM33.5992 8.1728C33.4587 8.1729 33.3207 8.13598 33.1991 8.06577C33.0775 7.99555 32.9765 7.89452 32.9063 7.77285C32.8361 7.65117 32.7993 7.51316 32.7994 7.3727C32.7996 7.23225 32.8368 7.09432 32.9072 6.9728L34.9072 3.5088C34.9593 3.41708 35.0291 3.33659 35.1125 3.27195C35.1959 3.2073 35.2912 3.1598 35.393 3.13215C35.4949 3.10451 35.6011 3.09728 35.7058 3.11088C35.8104 3.12448 35.9113 3.15864 36.0027 3.21139C36.094 3.26414 36.1741 3.33445 36.2382 3.41826C36.3022 3.50207 36.3491 3.59772 36.3761 3.69972C36.403 3.80172 36.4096 3.90805 36.3953 4.01258C36.381 4.11711 36.3462 4.21778 36.2928 4.3088L34.2928 7.7728C34.144 8.0288 33.876 8.1728 33.5992 8.1728ZM24 5.6C23.7878 5.6 23.5843 5.51571 23.4343 5.36569C23.2843 5.21566 23.2 5.01217 23.2 4.8V0.8C23.2 0.587827 23.2843 0.384344 23.4343 0.234315C23.5843 0.0842855 23.7878 0 24 0C24.2122 0 24.4157 0.0842855 24.5657 0.234315C24.7157 0.384344 24.8 0.587827 24.8 0.8V4.8C24.8 5.01217 24.7157 5.21566 24.5657 5.36569C24.4157 5.51571 24.2122 5.6 24 5.6ZM14.4008 8.1728C14.2602 8.1731 14.122 8.13627 14.0002 8.06603C13.8784 7.99579 13.7774 7.89464 13.7072 7.7728L11.7072 4.3088C11.6028 4.12515 11.5753 3.90766 11.6306 3.70379C11.686 3.49991 11.8197 3.32621 12.0026 3.22058C12.1856 3.11495 12.4029 3.08597 12.6071 3.13997C12.8114 3.19397 12.986 3.32656 13.0928 3.5088L15.0928 6.9728C15.163 7.09436 15.1999 7.23224 15.2 7.3726C15.2 7.51296 15.1631 7.65085 15.093 7.77245C15.0229 7.89404 14.922 7.99504 14.8005 8.06531C14.679 8.13559 14.5412 8.17266 14.4008 8.1728ZM7.372 15.2C7.2318 15.2002 7.09406 15.1632 6.9728 15.0928L3.5088 13.0928C3.41774 13.0403 3.33793 12.9704 3.27391 12.8871C3.2099 12.8038 3.16296 12.7086 3.13576 12.6071C3.10856 12.5056 3.10165 12.3998 3.11542 12.2956C3.12919 12.1914 3.16337 12.091 3.216 12C3.26838 11.9089 3.33824 11.829 3.42157 11.7649C3.5049 11.7008 3.60006 11.6538 3.70159 11.6266C3.80312 11.5994 3.90903 11.5925 4.01323 11.6064C4.11743 11.6202 4.21787 11.6545 4.3088 11.7072L7.7728 13.7072C7.92599 13.7949 8.04584 13.9308 8.11365 14.0938C8.18146 14.2567 8.19341 14.4376 8.14764 14.608C8.10187 14.7785 8.00095 14.929 7.86064 15.0361C7.72033 15.1432 7.54851 15.2008 7.372 15.2Z"
+                    fill="#25FF48"
+                  />
+                </g>
+                <defs>
+                  <clipPath id="clip0_6215_1023">
+                    <rect width="48" height="48" fill="white" />
+                  </clipPath>
+                </defs>
+              </svg>
+            </div>
+          </div>
+          <div className="mb-12">
+            <h1 className="text-4xl text-[#070707] font-bold text-center">
+              Thank You!
+            </h1>
+            <p className="text-[#070707] text-base text-center">
+              Your resume order has been received successfully.
+            </p>
+          </div>
+
+          {/* Info Box */}
+          <div className="border border-[#EEEEFF] bg-[#EEEEFF] rounded-md p-6 mb-8 max-w-3xl mx-auto">
+            <h3 className="font-bold text-lg text-center mb-4">
+              Check your email inbox
+            </h3>
+            <p className="text-gray-600 text-sm text-center">
+              Your resume will be delivered within 48 hours (starting from the
+              next business day).
+            </p>
+          </div>
+
+          {/* Checkmark List */}
+          <div className="space-y-3 mb-8 max-w-3xl mx-auto">
+            <div className="flex items-center gap-3">
+              <div className="w-5 h-5 rounded-full flex items-center justify-center shrink-0">
+                <CheckCheck />
+              </div>
+              <span className="text-[#25314C] text-sm text-left">
+                Payment processed successfully
+              </span>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <div className="w-5 h-5 rounded-full flex items-center justify-center shrink-0">
+                <CheckCheck />
+              </div>
+              <span className="text-[#25314C] text-sm text-left">
+                Resume data saved securely
+              </span>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <div className="w-5 h-5  rounded-full flex items-center justify-center shrink-0">
+                <CheckCheck />
+              </div>
+              <span className="text-[#25314C] text-sm text-left">
+                Professional PDF will be delivered
+              </span>
+            </div>
+          </div>
+
+          {/* Button */}
+          <div className="flex items-center justify-center">
+            <Link
+              href="/personal-info"
+              className="px-6 py-3 border-2 border-[#5952FF] text-[#5952FF] rounded-md font-bold cursor-pointer"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={3}
-                d="M5 13l4 4L19 7"
-              />
-            </svg>
+              Create Another Resume
+            </Link>
           </div>
-        </div>
-        <div className="mb-12">
-          <h1 className="text-4xl text-[#070707] font-bold text-center">
-            Thank You!
-          </h1>
-          <p className="text-[#070707] text-base text-center">
-            Your resume order has been received successfully.
-          </p>
-        </div>
-
-        {/* Info Box */}
-        <div className="border border-[#EEEEFF] bg-[#EEEEFF] rounded-md p-6 mb-8 max-w-3xl mx-auto">
-          <h3 className="font-bold text-lg text-center mb-4">
-            Check your email inbox
-          </h3>
-          <p className="text-gray-600 text-sm text-center">
-            Your resume will be delivered within 48 hours (starting from the next business day).
-          </p>
-        </div>
-
-        {/* Checkmark List */}
-        <div className="space-y-3 mb-8 max-w-3xl mx-auto">
-          <div className="flex items-center gap-3">
-            <div className="w-5 h-5 rounded-full flex items-center justify-center shrink-0">
-              <CheckCheck />
-            </div>
-            <span className="text-[#25314C] text-sm text-left">
-              Payment processed successfully
-            </span>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <div className="w-5 h-5 rounded-full flex items-center justify-center shrink-0">
-              <CheckCheck />
-            </div>
-            <span className="text-[#25314C] text-sm text-left">
-              Resume data saved securely
-            </span>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <div className="w-5 h-5  rounded-full flex items-center justify-center shrink-0">
-              <CheckCheck />
-            </div>
-            <span className="text-[#25314C] text-sm text-left">
-              Professional PDF will be delivered
-            </span>
-          </div>
-        </div>
-
-        {/* Button */}
-        <div className="flex items-center justify-center">
-          <Link
-            href="/"
-            className="px-6 py-3 border-2 border-[#5952FF] text-[#5952FF] rounded-md font-bold cursor-pointer"
-          >
-            Create Another Resume
-          </Link>
         </div>
       </div>
     </main>

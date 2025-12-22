@@ -67,7 +67,7 @@ export default function PersonalInfoStep({
           <div>
             <Label
               htmlFor="fullName"
-              className="block mb-2 font-medium text-[#1D1F2C]"
+              className="block mb-2 font-medium text-headerColor"
             >
               Full Name
             </Label>
@@ -87,7 +87,7 @@ export default function PersonalInfoStep({
           <div>
             <Label
               htmlFor="phoneNumber"
-              className="block mb-2 font-medium text-[#1D1F2C]"
+              className="block mb-2 font-medium text-headerColor"
             >
               Phone Number
             </Label>
@@ -109,7 +109,7 @@ export default function PersonalInfoStep({
           <div>
             <Label
               htmlFor="email"
-              className="block mb-2 font-medium text-[#1D1F2C]"
+              className="block mb-2 font-medium text-headerColor"
             >
               Email Address
             </Label>
@@ -136,7 +136,7 @@ export default function PersonalInfoStep({
           <div>
             <Label
               htmlFor="cityState"
-              className="block mb-2 font-medium text-[#1D1F2C]"
+              className="block mb-2 font-medium text-headerColor"
             >
               City & State
             </Label>
@@ -158,18 +158,17 @@ export default function PersonalInfoStep({
           <div>
             <Label
               htmlFor="resumeType"
-              className="block mb-2 font-medium text-[#1D1F2C]"
+              className="block mb-2 font-medium text-headerColor"
             >
               Resume Type
             </Label>
             <Select onValueChange={(value) => setValue("resumeType", value)}>
               <SelectTrigger className="w-full border rounded-sm focus:outline-none focus:ring-2 focus:ring-[#5952FF] cursor-pointer py-6 px-6">
-                <SelectValue placeholder="Select" />
+                <SelectValue placeholder="Select" defaultValue="STANDARD" />
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
-                  <SelectLabel>Resume Types</SelectLabel>
-                  <SelectItem value="Standard">Standard</SelectItem>
+                  <SelectItem value="STANDARD">Standard</SelectItem>
                 </SelectGroup>
               </SelectContent>
             </Select>
@@ -182,7 +181,7 @@ export default function PersonalInfoStep({
           <div>
             <Label
               htmlFor="resumeType"
-              className="block mb-2 font-medium text-[#1D1F2C]"
+              className="block mb-2 font-medium text-headerColor"
             >
               Do you want your full address on your resume? (Yes/No)
             </Label>
@@ -212,7 +211,7 @@ export default function PersonalInfoStep({
           <div>
             <Label
               htmlFor="linkedinUrl"
-              className="block mb-2 font-medium text-[#1D1F2C]"
+              className="block mb-2 font-medium text-headerColor"
             >
               LinkedIn URL (optional)
             </Label>
@@ -226,7 +225,7 @@ export default function PersonalInfoStep({
           <div>
             <Label
               htmlFor="websiteUrl"
-              className="block mb-2 font-medium text-[#1D1F2C]"
+              className="block mb-2 font-medium text-headerColor"
             >
               Website/Portfolio URL (optional)
             </Label>
@@ -240,7 +239,7 @@ export default function PersonalInfoStep({
           {/* <div className="md:col-span-2">
             <Label
               htmlFor="summary"
-              className="block mb-2 font-medium text-[#1D1F2C]"
+              className="block mb-2 font-medium text-headerColor"
             >
               Website/Portfolio URL (optional)
             </Label>
@@ -253,7 +252,7 @@ export default function PersonalInfoStep({
           {/* <div className="md:col-span-2">
             <Label
               htmlFor="summary"
-              className="block mb-2 font-medium text-[#1D1F2C]"
+              className="block mb-2 font-medium text-headerColor"
             >
               Professional Summary/Objective (optional)
             </Label>
@@ -266,7 +265,7 @@ export default function PersonalInfoStep({
           <div className="md:col-span-2">
             <Label
               htmlFor="summary"
-              className="block mb-2 font-medium text-[#1D1F2C]"
+              className="block mb-2 font-medium text-headerColor"
             >
               Professional Summary/Objective (optional)
             </Label>
