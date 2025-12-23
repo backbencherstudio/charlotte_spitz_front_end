@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 // Define protected routes
 const protectedRoutes = ["/dashboard", "/payment"]; // add your protected paths
-const publicRoutes = ["/login", "/", "/signup", "/email-verify"];
+const publicRoutes = ["/login", "/signup", "/email-verify"];
 
 export function middleware(request: NextRequest) {
   const token = request.cookies.get("accessToken")?.value;
