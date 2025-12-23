@@ -1,7 +1,7 @@
 import { baseApi } from "@/src/redux/api/baseApi";
 
 const profileApi = baseApi.injectEndpoints({
-  endpoints: (builder: any) => ({
+  endpoints: (builder) => ({
     getProfile: builder.query({
       query: () => ({
         url: "users/me",
@@ -9,7 +9,7 @@ const profileApi = baseApi.injectEndpoints({
       }),
     }),
     updateProfile: builder.mutation({
-      query: (data: any) => ({
+      query: (data) => ({
         url: "auth/update-profile",
         method: "PATCH",
         body: data,

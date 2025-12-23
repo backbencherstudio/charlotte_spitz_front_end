@@ -13,15 +13,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Pencil, User } from "lucide-react";
-import {
-  useGetProfileQuery,
-  useUpdateProfileMutation,
-} from "@/src/redux/features/(auth)/profile";
+
 import { toast } from "sonner";
 import Image from "next/image";
+import { useGetProfileQuery, useUpdateProfileMutation } from "@/src/redux/features/(auth)/profile";
 
 export default function Profile() {
-  const { data: profileData } = useGetProfileQuery();
+  const { data: profileData } = useGetProfileQuery({});
   const [updateProfile] = useUpdateProfileMutation();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [formData, setFormData] = useState({
