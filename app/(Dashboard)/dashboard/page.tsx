@@ -33,8 +33,6 @@ const mostUsedTemplatesData: TemplateData[] = [
 
 export default function DashboardPage() {
   const { data: dashboardData } = useGetAllOverviewQuery({});
-  // console.log(dashboardData?.data?.monthlyRevenue);
-  // console.log(dashboardData?.data?.recentActivities);
   return (
     <div className="p-4 sm:p-6 bg-gray-50 min-h-screen">
       <div className="mb-6">
@@ -45,8 +43,6 @@ export default function DashboardPage() {
         </p>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {/* {dashboardCardsData.map((card) => (
-        ))} */}
         <DashboardCard
           title={"Total Packages"}
           icon={FileText}

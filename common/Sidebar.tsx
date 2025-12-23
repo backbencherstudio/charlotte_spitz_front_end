@@ -66,10 +66,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
     return pathWithoutLocale.startsWith(href);
   };
 
-  const handleLogout = () => {
-    // Handle logout logic here
-    router.push("/login");
-  };
   return (
     <div className="h-screen">
       {/* Overlay for mobile */}

@@ -103,6 +103,8 @@ export default function SubscriptionFormPage() {
     const res = await updateSubscription({ data, id });
     if (res?.data?.success) {
       toast.success(res?.data?.message);
+    } else{
+      toast.error("Something wont wrong")
     }
   };
 

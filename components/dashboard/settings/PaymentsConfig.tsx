@@ -39,11 +39,16 @@ export default function PaymentsConfig() {
     };
     try {
       const res = await updateSettings(data);
-      if (res?.data?.success) {
-        toast.success(res?.data?.message);
+      console.log(res?.data)
+      if (res?.data) {
+        toast.success("Payment setting update successfully");
+      } else{
+        toast.error("Something wont wrong")
       }
     } catch (error) {
-      console.error(error);
+      console.log(error)
+        toast.error("Something wont wrong")
+      
     }
   };
 

@@ -25,7 +25,7 @@ export const baseApi = createApi({
     prepareHeaders: async (headers) => {
       if (typeof window !== "undefined") {
         const token = await getToken();
-        console.log(token, "token");
+        // console.log(token, "token");
 
         if (token) {
           headers.set("Authorization", `Bearer ${token}`);

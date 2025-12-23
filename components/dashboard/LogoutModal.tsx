@@ -13,22 +13,24 @@ import {
 import { LogOut } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { removeToken } from "../auth/token";
+import { toast } from "sonner";
 
 export default function LogoutModal() {
   const router = useRouter();
   const handleLogout = async () => {
     await removeToken();
+    toast.success("Logged out successfully");
     router.push("/login");
   };
 
   return (
     <div>
       <Dialog>
-        <DialogTrigger className="w-full">
-          <button className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-red-600 hover:bg-red-50 transition-colors duration-200 w-full  cursor-pointer">
+        <DialogTrigger className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-red-600 hover:bg-red-50 transition-colors duration-200 cursor-pointer">
+     
             <LogOut size={20} />
             <span className="text-base font-medium">Log out</span>
-          </button>
+         
         </DialogTrigger>
         <DialogContent className="sm:max-w-md">
           <div className="flex flex-col items-center gap-4 py-2">
