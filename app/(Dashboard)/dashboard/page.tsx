@@ -36,7 +36,7 @@ export default function DashboardPage() {
   return (
     <div className="p-4 sm:p-6 bg-gray-50 min-h-screen">
       <div className="mb-6">
-        <h1 className="text-4xl font-semibold mb-2">Good Morning, Smith 👋 </h1>
+        <h1 className="text-2xl md:text-4xl font-semibold mb-2">Good Morning, Smith 👋 </h1>
         <p className="text-sm text-gray-500">
           Welcome to Syntera Admin — Manage submissions, approvals, tokens, and
           platform activity.

@@ -27,7 +27,7 @@ export default function Footer() {
                 CVdigger
               </Link>
               <p className="text-gray-200 mt-4 text-sm md:text-base">
-                cvtailor.ai — your AI career partner
+                CVdigger is a service operated by myPoolPay LLC.
               </p>
             </div>
 

@@ -1,8 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { Progress } from "@/components/ui/progress";
 import Image from "next/image";
 import image1 from "@/public/images/11.png";
+import { useGetSubmissionsByIdQuery } from "@/src/redux/features/setting";
+import { useParams } from "next/navigation";
 
 interface ExperienceItem {
   company: string;
@@ -17,7 +20,14 @@ interface Skill {
 }
 
 export default function Preview() {
-  
+  const { id } = useParams();
+
+  const { data: submissionData, isLoading } = useGetSubmissionsByIdQuery(id);
+
+  // console.log(submissionData?.data?.[0]);
+
+  const submissionInfo = submissionData?.data?.[0];
+
   const experiences: ExperienceItem[] = [
     {
       company: "Uber",
@@ -89,20 +99,21 @@ export default function Preview() {
               {/* Name and Title */}
               <div>
                 <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-7xl font-bold text-blue-900 mb-1 sm:mb-2">
-                  Rick Tang
+                  {submissionInfo?.submission?.personalInfo?.fullName}
                 </h1>
                 <p className="text-base sm:text-lg md:text-xl text-blue-900 font-bold">
-                  Product Designer
+                  {submissionInfo?.submission?.personalInfo?.jobTitle ||
+                    "Product Designer"}
                 </p>
               </div>
 
               {/* About Me */}
               <div>
                 <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
-                  I&apos;m a UI/UX specialist focused on designing clean and
-                  functional projects across all platforms and devices in
-                  response to specific briefs and problems, while always
-                  maintaining a unique look and feel.
+                  {
+                    submissionInfo?.submission?.personalInfo
+                      ?.professionalSummary
+                  }
                 </p>
               </div>
             </div>
@@ -117,6 +128,40 @@ export default function Preview() {
                     Experience
                   </h2>
                   <div className="space-y-4 sm:space-y-5 md:space-y-6">
+                    {submissionInfo?.submission?.workExperiences?.map(
+                      (exp: any, idx:number) => (
+                        <div key={idx} className="space-y-2">
+                          <div className="">
+                            <div>
+                              <h3 className="text-lg sm:text-xl font-bold text-gray-800">
+                                {exp.companyName}
+                              </h3>
+                              <p className="text-base sm:text-lg text-gray-700">
+                                {exp.jobTitle}
+                              </p>
+                            </div>
+                            <p className="text-gray-500 text-xs sm:text-sm mt-1">
+                              {new Date(exp.startDate).toLocaleString("en-US", {
+                                month: "short",
+                                year: "numeric",
+                              })}
+                              -
+                              {new Date(exp.endDate).toLocaleString("en-US", {
+                                month: "short",
+                                year: "numeric",
+                              })}
+                            </p>
+                          </div>
+                          <ul className="list-disc list-inside space-y-1 ml-2 sm:ml-4 text-sm sm:text-base text-gray-600">
+                            <li>{exp.achievements}</li>
+                            <li>{exp.responsibilities}</li>
+                            <li>{exp.location}</li>
+                          </ul>
+                        </div>
+                      )
+                    )}
+                  </div>
+                  {/* <div className="space-y-4 sm:space-y-5 md:space-y-6">
                     {experiences.map((exp, idx) => (
                       <div key={idx} className="space-y-2">
                         <div className="">
@@ -139,7 +184,7 @@ export default function Preview() {
                         </ul>
                       </div>
                     ))}
-                  </div>
+                  </div> */}
                 </div>
 
                 {/* Education */}
@@ -147,14 +192,24 @@ export default function Preview() {
                   <h2 className="text-xl sm:text-2xl font-bold text-blue-900 mb-2 sm:mb-3">
                     Education
                   </h2>
-                  <div>
+                  {submissionInfo?.submission?.educations?.map((edu: any, idx: number) => (
+                    <div key={idx}>
+                      <h3 className="text-lg sm:text-xl font-semibold text-gray-800">
+                        {edu.institutionName}
+                      </h3>
+                      <p className="text-sm sm:text-base text-gray-600">
+                      Passing Year : {edu.passingYear}
+                      </p>
+                    </div>
+                  ))}
+                  {/* <div>
                     <h3 className="text-lg sm:text-xl font-semibold text-gray-800">
                       Brown University
                     </h3>
                     <p className="text-sm sm:text-base text-gray-600">
                       Interdisciplinary Studies, Sep 2010 - May 2012
                     </p>
-                  </div>
+                  </div> */}
                 </div>
               </div>
 
@@ -171,12 +226,11 @@ export default function Preview() {
                       Francisco, California
                     </p>
                     <p>
-                      <span className="font-semibold">Phone:</span> (303)
-                      902-9179
+                      <span className="font-semibold">Phone:</span> {submissionInfo?.submission?.personalInfo?.phoneNumber}
                     </p>
                     <p>
-                      <span className="font-semibold">Email:</span>{" "}
-                      ricktang@gmail.com
+                      <span className="font-semibold">Email:</span> 
+                      {submissionInfo?.submission?.personalInfo?.email}
                     </p>
                   </div>
                 </div>
