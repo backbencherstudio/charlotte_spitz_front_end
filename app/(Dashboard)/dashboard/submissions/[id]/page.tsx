@@ -9,10 +9,10 @@ import {
   Calendar,
   FileText,
   Download,
-  Edit,
   CheckCircle,
   Clock,
   AlertCircle,
+  ExternalLink,
 } from "lucide-react";
 import { useParams } from "next/navigation";
 import {
@@ -20,6 +20,11 @@ import {
   useSubmissionStatusMutation,
 } from "@/src/redux/features/submissions";
 import { toast } from "sonner";
+import Link from "next/link";
+import { pdf } from "@react-pdf/renderer";
+import { ResumePDF } from "@/components/dashboard/submissions/ResumeDownload";
+import previewImage from "@/public/images/10.png";
+import Image from "next/image";
 
 interface SubmissionDetails {
   id: string;
@@ -134,8 +139,8 @@ export default function SubmissionDetailsPage() {
     });
     if (res?.data?.success) {
       toast.success("Submission status approved");
-    } else{
-      toast.error("Something wont wrong")
+    } else {
+      toast.error("Something wont wrong");
     }
   };
 
@@ -146,8 +151,8 @@ export default function SubmissionDetailsPage() {
     });
     if (res?.data?.success) {
       toast.success("Submission status pending");
-    } else{
-      toast.error("Something wont wrong")
+    } else {
+      toast.error("Something wont wrong");
     }
   };
 
@@ -158,19 +163,9 @@ export default function SubmissionDetailsPage() {
     });
     if (res?.data?.success) {
       toast.success("Submission status revision");
+    } else {
+      toast.error("Something wont wrong");
     }
-    else{
-      toast.error("Something wont wrong")
-    }
-  };
-
-  const handleDownloadPDF = () => {
-    console.log("Download PDF:", id);
-  };
-
-  const handleEdit = () => {
-    console.log("Edit submission:", id);
-    // Implement edit logic
   };
 
   // Loading state
@@ -185,21 +180,18 @@ export default function SubmissionDetailsPage() {
     );
   }
 
-  // Error/No data state
-  // if (!apiData || !submissionInfo) {
-  //   return (
-  //     <div className="p-6 bg-gray-50 min-h-screen">
-  //       <div className="mb-6">
-  //         <h1 className="text-2xl font-semibold text-[#4a4c56]">
-  //           Submission Details
-  //         </h1>
-  //       </div>
-  //       <div className="bg-white rounded-lg p-6 shadow-sm">
-  //         <p className="text-[#4a4c56]">No submission data found.</p>
-  //       </div>
-  //     </div>
-  //   );
-  // }
+
+  const downloadAsPdf = async () => {
+    const blob = await pdf(<ResumePDF />).toBlob();
+
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${"download"}.pdf`;
+    a.click();
+    URL.revokeObjectURL(url);
+    toast.success("Download resume")
+  };
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
@@ -315,13 +307,14 @@ export default function SubmissionDetailsPage() {
               Revision
             </button>
 
-            {/* <button
-              onClick={handleDownloadPDF}
+            <button
+              onClick={downloadAsPdf}
+              type="button"
               className="w-full border border-gray-300 hover:bg-gray-50 text-[#4a4c56] font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2 cursor-pointer"
             >
               <Download className="w-5 h-5" />
               Download PDF
-            </button> */}
+            </button>
           </div>
         </div>
 
@@ -397,20 +390,40 @@ export default function SubmissionDetailsPage() {
           </div>
 
           {/* Template Preview */}
-          <div className="bg-white rounded-lg p-6 shadow-sm">
-            <h3 className="text-lg font-semibold text-[#4a4c56] mb-4">
-              Template Preview
-            </h3>
-            <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 flex flex-col items-center justify-center min-h-[300px] bg-gray-50">
-              <FileText className="w-16 h-16 text-gray-400 mb-4" />
-              <p className="text-sm font-medium text-[#4a4c56] mb-2">
-                Template preview: {submission.template}
-              </p>
-              <p className="text-xs text-[#A1A1A1] text-center">
-                Full resume preview would be displayed here
-              </p>
+          <Link href={`/dashboard/submissions/preview/${id}`}>
+            <div className="group bg-white rounded-lg p-6 shadow-sm cursor-pointer">
+              <h3 className="text-lg font-semibold text-[#4a4c56] mb-4">
+                Template Preview
+              </h3>
+
+              {/* Preview Container */}
+              <div className="relative border-2 border-dashed border-gray-300 rounded-3xl overflow-hidden flex items-center justify-center h-[450px]">
+                {/* Image */}
+                <Image
+                  src={previewImage}
+                  alt="image"
+                  fill
+                  className="object-cover"
+                />
+
+                {/* Hover Overlay */}
+                <div
+                  className="absolute inset-0 bg-black/30 flex items-center justify-center
+                      opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                >
+                  <button
+                    className="flex items-center gap-2 px-6 py-3 bg-white text-[#1e3a8a]
+             font-semibold rounded-full shadow-lg
+             hover:bg-[#1e3a8a] hover:text-white
+             transition-all duration-300 cursor-pointer"
+                  >
+                    Preview
+                    <ExternalLink className="w-5 h-5" />
+                  </button>
+                </div>
+              </div>
             </div>
-          </div>
+          </Link>
         </div>
       </div>
     </div>

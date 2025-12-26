@@ -7,6 +7,7 @@ const subscriptionsApi = baseApi.injectEndpoints({
         url: `packages`,
         method: "GET",
       }),
+      providesTags: ['subsciprions']
     }),
     getSubscriptionById: builder.query({
       query: (id) => ({
@@ -33,6 +34,7 @@ const subscriptionsApi = baseApi.injectEndpoints({
         method: "PATCH",
         body: data,
       }),
+      invalidatesTags: ['subsciprions']
     }),
   }),
 });
