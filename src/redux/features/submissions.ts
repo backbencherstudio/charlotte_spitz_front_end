@@ -34,6 +34,7 @@ const submissionsApi = baseApi.injectEndpoints({
           method: "GET",
         };
       },
+      providesTags: ["submissions"]
     }),
     getSubmissionsById: builder.query({
       query: (id) => ({
@@ -47,6 +48,7 @@ const submissionsApi = baseApi.injectEndpoints({
         method: "PATCH",
         body: data,
       }),
+      invalidatesTags: ["submissions"]
     }),
     createSubmissions: builder.mutation({
       query: (data) => ({

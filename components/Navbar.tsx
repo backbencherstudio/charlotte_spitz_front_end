@@ -4,7 +4,7 @@ import { useGetLoggedUserQuery } from "@/src/redux/features/resumeInfo";
 import { LogOut } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import {  useState } from "react";
+import { useState } from "react";
 import { HiOutlineMenu, HiX } from "react-icons/hi";
 import { removeToken } from "./auth/token";
 import {
@@ -13,6 +13,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
+import { MdDashboard } from "react-icons/md";
 type User = {
   id: string;
   email: string;
@@ -45,8 +46,7 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [userData, setUserData] = useState<User | null>(null);
 
-
-
+  console.log(userData)
 
   // Only call API if token exists
   const { data } = useGetLoggedUserQuery() as {
@@ -119,24 +119,48 @@ export default function Navbar() {
           </div>
         ) : (
           <DropdownMenu>
-            <DropdownMenuTrigger className="flex justify-start items-center gap-3 cursor-pointer hover:opacity-90">
-              <div className="px-4 py-2 rounded-full border shadow-lg shadow-primaryColor/80 border-primaryColor bg-white hidden md:flex items-center justify-center ">
-                <span className="text-primaryColor font-semibold  text-base mr-4">
+            <DropdownMenuTrigger className="flex items-center gap-3 cursor-pointer hover:opacity-90">
+              <div className="px-4 py-2 rounded-full border shadow-lg shadow-primaryColor/80 border-primaryColor bg-white hidden md:flex items-center">
+                <span className="text-primaryColor font-semibold text-base">
                   Welcome, {userData?.userProfile?.firstName}
                 </span>
               </div>
-
-              {/* <IoIosArrowDown size={24} className="text-whiteColor" /> */}
             </DropdownMenuTrigger>
+
             <DropdownMenuContent
               align="end"
-              className="min-w-35 bg-red-300 border-0"
+              className="min-w-[180px] rounded-xl bg-white shadow-lg p-1"
             >
+              {/* Dashboard */}
+              {userData?.role === "ADMIN" && (
+                <DropdownMenuItem asChild>
+                  <Link
+                    href="/dashboard"
+                    className="flex items-center gap-2 px-3 py-2 rounded-md
+                          text-sm font-medium text-gray-700
+                          hover:bg-primaryColor/10 hover:text-primaryColor
+                          transition cursor-pointer"
+                  >
+                    <MdDashboard className="w-4 h-4" />
+                    Dashboard
+                  </Link>
+                </DropdownMenuItem>
+              )}
+
+              {/* Divider */}
+              {userData?.role === "ADMIN" && (
+                <div className="my-1 h-px bg-gray-200" />
+              )}
+
+              {/* Logout */}
               <DropdownMenuItem
                 onClick={hanldeLogout}
-                className="cursor-pointer text-white hover:bg-red-200! hover:text-red-600! font-semibold text-lg"
+                className="flex items-center gap-2 px-3 py-2 rounded-md
+                         cursor-pointer text-sm font-medium text-red-600
+                         hover:bg-red-50 transition"
               >
-                <LogOut className="text-blackColor" /> Log out
+                <LogOut className="w-4 h-4" />
+                Log out
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

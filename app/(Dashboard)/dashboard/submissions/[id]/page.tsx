@@ -180,7 +180,6 @@ export default function SubmissionDetailsPage() {
     );
   }
 
-
   const downloadAsPdf = async () => {
     const blob = await pdf(<ResumePDF />).toBlob();
 
@@ -190,7 +189,7 @@ export default function SubmissionDetailsPage() {
     a.download = `${"download"}.pdf`;
     a.click();
     URL.revokeObjectURL(url);
-    toast.success("Download resume")
+    toast.success("Download resume");
   };
 
   return (
@@ -369,7 +368,7 @@ export default function SubmissionDetailsPage() {
 
               <div>
                 <p className="text-xs text-[#A1A1A1] mb-1">Skills</p>
-                <p className="text-sm font-medium text-[#4a4c56]">
+                <p className="text-sm font-medium text-[#4a4c56] flex flex-wrap">
                   {skills.map((skill: any) => (
                     <span key={skill.id} className="mr-2">
                       {skill.name},
@@ -391,7 +390,7 @@ export default function SubmissionDetailsPage() {
 
           {/* Template Preview */}
           <Link href={`/dashboard/submissions/preview/${id}`}>
-            <div className="group bg-white rounded-lg p-6 shadow-sm cursor-pointer">
+            <div className="group bg-white rounded-lg p-4 md:p-6 shadow-sm cursor-pointer">
               <h3 className="text-lg font-semibold text-[#4a4c56] mb-4">
                 Template Preview
               </h3>
