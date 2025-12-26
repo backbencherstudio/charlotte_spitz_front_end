@@ -4,7 +4,6 @@ import React, { useState, useEffect, useRef } from "react";
 import {
   Search,
   Eye,
-  MoreVertical,
   ChevronDown,
   ChevronLeft,
   ChevronRight,
@@ -299,12 +298,12 @@ export default function SubmissionTable({
                             <Eye className="w-4 h-4" />
                           </Link>
                         )}
-                        {onMore && (
+                        {/* {onMore && (
                           <MoreVertical
                             className="w-4 h-4 text-descriptionColor hover:text-[#0068ef] cursor-pointer"
                             onClick={() => onMore(row)}
                           />
-                        )}
+                        )} */}
                       </div>
                     </td>
                   )}
