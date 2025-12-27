@@ -4,6 +4,12 @@ import { CheckCheck } from "lucide-react";
 import Link from "next/link";
 
 export default function SuccessPage() {
+  const sucessList = [
+    "Payments are processed by myPoolPay LLC and will appear as such on your bank statement.",
+    "Payment processed successfully",
+    "Resume data saved securely",
+    "Professional PDF will be delivered",
+  ];
   return (
     <main className="py-20">
       <div className="max-w-4xl mx-auto px-4">
@@ -58,32 +64,14 @@ export default function SuccessPage() {
 
           {/* Checkmark List */}
           <div className="space-y-3 mb-8 max-w-3xl mx-auto">
-            <div className="flex items-center gap-3">
-              <div className="w-5 h-5 rounded-full flex items-center justify-center shrink-0">
-                <CheckCheck />
+            {sucessList.map((item, index) => (
+              <div key={index} className="flex items-center gap-3">
+                <div className="w-5 h-5 rounded-full flex items-center justify-center shrink-0">
+                  <CheckCheck />
+                </div>
+                <span className="text-[#25314C] text-sm text-left">{item}</span>
               </div>
-              <span className="text-[#25314C] text-sm text-left">
-                Payment processed successfully
-              </span>
-            </div>
-
-            <div className="flex items-center gap-3">
-              <div className="w-5 h-5 rounded-full flex items-center justify-center shrink-0">
-                <CheckCheck />
-              </div>
-              <span className="text-[#25314C] text-sm text-left">
-                Resume data saved securely
-              </span>
-            </div>
-
-            <div className="flex items-center gap-3">
-              <div className="w-5 h-5  rounded-full flex items-center justify-center shrink-0">
-                <CheckCheck />
-              </div>
-              <span className="text-[#25314C] text-sm text-left">
-                Professional PDF will be delivered
-              </span>
-            </div>
+            ))}
           </div>
 
           {/* Button */}
