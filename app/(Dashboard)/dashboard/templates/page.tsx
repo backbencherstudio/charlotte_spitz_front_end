@@ -4,22 +4,28 @@ import { Eye, Trash2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import image1 from "@/public/images/10.png";
+import image2 from "@/public/images/template2.png";
+import image3 from "@/public/images/Screenshot_9.png";
+import { StaticImageData } from "next/image";
 
-// Template data type
-export interface TemplateData {
+// Template type definition
+interface Template {
   id: string;
+  img: StaticImageData;
+  url: string;
   name: string;
   description: string;
   previewType: "light" | "dark";
   usage: number;
-  status: "active" | "inactive";
-  previewImage?: string;
+  status: string;
 }
 
 // JSON data for templates
-const templatesData: TemplateData[] = [
+const templatesData: Template[] = [
   {
     id: "1",
+    img: image1,
+    url: "/dashboard/templates/preview",
     name: "Modern Pro",
     description: "Clean and professional design for corporate roles.",
     previewType: "light",
@@ -28,6 +34,8 @@ const templatesData: TemplateData[] = [
   },
   {
     id: "2",
+    img: image2,
+    url: "/dashboard/templates/preview2",
     name: "Modern Pro",
     description: "Clean and professional design for corporate roles.",
     previewType: "dark",
@@ -36,47 +44,49 @@ const templatesData: TemplateData[] = [
   },
   {
     id: "3",
+    img: image3,
+    url: "/dashboard/templates/preview3",
     name: "Modern Pro",
     description: "Clean and professional design for corporate roles.",
     previewType: "light",
     usage: 342,
     status: "active",
   },
-  {
-    id: "4",
-    name: "Modern Pro",
-    description: "Clean and professional design for corporate roles.",
-    previewType: "light",
-    usage: 342,
-    status: "active",
-  },
-  {
-    id: "5",
-    name: "Modern Pro",
-    description: "Clean and professional design for corporate roles.",
-    previewType: "dark",
-    usage: 342,
-    status: "active",
-  },
-  {
-    id: "6",
-    name: "Modern Pro",
-    description: "Clean and professional design for corporate roles.",
-    previewType: "light",
-    usage: 342,
-    status: "active",
-  },
+  // {
+  //   id: "4",
+  //   name: "Modern Pro",
+  //   description: "Clean and professional design for corporate roles.",
+  //   previewType: "light",
+  //   usage: 342,
+  //   status: "active",
+  // },
+  // {
+  //   id: "5",
+  //   name: "Modern Pro",
+  //   description: "Clean and professional design for corporate roles.",
+  //   previewType: "dark",
+  //   usage: 342,
+  //   status: "active",
+  // },
+  // {
+  //   id: "6",
+  //   name: "Modern Pro",
+  //   description: "Clean and professional design for corporate roles.",
+  //   previewType: "light",
+  //   usage: 342,
+  //   status: "active",
+  // },
 ];
 
 // Template Card Component
-function TemplateCard({ template }: { template: TemplateData }) {
+function TemplateCard({ template }: { template: Template }) {
   return (
     <Card className="">
       <CardContent className="p-0">
         {/* Image Section */}
-        <div className="w-full h-60 relative overflow-hidden mb-2">
+        <div className="w-full h-72 relative overflow-hidden mb-2">
           <Image
-            src={image1}
+            src={template?.img}
             alt={template.name}
             fill
             className="object-cover bg-center bg-no-repeat"
@@ -113,7 +123,7 @@ function TemplateCard({ template }: { template: TemplateData }) {
 
           {/* Action Buttons */}
           <div className="flex gap-2 pt-2">
-            <Link className="flex-1" href={`/dashboard/templates/preview`}>
+            <Link className="flex-1" href={template.url}>
               <Button
                 variant="outline"
                 size="sm"

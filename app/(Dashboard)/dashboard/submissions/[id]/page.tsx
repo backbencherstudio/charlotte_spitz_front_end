@@ -8,7 +8,6 @@ import {
   MapPin,
   Calendar,
   FileText,
-  Download,
   CheckCircle,
   Clock,
   AlertCircle,
@@ -21,10 +20,9 @@ import {
 } from "@/src/redux/features/submissions";
 import { toast } from "sonner";
 import Link from "next/link";
-import { pdf } from "@react-pdf/renderer";
-import { ResumePDF } from "@/components/dashboard/submissions/ResumeDownload";
 import previewImage from "@/public/images/10.png";
 import Image from "next/image";
+import { ResumeDownloadModal } from "@/components/dashboard/submissions/ResumeDownloadModal";
 
 interface SubmissionDetails {
   id: string;
@@ -180,17 +178,6 @@ export default function SubmissionDetailsPage() {
     );
   }
 
-  const downloadAsPdf = async () => {
-    const blob = await pdf(<ResumePDF />).toBlob();
-
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `${"download"}.pdf`;
-    a.click();
-    URL.revokeObjectURL(url);
-    toast.success("Download resume");
-  };
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
@@ -306,14 +293,16 @@ export default function SubmissionDetailsPage() {
               Revision
             </button>
 
-            <button
+            {/* Download Resume */}
+            {/* <button
               onClick={downloadAsPdf}
               type="button"
               className="w-full border border-gray-300 hover:bg-gray-50 text-[#4a4c56] font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2 cursor-pointer"
             >
               <Download className="w-5 h-5" />
               Download PDF
-            </button>
+            </button> */}
+            <ResumeDownloadModal />
           </div>
         </div>
 
