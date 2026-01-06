@@ -7,21 +7,22 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { pdf } from "@react-pdf/renderer";
-import { toast } from "sonner";
 import { ResumePDF } from "./ResumeDownload1";
 import { Download } from "lucide-react";
 import { ResumePDF2 } from "./ResumeDownload2";
 import { ResumePDF3 } from "./ResumeDownload3";
 import { useParams } from "next/navigation";
 import { useGetSubmissionsByIdQuery } from "@/src/redux/features/submissions";
+import Image from "next/image";
+import image1 from "@/public/images/10.png";
+import image2 from "@/public/images/template2.png";
+import image3 from "@/public/images/Screenshot_9.png";
 
 export function ResumeDownloadModal() {
   // Data
   const params = useParams();
   const id = params.id as string;
-
-  const { data: submissionData, isLoading } = useGetSubmissionsByIdQuery(id);
-
+  const { data: submissionData } = useGetSubmissionsByIdQuery(id);
 
   const apiItem = submissionData?.data?.[0];
 
@@ -78,30 +79,57 @@ export function ResumeDownloadModal() {
           <DialogHeader>
             <DialogTitle>Resume Download</DialogTitle>
             <div className="flex flex-col md:flex-row justify-between gap-3 pt-5">
-              <button
-                onClick={downloadAsPdf}
-                type="button"
-                className="w-full border border-gray-300 hover:bg-gray-50 text-[#4a4c56] font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2 cursor-pointer"
-              >
-                <Download className="w-5 h-5" />
-                Download PDF 1
-              </button>
-              <button
-                onClick={downloadAsPdf2}
-                type="button"
-                className="w-full border border-gray-300 hover:bg-gray-50 text-[#4a4c56] font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2 cursor-pointer"
-              >
-                <Download className="w-5 h-5" />
-                Download PDF 2
-              </button>
-              <button
-                onClick={downloadAsPdf3}
-                type="button"
-                className="w-full border border-gray-300 hover:bg-gray-50 text-[#4a4c56] font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2 cursor-pointer"
-              >
-                <Download className="w-5 h-5" />
-                Download PDF 3
-              </button>
+              <div>
+                <Image
+                  src={image1}
+                  alt="img"
+                  width={200}
+                  height={200}
+                  className="object-contain"
+                />
+                <button
+                  onClick={downloadAsPdf}
+                  type="button"
+                  className="w-full border border-gray-300 hover:bg-gray-50 text-[#4a4c56] font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  <Download className="w-5 h-5" />
+                  Download PDF 
+                </button>
+              </div>
+              <div>
+                <Image
+                  src={image2}
+                  alt="img"
+                  width={200}
+                  height={200}
+                  className="object-contain"
+                />
+                <button
+                  onClick={downloadAsPdf2}
+                  type="button"
+                  className="w-full border border-gray-300 hover:bg-gray-50 text-[#4a4c56] font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  <Download className="w-5 h-5" />
+                  Download PDF
+                </button>
+              </div>
+              <div>
+                <Image
+                  src={image3}
+                  alt="img"
+                  width={200}
+                  height={200}
+                  className="object-contain"
+                />
+                <button
+                  onClick={downloadAsPdf3}
+                  type="button"
+                  className="w-full border border-gray-300 hover:bg-gray-50 text-[#4a4c56] font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  <Download className="w-5 h-5" />
+                  Download PDF 
+                </button>
+              </div>
             </div>
           </DialogHeader>
         </DialogContent>
