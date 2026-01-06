@@ -11,7 +11,6 @@ import {
   CheckCircle,
   Clock,
   AlertCircle,
-  ExternalLink,
 } from "lucide-react";
 import { useParams } from "next/navigation";
 import {
@@ -19,10 +18,10 @@ import {
   useSubmissionStatusMutation,
 } from "@/src/redux/features/submissions";
 import { toast } from "sonner";
-import Link from "next/link";
 import previewImage from "@/public/images/10.png";
 import Image from "next/image";
 import { ResumeDownloadModal } from "@/components/dashboard/submissions/ResumeDownloadModal";
+import { TemplatePreviewModal } from "@/components/dashboard/submissions/TemplatePreviewModal";
 
 interface SubmissionDetails {
   id: string;
@@ -177,7 +176,6 @@ export default function SubmissionDetailsPage() {
       </div>
     );
   }
-
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
@@ -378,40 +376,25 @@ export default function SubmissionDetailsPage() {
           </div>
 
           {/* Template Preview */}
-          <Link href={`/dashboard/submissions/preview/${id}`}>
-            <div className="group bg-white rounded-lg p-4 md:p-6 shadow-sm cursor-pointer">
-              <h3 className="text-lg font-semibold text-[#4a4c56] mb-4">
-                Template Preview
-              </h3>
+          <div className="bg-white rounded-lg p-4 md:p-6 shadow-sm">
+            <h3 className="text-lg font-semibold text-[#4a4c56] mb-4">
+              Template Preview
+            </h3>
 
-              {/* Preview Container */}
-              <div className="relative border-2 border-dashed border-gray-300 rounded-3xl overflow-hidden flex items-center justify-center h-[450px]">
-                {/* Image */}
-                <Image
-                  src={previewImage}
-                  alt="image"
-                  fill
-                  className="object-cover"
-                />
-
-                {/* Hover Overlay */}
-                <div
-                  className="absolute inset-0 bg-black/30 flex items-center justify-center
-                      opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                >
-                  <button
-                    className="flex items-center gap-2 px-6 py-3 bg-white text-[#1e3a8a]
-             font-semibold rounded-full shadow-lg
-             hover:bg-[#1e3a8a] hover:text-white
-             transition-all duration-300 cursor-pointer"
-                  >
-                    Preview
-                    <ExternalLink className="w-5 h-5" />
-                  </button>
-                </div>
-              </div>
+            {/* Preview Container */}
+            <div className="relative border-2 border-dashed border-gray-300 rounded-3xl overflow-hidden flex items-center justify-center h-[450px] mb-4">
+              {/* Image */}
+              <Image
+                src={previewImage}
+                alt="image"
+                fill
+                className="object-cover"
+              />
             </div>
-          </Link>
+
+            {/* Preview Button */}
+            <TemplatePreviewModal submissionId={id} />
+          </div>
         </div>
       </div>
     </div>
