@@ -79,7 +79,7 @@ export function ResumeDownloadModal() {
           <DialogHeader>
             <DialogTitle>Resume Download</DialogTitle>
             <div className="flex flex-col md:flex-row justify-between gap-3 pt-5">
-              <div>
+              <div className="space-y-1">
                 <Image
                   src={image1}
                   alt="img"
@@ -96,7 +96,7 @@ export function ResumeDownloadModal() {
                   Download PDF 
                 </button>
               </div>
-              <div>
+              <div className="space-y-1">
                 <Image
                   src={image2}
                   alt="img"
@@ -113,7 +113,7 @@ export function ResumeDownloadModal() {
                   Download PDF
                 </button>
               </div>
-              <div>
+              <div className="space-y-1">
                 <Image
                   src={image3}
                   alt="img"

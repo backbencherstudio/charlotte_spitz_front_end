@@ -89,7 +89,7 @@ function TemplateCard({ template }: { template: Template }) {
             src={template?.img}
             alt={template.name}
             fill
-            className="object-cover bg-center bg-no-repeat"
+            className=" bg-no-repeat"
           />
         </div>
 
