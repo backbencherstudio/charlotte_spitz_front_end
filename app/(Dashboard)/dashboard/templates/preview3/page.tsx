@@ -64,7 +64,7 @@ export default function Preview3() {
 
   return (
     <main className="min-h-screen flex items-center justify-center p-6">
-      <div className="w-full max-w-[1000px] bg-white grid grid-cols-12 shadow-lg rounded-xl overflow-hidden">
+      <div className="w-[210mm] h-[297mm] bg-white grid grid-cols-12 shadow-lg rounded-xl overflow-hidden">
         {/* LEFT SIDEBAR */}
         <aside className="col-span-4 bg-[#E8EAEE] p-14">
           <h1 className="text-2xl font-bold text-[#5C6168] leading-tight">

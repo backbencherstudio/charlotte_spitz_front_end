@@ -38,7 +38,7 @@ export function TemplatePreviewModal({
           className="w-full border border-gray-300 hover:bg-[#E7E4FF] text-[#5952FF] hover:text-[#5952FF] hover:border-[#5952FF]  font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2 cursor-pointer"
         >
           <Eye className="w-5 h-5" />
-          Preview Template
+       Template Preview 
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[800px]">
