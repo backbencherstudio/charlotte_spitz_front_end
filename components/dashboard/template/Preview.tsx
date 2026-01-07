@@ -17,6 +17,7 @@ interface Skill {
 }
 
 export default function Preview() {
+  
   const experiences: ExperienceItem[] = [
     {
       company: "Uber",
@@ -73,13 +74,7 @@ export default function Preview() {
     <div className="bg-gray-100 relative min-h-screen w-full flex items-center justify-center p-4">
       {/* A4 Size Container */}
       <div
-        className="mx-auto shadow-2xl"
-        style={{
-          width: "210mm",
-          height: "297mm",
-          maxWidth: "210mm",
-          maxHeight: "297mm",
-        }}
+        className="mx-auto shadow-2xl w-[210mm] h-[297mm]"
       >
         <div
           className="relative rounded-lg shadow-lg px-4 py-6 sm:px-6 sm:py-8 md:px-10 md:py-12 w-full h-full"
@@ -126,7 +121,7 @@ export default function Preview() {
                 <div>
                   <h2 className="text-lg md:text-xl font-bold text-blue-900 mb-3">
                     Experience
-                  </h2>
+                  </h2> 
                   <div className="space-y-3 md:space-y-4">
                     {experiences.map((exp, idx) => (
                       <div key={idx} className="space-y-1">
