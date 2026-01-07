@@ -13,7 +13,9 @@ import PersonalInfoStep from "./Steps/PersonalInfoStep";
 import ProgressBar from "./Steps/ProgressBar";
 import SkillsSection from "./Steps/SkillsSection";
 import WorkExperienceStep from "./Steps/WorkExperience";
-
+// import { ReferenceArea } from "recharts";
+import { VscReferences } from "react-icons/vsc";
+import ReferenceStep from "./Steps/ReferenceStep";
 const STEPS = [
   { id: 1, name: "Personal Info", label: "Personal Info", icon: <FileText /> },
   {
@@ -38,7 +40,13 @@ const STEPS = [
     id: 5,
     name: "Certification",
     label: "Certification",
-    icon: <BiCertification className="h-8 w-8" />,
+    icon: <BiCertification className="h-7 w-7" />,
+  },
+  {
+    id: 6,
+    name: "Reference",
+    label: "Reference",
+    icon: <VscReferences className="h-6 w-6" />,
   },
 ];
 
@@ -84,6 +92,12 @@ interface FormData {
     issuingOrganization: string;
     expirationYear: string;
     certificateId: string;
+  }[];
+  references: {
+    name: string;
+    relationship: string;
+    phoneNumber: string;
+    availableOnRequest: boolean;
   }[];
 }
 
@@ -152,6 +166,14 @@ export default function MultiStepForm() {
           certificateId: "",
         },
       ],
+      references: [
+        {
+          name: "",
+          relationship: "",
+          phoneNumber: "",
+          availableOnRequest: false,
+        },
+      ],
     };
     if (typeof window !== "undefined") {
       try {
@@ -170,6 +192,17 @@ export default function MultiStepForm() {
             parsed.certifications = parsed.certifications
               ? [parsed.certifications]
               : [];
+          }
+          if (!Array.isArray(parsed.references)) {
+            parsed.references = parsed.references ? [parsed.references] : [];
+          }
+          if (Array.isArray(parsed.references)) {
+            parsed.references = parsed.references.map((r: any) => ({
+              name: r?.name ?? "",
+              relationship: r?.relationship ?? "",
+              phoneNumber: r?.phoneNumber ?? r?.phone_number ?? "",
+              availableOnRequest: r?.availableOnRequest ?? false,
+            }));
           }
           // Ensure at least one blank item exists for each array
           if (
@@ -190,6 +223,9 @@ export default function MultiStepForm() {
           ) {
             parsed.certifications = initial.certifications;
           }
+          if (Array.isArray(parsed.references) && parsed.references.length === 0) {
+            parsed.references = initial.references;
+          }
           return parsed as FormData;
         }
       } catch {}
@@ -209,6 +245,9 @@ export default function MultiStepForm() {
     null
   );
   const certGetterRef = useRef<(() => FormData["certifications"]) | null>(null);
+  const referencesGetterRef = useRef<(() => FormData["references"]) | null>(
+    null
+  );
 
   // LocalStorage keys
   const STORAGE_KEYS = {
@@ -264,6 +303,8 @@ export default function MultiStepForm() {
       updated = { ...formData, educations: educationsGetterRef.current() };
     } else if (currentStep === 5 && certGetterRef.current) {
       updated = { ...formData, certifications: certGetterRef.current() };
+    } else if (currentStep === 6 && referencesGetterRef.current) {
+      updated = { ...formData, references: referencesGetterRef.current() };
     }
     setFormData(updated);
     console.log("MultiStepForm data (step " + currentStep + "):", updated);
@@ -300,6 +341,8 @@ export default function MultiStepForm() {
       updated = { ...formData, educations: educationsGetterRef.current() };
     } else if (currentStep === 5 && certGetterRef.current) {
       updated = { ...formData, certifications: certGetterRef.current() };
+    } else if (currentStep === 6 && referencesGetterRef.current) {
+      updated = { ...formData, references: referencesGetterRef.current() };
     }
     setFormData(updated);
     try {
@@ -379,6 +422,18 @@ export default function MultiStepForm() {
               onSnapshot={(getter) => {
                 certGetterRef.current =
                   getter as () => FormData["certifications"];
+              }}
+            />
+          )}
+          {currentStep === 6 && (
+            <ReferenceStep
+              data={formData.references}
+              onUpdate={(data: any) =>
+                handleUpdateFormData("references", data)
+              }
+              onSnapshot={(getter) => {
+                referencesGetterRef.current =
+                  getter as () => FormData["references"];
               }}
             />
           )}
