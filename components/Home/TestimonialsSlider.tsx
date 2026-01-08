@@ -14,6 +14,7 @@ import "swiper/css/pagination";
 
 interface Testimonial {
   id: number;
+  header: string;
   text: string;
   name: string;
   title: string;
@@ -23,59 +24,51 @@ interface Testimonial {
 const testimonials: Testimonial[] = [
   {
     id: 1,
-    text: "The AI doesn’t just generate content—it genuinely understands what recruiters and hiring managers are looking for in a candidate. It goes beyond surface-level suggestions by tailoring my resume, optimizing the tone and structure of my portfolio, and even helping me communicate my skills and experience more strategically. I was able to highlight what truly matters for the roles I’m applying to, and it made my entire job search process feel more focused, confident, and aligned with industry expectations.",
-    name: "David K.",
-    title: "Software engineer",
-    avatar: "/images/david.jpg",
+    header: `“I was honestly shocked at how good this came out.”`,
+    text: "I’ve paid for resume services before and they were… fine. CVdigger was different. It didn’t just rewrite my resume — it reframed my experience in a way that actually made sense to recruiters. I started getting callbacks within a week.",
+    name: "— Sarah M.",
+    title: "Operations Manager",
+    avatar: "/images/profile.png",
   },
   {
     id: 2,
-    text: "The AI doesn’t just generate content—it genuinely understands what recruiters and hiring managers are looking for in a candidate. It goes beyond surface-level suggestions by tailoring my resume, optimizing the tone and structure of my portfolio, and even helping me communicate my skills and experience more strategically. I was able to highlight what truly matters for the roles I’m applying to, and it made my entire job search process feel more focused, confident, and aligned with industry expectations.",
-    name: "David K.",
-    title: "Software engineer",
-    avatar: "/images/david.jpg",
+       header: `“Fast, clean, and actually tailored.”`,
+    text: "I needed a resume fast and didn’t expect much going in. The turnaround was quick, the layout was clean, and the wording sounded like me — just better. Worth every dollar.",
+    name: "— Josh L.",
+    title: "Sales Associate",
+    avatar: "/images/profile.png",
   },
   {
     id: 3,
-    text: "The AI doesn’t just generate content—it genuinely understands what recruiters and hiring managers are looking for in a candidate. It goes beyond surface-level suggestions by tailoring my resume, optimizing the tone and structure of my portfolio, and even helping me communicate my skills and experience more strategically. I was able to highlight what truly matters for the roles I’m applying to, and it made my entire job search process feel more focused, confident, and aligned with industry expectations.",
-    name: "David K.",
-    title: "Software engineer",
-    avatar: "/images/david.jpg",
+      header: `“Perfect for first-time job seekers.”`,
+    text: "This was my first real resume and I had no idea what to include. CVdigger made it simple and asked the right questions. I feel way more confident applying now.",
+    name: "— Emily R.",
+    title: "College Student",
+    avatar: "/images/profile.png",
   },
   {
     id: 4,
-    text: "The AI doesn’t just generate content—it genuinely understands what recruiters and hiring managers are looking for in a candidate. It goes beyond surface-level suggestions by tailoring my resume, optimizing the tone and structure of my portfolio, and even helping me communicate my skills and experience more strategically. I was able to highlight what truly matters for the roles I’m applying to, and it made my entire job search process feel more focused, confident, and aligned with industry expectations.",
-    name: "David K.",
-    title: "Software engineer",
-    avatar: "/images/david.jpg",
+    header:`“Helped me switch industries.”`,
+    text: "I was changing careers and didn’t know how to translate my experience. CVdigger did an amazing job connecting the dots and making my background relevant.",
+    name: "— Rachel S.",
+    title: "Career Switcher",
+    avatar: "/images/profile.png",
   },
   {
     id: 5,
-    text: "The AI doesn’t just generate content—it genuinely understands what recruiters and hiring managers are looking for in a candidate. It goes beyond surface-level suggestions by tailoring my resume, optimizing the tone and structure of my portfolio, and even helping me communicate my skills and experience more strategically. I was able to highlight what truly matters for the roles I’m applying to, and it made my entire job search process feel more focused, confident, and aligned with industry expectations.",
-    name: "David K.",
-    title: "Software engineer",
-    avatar: "/images/david.jpg",
+    header:`“The formatting alone was a huge upgrade.”`,
+    text: "Even before reading the content, the resume looked professional. Clean, modern, and recruiter-friendly. The content matched it perfectly.",
+    name: "— Daniel P.",
+    title: "Finance Analyst",
+    avatar: "/images/profile.png",
   },
   {
     id: 6,
-    text: "The AI doesn’t just generate content—it genuinely understands what recruiters and hiring managers are looking for in a candidate. It goes beyond surface-level suggestions by tailoring my resume, optimizing the tone and structure of my portfolio, and even helping me communicate my skills and experience more strategically. I was able to highlight what truly matters for the roles I’m applying to, and it made my entire job search process feel more focused, confident, and aligned with industry expectations.",
-    name: "David K.",
-    title: "Software engineer",
-    avatar: "/images/david.jpg",
-  },
-  {
-    id: 7,
-    text: "The AI doesn’t just generate content—it genuinely understands what recruiters and hiring managers are looking for in a candidate. It goes beyond surface-level suggestions by tailoring my resume, optimizing the tone and structure of my portfolio, and even helping me communicate my skills and experience more strategically. I was able to highlight what truly matters for the roles I’m applying to, and it made my entire job search process feel more focused, confident, and aligned with industry expectations.",
-    name: "David K.",
-    title: "Software engineer",
-    avatar: "/images/david.jpg",
-  },
-  {
-    id: 8,
-    text: "The AI doesn’t just generate content—it genuinely understands what recruiters and hiring managers are looking for in a candidate. It goes beyond surface-level suggestions by tailoring my resume, optimizing the tone and structure of my portfolio, and even helping me communicate my skills and experience more strategically. I was able to highlight what truly matters for the roles I’m applying to, and it made my entire job search process feel more focused, confident, and aligned with industry expectations.",
-    name: "David K.",
-    title: "Software engineer",
-    avatar: "/images/david.jpg",
+    header: `“Simple process, great results.”`,
+    text: "The form was easy, the communication was clear, and the final resume was polished and strong. I’d definitely recommend this to anyone job hunting.",
+    name: "— Leah B.",
+    title: "Marketing Assistant",
+    avatar: "/images/profile.png",
   },
 ];
 
@@ -142,7 +135,7 @@ interface TestimonialCardProps {
 
 function TestimonialCard({ testimonial }: TestimonialCardProps) {
   return (
-    <div className="p-4 bg-[#F6F8FA] rounded-md">
+    <div className="p-4 h-88.5 flex flex-col justify-between bg-[#F6F8FA] rounded-md">
       <div className="flex gap-1 mb-4">
         {[...Array(5)].map((_, i) => (
           <Star
@@ -151,10 +144,13 @@ function TestimonialCard({ testimonial }: TestimonialCardProps) {
           />
         ))}
       </div>
-
+      <div>
+      <h4 className="text-base md:text-lg text-headerColor mb-4 font-semibold ">{testimonial.header}</h4>
       <p className="text-[#4A4C56] text-sm md:text-base leading-relaxed mb-6">
         {testimonial.text}
       </p>
+      </div>
+
 
       <div className="flex items-center justify-between">
         <div>
