@@ -119,6 +119,7 @@ export default function Profile() {
                       width={100}
                       height={100}
                       className="object-cover"
+                      crossOrigin="anonymous"
                     />
                   ) : (
                     <User className="size-16 text-muted-foreground" />
@@ -210,6 +211,7 @@ export default function Profile() {
                       width={100}
                       height={100}
                       className="object-cover"
+                      crossOrigin="anonymous"
                     />
                   ) : (
                     <User className="size-16 text-muted-foreground" />
