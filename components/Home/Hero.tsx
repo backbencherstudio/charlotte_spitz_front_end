@@ -62,12 +62,12 @@ const HeroSection = () => {
         <div className="container grid grid-cols-1 gap-6 lg:gap-0 lg:grid-cols-11 h-full items-center  ">
           <div className="lg:col-span-6 md:mr-10">
             <div className="mb-2">
-              <div className="inline-flex items-center gap-2 bg-[#EEEEFF]  px-4 py-2 rounded-full">
+              {/* <div className="inline-flex items-center gap-2 bg-[#EEEEFF]  px-4 py-2 rounded-full">
                 <div className="w-2 h-2 bg-[#908BFF] rounded-full"></div>
                 <span className="text-sm font-medium text-[#4A4C56]">
                   Your first CV is 100% free no card need
                 </span>
-              </div>
+              </div> */}
             </div>
 
             <div>
@@ -78,14 +78,14 @@ const HeroSection = () => {
             </div>
 
             {/* Subheading */}
-            <p className="text-base md:text-lg text-[#4A4C56] md:mr-10 lg:mr-30">
+            {/* <p className="text-base md:text-lg text-[#4A4C56] md:mr-10 lg:mr-30">
               Turn one resume into a fleet of AI-perfected CVs—each tuned to a{' '}
               different job description with a single click.
-            </p>
+            </p> */}
 
             {/* Stats */}
             <div className="flex items-center my-8 gap-x-4">
-              <div className="flex items-start gap-3">
+              {/* <div className="flex items-start gap-3">
                 <div className="bg-[#FFFFFF] h-10 w-10 flex items-center justify-center rounded-md border border-gray-200">
                   <Image
                     src="/images/fileTextIcon.svg"
@@ -101,7 +101,7 @@ const HeroSection = () => {
                     CVs Optimized
                   </div>
                 </div>
-              </div>
+              </div> */}
               <div className="flex items-start gap-3">
                 <div className="bg-[#FFFFFF] h-10 w-10 flex items-center justify-center rounded-md border border-gray-200">
                   <PiClockCountdown className="w-6 h-6" />

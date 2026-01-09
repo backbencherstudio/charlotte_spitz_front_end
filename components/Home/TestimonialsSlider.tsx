@@ -151,7 +151,6 @@ function TestimonialCard({ testimonial }: TestimonialCardProps) {
       </p>
       </div>
 
-
       <div className="flex items-center justify-between">
         <div>
           <p className="font-semibold text-[#333333] text-sm md:text-base">
