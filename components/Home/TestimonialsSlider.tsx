@@ -102,7 +102,7 @@ export default function TestimonialsSlider() {
             className="pb-10"
           >
             {testimonials.map((testimonial) => (
-              <SwiperSlide key={testimonial.id}>
+              <SwiperSlide key={testimonial.id} className="h-auto">
                 <TestimonialCard testimonial={testimonial} />
               </SwiperSlide>
             ))}
@@ -151,7 +151,7 @@ function TestimonialCard({ testimonial }: TestimonialCardProps) {
       </p>
       </div>
 
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between shrink-0">
         <div>
           <p className="font-semibold text-[#333333] text-sm md:text-base">
             {testimonial.name}

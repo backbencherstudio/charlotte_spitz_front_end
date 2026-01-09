@@ -8,7 +8,6 @@ import {
   MapPin,
   Calendar,
   FileText,
-  CheckCircle,
   Clock,
   AlertCircle,
 } from "lucide-react";
@@ -22,6 +21,7 @@ import previewImage from "@/public/images/10.png";
 import Image from "next/image";
 import { ResumeDownloadModal } from "@/components/dashboard/submissions/ResumeDownloadModal";
 import { TemplatePreviewModal } from "@/components/dashboard/submissions/TemplatePreviewModal";
+import ApprovedModal from "@/components/dashboard/submissions/ApprovedModal";
 
 interface SubmissionDetails {
   id: string;
@@ -129,18 +129,6 @@ export default function SubmissionDetailsPage() {
     status: mapStatus(apiItem?.status || ""),
   };
 
-  const handleApprove = async () => {
-    const res = await submissionStatus({
-      id,
-      status: "APPROVED",
-    });
-    if (res?.data?.success) {
-      toast.success("Submission status approved");
-    } else {
-      toast.error("Something wont wrong");
-    }
-  };
-
   const handlePending = async () => {
     const res = await submissionStatus({
       id,
@@ -149,7 +137,12 @@ export default function SubmissionDetailsPage() {
     if (res?.data?.success) {
       toast.success("Submission status pending");
     } else {
-      toast.error("Something wont wrong");
+      const errorMessage =
+        ("error" in res && res.error && "data" in res.error
+          ? (res.error.data as any)?.message?.message ||
+            (res.error.data as any)?.message
+          : null) || "Something went wrong";
+      toast.error(errorMessage);
     }
   };
 
@@ -161,7 +154,12 @@ export default function SubmissionDetailsPage() {
     if (res?.data?.success) {
       toast.success("Submission status revision");
     } else {
-      toast.error("Something wont wrong");
+      const errorMessage =
+        ("error" in res && res.error && "data" in res.error
+          ? (res.error.data as any)?.message?.message ||
+            (res.error.data as any)?.message
+          : null) || "Something went wrong";
+      toast.error(errorMessage);
     }
   };
 
@@ -267,13 +265,8 @@ export default function SubmissionDetailsPage() {
 
           {/* Action Buttons */}
           <div className="space-y-3">
-            <button
-              onClick={handleApprove}
-              className="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2 cursor-pointer"
-            >
-              <CheckCircle className="w-5 h-5" />
-              Approve Submission
-            </button>
+            {/* Approved Modal */}
+            <ApprovedModal />
 
             <button
               onClick={handlePending}

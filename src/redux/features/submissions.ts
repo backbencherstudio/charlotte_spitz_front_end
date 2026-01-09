@@ -43,11 +43,18 @@ const submissionsApi = baseApi.injectEndpoints({
       }),
     }),
     submissionStatus: builder.mutation({
-      query: ({ id, data }) => ({
-        url: `submissions/${id}/status`,
-        method: "PATCH",
-        body: data,
-      }),
+      query: ({ id, status, file }) => {
+        const formData = new FormData();
+        formData.append("status", status);
+        if (file) {
+          formData.append("file", file);
+        }
+        return {
+          url: `submissions/${id}/status`,
+          method: "PATCH",
+          body: formData,
+        };
+      },
       invalidatesTags: ["submissions"]
     }),
     createSubmissions: builder.mutation({
