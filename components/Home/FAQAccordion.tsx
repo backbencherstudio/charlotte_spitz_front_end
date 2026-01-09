@@ -52,10 +52,10 @@ export default function FAQAccordion() {
 
   return (
     <section className="py-20 bg-white">
-      <div className="max-w-[830px] mx-auto px-4">
+      <div className="max-w-207.5 mx-auto px-4">
         {/* Header */}
         <div className="mb-14 text-center">
-          <h1 className="text-2xl md:text-4xl font-bold tracking-tight text-[#1D1F2C]">
+          <h1 className="text-2xl md:text-4xl font-bold tracking-tight text-headerColor">
             Frequently Asked Questions
           </h1>
         </div>

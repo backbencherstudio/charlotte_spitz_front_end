@@ -61,14 +61,14 @@ const HeroSection = () => {
       <div className="py-10">
         <div className="container grid grid-cols-1 gap-6 lg:gap-0 lg:grid-cols-11 h-full items-center  ">
           <div className="lg:col-span-6 md:mr-10">
-            {/* <div className="mb-2">
-              <div className="inline-flex items-center gap-2 bg-[#EEEEFF]  px-4 py-2 rounded-full">
+            <div className="mb-2">
+              {/* <div className="inline-flex items-center gap-2 bg-[#EEEEFF]  px-4 py-2 rounded-full">
                 <div className="w-2 h-2 bg-[#908BFF] rounded-full"></div>
                 <span className="text-sm font-medium text-[#4A4C56]">
                   Your first CV is 100% free no card need
                 </span>
-              </div>
-            </div> */}
+              </div> */}
+            </div>
 
             <div>
               <h1 className="md:text-[56px] text-3xl font-bold text-black leading-[120%] mb-4">

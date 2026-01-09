@@ -14,6 +14,7 @@ import "swiper/css/pagination";
 
 interface Testimonial {
   id: number;
+  header: string;
   text: string;
   name: string;
   title: string;
@@ -23,45 +24,51 @@ interface Testimonial {
 const testimonials: Testimonial[] = [
   {
     id: 1,
-    text: "\u201CI was honestly shocked at how good this came out.\u201D\nI've paid for resume services before and they were… fine. CVdigger was different. It didn't just rewrite my resume — it reframed my experience in a way that actually made sense to recruiters. I started getting callbacks within a week.",
-    name: "Sarah M.",
+    header: `“I was honestly shocked at how good this came out.”`,
+    text: "I’ve paid for resume services before and they were… fine. CVdigger was different. It didn’t just rewrite my resume — it reframed my experience in a way that actually made sense to recruiters. I started getting callbacks within a week.",
+    name: "— Sarah M.",
     title: "Operations Manager",
-    avatar: "/images/david.jpg",
+    avatar: "/images/profile.png",
   },
   {
     id: 2,
-    text: "\u201CFast, clean, and actually tailored.\u201D\nI needed a resume fast and didn't expect much going in. The turnaround was quick, the layout was clean, and the wording sounded like me — just better. Worth every dollar.",
-    name: "Josh L.",
+       header: `“Fast, clean, and actually tailored.”`,
+    text: "I needed a resume fast and didn’t expect much going in. The turnaround was quick, the layout was clean, and the wording sounded like me — just better. Worth every dollar.",
+    name: "— Josh L.",
     title: "Sales Associate",
-    avatar: "/images/david.jpg",
+    avatar: "/images/profile.png",
   },
   {
     id: 3,
-    text: "\u201CPerfect for first-time job seekers.\u201D\nThis was my first real resume and I had no idea what to include. CVdigger made it simple and asked the right questions. I feel way more confident applying now.",
-    name: "Emily R.",
+      header: `“Perfect for first-time job seekers.”`,
+    text: "This was my first real resume and I had no idea what to include. CVdigger made it simple and asked the right questions. I feel way more confident applying now.",
+    name: "— Emily R.",
     title: "College Student",
-    avatar: "/images/david.jpg",
+    avatar: "/images/profile.png",
   },
   {
     id: 4,
-    text: "\u201CHelped me switch industries.\u201D\nI was changing careers and didn't know how to translate my experience. CVdigger did an amazing job connecting the dots and making my background relevant.",
-    name: "Rachel S.",
+    header:`“Helped me switch industries.”`,
+    text: "I was changing careers and didn’t know how to translate my experience. CVdigger did an amazing job connecting the dots and making my background relevant.",
+    name: "— Rachel S.",
     title: "Career Switcher",
-    avatar: "/images/david.jpg",
+    avatar: "/images/profile.png",
   },
   {
     id: 5,
-    text: "\u201CThe formatting alone was a huge upgrade.\u201D\nEven before reading the content, the resume looked professional. Clean, modern, and recruiter-friendly. The content matched it perfectly.",
-    name: "Daniel P.",
+    header:`“The formatting alone was a huge upgrade.”`,
+    text: "Even before reading the content, the resume looked professional. Clean, modern, and recruiter-friendly. The content matched it perfectly.",
+    name: "— Daniel P.",
     title: "Finance Analyst",
-    avatar: "/images/david.jpg",
+    avatar: "/images/profile.png",
   },
   {
     id: 6,
-    text: "\u201CSimple process, great results.\u201D\nThe form was easy, the communication was clear, and the final resume was polished and strong. I'd definitely recommend this to anyone job hunting.",
-    name: "Leah B.",
+    header: `“Simple process, great results.”`,
+    text: "The form was easy, the communication was clear, and the final resume was polished and strong. I’d definitely recommend this to anyone job hunting.",
+    name: "— Leah B.",
     title: "Marketing Assistant",
-    avatar: "/images/david.jpg",
+    avatar: "/images/profile.png",
   },
 ];
 
@@ -128,8 +135,8 @@ interface TestimonialCardProps {
 
 function TestimonialCard({ testimonial }: TestimonialCardProps) {
   return (
-    <div className="p-4 bg-[#F6F8FA] rounded-md h-[300px] flex flex-col">
-      <div className="flex gap-1 mb-4 shrink-0">
+    <div className="p-4 h-88.5 flex flex-col justify-between bg-[#F6F8FA] rounded-md">
+      <div className="flex gap-1 mb-4">
         {[...Array(5)].map((_, i) => (
           <Star
             key={i}
@@ -137,10 +144,12 @@ function TestimonialCard({ testimonial }: TestimonialCardProps) {
           />
         ))}
       </div>
-
-      <p className="text-[#4A4C56] text-sm md:text-base leading-relaxed mb-6 flex-1 overflow-y-auto">
+      <div>
+      <h4 className="text-base md:text-lg text-headerColor mb-4 font-semibold ">{testimonial.header}</h4>
+      <p className="text-[#4A4C56] text-sm md:text-base leading-relaxed mb-6">
         {testimonial.text}
       </p>
+      </div>
 
       <div className="flex items-center justify-between shrink-0">
         <div>
