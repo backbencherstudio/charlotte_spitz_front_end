@@ -1,80 +1,38 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { Progress } from "@/components/ui/progress";
 import Image from "next/image";
 import image1 from "@/public/images/11.png";
 
-interface ExperienceItem {
-  company: string;
-  position: string;
-  period: string;
-  bullets: string[];
+interface TemplatePreview1Props {
+  submissionInfo: any;
 }
 
-interface Skill {
-  name: string;
-  proficiency: number;
-}
+export default function TemplatePreview1({
+  submissionInfo,
+}: TemplatePreview1Props) {
+  const personalInfo = submissionInfo?.submission?.personalInfo;
+  const workExperiences = submissionInfo?.submission?.workExperiences ?? [];
+  const educations = submissionInfo?.submission?.educations ?? [];
+  const skills = submissionInfo?.submission?.skills ?? [];
 
-export default function Preview() {
-  
-  const experiences: ExperienceItem[] = [
-    {
-      company: "Uber",
-      position: "Product Designer",
-      period: "Mar 2018 - Present",
-      bullets: [
-        "Designed safety-focused experiences for Riders and Drivers",
-        "Physical space problem solving and its interaction with the digital interface",
-        "Navigated organization to achieve operational improvements",
-      ],
-    },
-    {
-      company: "IFTTT",
-      position: "Product Designer",
-      period: "Dec 2015 - Mar 2018",
-      bullets: [
-        "Product and system design for a complex product",
-        "Collaborated with researchers and developers for IFTTT",
-        "Responsible for maintaining design across iOS, Android, and web",
-      ],
-    },
-    {
-      company: "Facebook",
-      position: "Product Designer",
-      period: "June 2013 - Sep 2015",
-      bullets: [
-        "Designed and prototyped internal tools",
-        "Partnered with many teams to build assets and features",
-        "Authored/developed custom user experience for mobile",
-      ],
-    },
-    {
-      company: "Google Maps",
-      position: "UX/UI Design Intern",
-      period: "June 2012 - Sep 2012",
-      bullets: [
-        "Contributed to Maps on iOS wireframe and user experience",
-        "Designed and prototyped onboarding experience",
-        "Asset and feature design for Maps on Android",
-      ],
-    },
-  ];
-
-  const skills: Skill[] = [
-    { name: "Figma", proficiency: 90 },
-    { name: "Sketch", proficiency: 85 },
-    { name: "Adobe Photoshop", proficiency: 75 },
-    { name: "Adobe Illustrator", proficiency: 70 },
-    { name: "Principle", proficiency: 65 },
-    { name: "Adobe XD", proficiency: 80 },
-  ];
+  // Format date helper
+  const formatDate = (dateString: string) => {
+    if (!dateString) return "N/A";
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", {
+      month: "short",
+      year: "numeric",
+    });
+  };
 
   return (
     <div className="bg-gray-100 relative min-h-screen w-full flex items-center justify-center p-4">
       {/* A4 Size Container */}
       <div
         className="mx-auto shadow-2xl w-[210mm] h-[297mm]"
+       
       >
         <div
           className="relative rounded-lg shadow-lg px-4 py-6 sm:px-6 sm:py-8 md:px-10 md:py-12 w-full h-full"
@@ -95,20 +53,18 @@ export default function Preview() {
               {/* Name and Title */}
               <div>
                 <h1 className="text-3xl md:text-4xl font-bold text-blue-900 mb-1">
-                  Rick Tang
+                  {personalInfo?.fullName || "Your Name"}
                 </h1>
                 <p className="text-base md:text-lg text-blue-900 font-bold">
-                  Product Designer
+                  {personalInfo?.jobTitle || "Your Job Title"}
                 </p>
               </div>
 
               {/* About Me */}
               <div>
                 <p className="text-xs md:text-sm text-gray-600 leading-relaxed">
-                  I&apos;m a UI/UX specialist focused on designing clean and
-                  functional projects across all platforms and devices in
-                  response to specific briefs and problems, while always
-                  maintaining a unique look and feel.
+                  {personalInfo?.professionalSummary ||
+                    "Professional summary goes here."}
                 </p>
               </div>
             </div>
@@ -121,27 +77,30 @@ export default function Preview() {
                 <div>
                   <h2 className="text-lg md:text-xl font-bold text-blue-900 mb-3">
                     Experience
-                  </h2> 
+                  </h2>
                   <div className="space-y-3 md:space-y-4">
-                    {experiences.map((exp, idx) => (
+                    {workExperiences.map((exp: any, idx: number) => (
                       <div key={idx} className="space-y-1">
                         <div className="">
                           <div>
                             <h3 className="text-base md:text-lg font-bold text-gray-800">
-                              {exp.company}
+                              {exp.companyName}
                             </h3>
                             <p className="text-sm md:text-base text-gray-700">
-                              {exp.position}
+                              {exp.jobTitle}
                             </p>
                           </div>
                           <p className="text-gray-500 text-xs mt-1">
-                            {exp.period}
+                            {formatDate(exp.startDate)} -{" "}
+                            {exp.endDate ? formatDate(exp.endDate) : "Present"}
                           </p>
                         </div>
                         <ul className="list-disc list-inside space-y-0.5 ml-2 text-xs md:text-sm text-gray-600">
-                          {exp.bullets.map((bullet, bulletIdx) => (
-                            <li key={bulletIdx}>{bullet}</li>
-                          ))}
+                          {exp.achievements && <li>{exp.achievements}</li>}
+                          {exp.responsibilities && (
+                            <li>{exp.responsibilities}</li>
+                          )}
+                          {exp.location && <li>{exp.location}</li>}
                         </ul>
                       </div>
                     ))}
@@ -153,13 +112,17 @@ export default function Preview() {
                   <h2 className="text-lg md:text-xl font-bold text-blue-900 mb-2">
                     Education
                   </h2>
-                  <div>
-                    <h3 className="text-base md:text-lg font-semibold text-gray-800">
-                      Brown University
-                    </h3>
-                    <p className="text-xs md:text-sm text-gray-600">
-                      Interdisciplinary Studies, Sep 2010 - May 2012
-                    </p>
+                  <div className="space-y-2">
+                    {educations.map((edu: any, idx: number) => (
+                      <div key={idx}>
+                        <h3 className="text-base md:text-lg font-semibold text-gray-800">
+                          {edu.institutionName}
+                        </h3>
+                        <p className="text-xs md:text-sm text-gray-600">
+                          {edu.degreeOrCertificate}, {edu.passingYear}
+                        </p>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>
@@ -173,16 +136,16 @@ export default function Preview() {
                   </h2>
                   <div className="space-y-1 text-xs md:text-sm text-gray-600">
                     <p>
-                      <span className="font-semibold">Address:</span> San
-                      Francisco, California
+                      <span className="font-semibold">Address:</span>{" "}
+                      {personalInfo?.city_and_state || "N/A"}
                     </p>
                     <p>
-                      <span className="font-semibold">Phone:</span> (303)
-                      902-9179
+                      <span className="font-semibold">Phone:</span>{" "}
+                      {personalInfo?.phoneNumber || "N/A"}
                     </p>
                     <p>
                       <span className="font-semibold">Email:</span>{" "}
-                      ricktang@gmail.com
+                      {personalInfo?.email || "N/A"}
                     </p>
                   </div>
                 </div>
@@ -193,43 +156,19 @@ export default function Preview() {
                     Skills
                   </h2>
                   <div className="space-y-2 md:space-y-3">
-                    {skills.map((skill, idx) => (
+                    {skills.map((skill: any, idx: number) => (
                       <div key={idx} className="space-y-1">
                         <div className="flex justify-between items-center">
                           <span className="text-xs md:text-sm text-gray-700 font-medium">
                             {skill.name}
                           </span>
                         </div>
-                        <Progress value={skill.proficiency} className="h-1.5" />
+                        <Progress
+                          value={skill.proficiency || 0}
+                          className="h-1.5"
+                        />
                       </div>
                     ))}
-                  </div>
-                </div>
-
-                {/* Links */}
-                <div>
-                  <h2 className="text-lg md:text-xl font-bold text-blue-900 mb-2">
-                    Links
-                  </h2>
-                  <div className="space-y-1">
-                    <a
-                      href="#"
-                      className="text-xs md:text-sm text-blue-600 hover:text-blue-800 underline block"
-                    >
-                      LinkedIn
-                    </a>
-                    <a
-                      href="#"
-                      className="text-xs md:text-sm text-blue-600 hover:text-blue-800 underline block"
-                    >
-                      Dribbble
-                    </a>
-                    <a
-                      href="#"
-                      className="text-xs md:text-sm text-blue-600 hover:text-blue-800 underline block"
-                    >
-                      Behance
-                    </a>
                   </div>
                 </div>
               </div>

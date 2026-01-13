@@ -159,7 +159,7 @@ export default function CertificateStep({
                 htmlFor={`expiration-${index}`}
                 className="block mb-2 font-medium text-headerColor"
               >
-                Year/Expiration
+                Year Earned
               </Label>
               <input
                 id={`expiration-${index}`}

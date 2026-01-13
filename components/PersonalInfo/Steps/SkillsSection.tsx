@@ -2,7 +2,7 @@
 
 import { Checkbox } from "@/components/ui/checkbox";
 import { Plus } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 interface SkillTag {
   id: string;
@@ -18,40 +18,42 @@ interface FormattedSkill {
 
 interface SkillsSectionProps {
   data: FormattedSkill[];
-
   onUpdate: (data: FormattedSkill[]) => void;
   onSnapshot?: (getter: () => FormattedSkill[]) => void;
 }
+const BASE_HARD_SKILLS: SkillTag[] = [
+  { id: "1", name: "Microsoft Word", isCustom: false },
+  { id: "2", name: "Microsoft Excel", isCustom: false },
+  { id: "3", name: "Customer Service", isCustom: false },
+  { id: "4", name: "Data Entry", isCustom: false },
+  { id: "5", name: "QuickBooks", isCustom: false },
+  { id: "6", name: "Billing", isCustom: false },
+  { id: "7", name: "Medical Office Skills", isCustom: false },
+  { id: "8", name: "Computer Skills", isCustom: false },
+];
 
-export default function SkillsSection({ onSnapshot }: SkillsSectionProps) {
-  const [hardSkills, setHardSkills] = useState<SkillTag[]>([
-    { id: "1", name: "Microsoft Word", isCustom: false },
-    { id: "2", name: "Microsoft Excel", isCustom: false },
-    { id: "3", name: "Customer Service", isCustom: false },
-    { id: "4", name: "Data Entry", isCustom: false },
-    { id: "5", name: "QuickBooks", isCustom: false },
-    { id: "6", name: "Billing", isCustom: false },
-    { id: "7", name: "Medical Office Skills", isCustom: false },
-    { id: "8", name: "Computer Skills", isCustom: false },
-  ]);
+const BASE_SOFT_SKILLS: SkillTag[] = [
+  { id: "1", name: "Communication", isCustom: false },
+  { id: "2", name: "Time Management", isCustom: false },
+  { id: "3", name: "Leadership", isCustom: false },
+  { id: "4", name: "Teamwork", isCustom: false },
+  { id: "5", name: "Detail-Oriented", isCustom: false },
+  { id: "6", name: "Multitasking", isCustom: false },
+];
 
-  const [softSkills, setSoftSkills] = useState<SkillTag[]>([
-    { id: "1", name: "Communication", isCustom: false },
-    { id: "2", name: "Time Management", isCustom: false },
-    { id: "3", name: "Leadership", isCustom: false },
-    { id: "4", name: "Teamwork", isCustom: false },
-    { id: "5", name: "Detail-Oriented", isCustom: false },
-    { id: "6", name: "Multitasking", isCustom: false },
-  ]);
+const BASE_LANGUAGES: SkillTag[] = [
+  { id: "1", name: "Bangla", isCustom: false },
+  { id: "2", name: "English", isCustom: false },
+  { id: "3", name: "Hindi", isCustom: false },
+  { id: "4", name: "Spanish", isCustom: false },
+  { id: "5", name: "French", isCustom: false },
+  { id: "6", name: "German", isCustom: false },
+];
 
-  const [languages, setLanguages] = useState<SkillTag[]>([
-    { id: "1", name: "Bangla", isCustom: false },
-    { id: "2", name: "English", isCustom: false },
-    { id: "3", name: "Hindi", isCustom: false },
-    { id: "4", name: "Spanish", isCustom: false },
-    { id: "5", name: "French", isCustom: false },
-    { id: "6", name: "German", isCustom: false },
-  ]);
+export default function SkillsSection({ data, onUpdate, onSnapshot }: SkillsSectionProps) {
+  const [hardSkills, setHardSkills] = useState<SkillTag[]>(BASE_HARD_SKILLS);
+  const [softSkills, setSoftSkills] = useState<SkillTag[]>(BASE_SOFT_SKILLS);
+  const [languages, setLanguages] = useState<SkillTag[]>(BASE_LANGUAGES);
 
   const [selectedHardSkills, setSelectedHardSkills] = useState<string[]>([]);
   const [selectedSoftSkills, setSelectedSoftSkills] = useState<string[]>([]);
@@ -72,9 +74,15 @@ export default function SkillsSection({ onSnapshot }: SkillsSectionProps) {
   const [isLanguageInputVisible, setIsLanguageInputVisible] =
     useState<boolean>(false);
 
-  const [nextId, setNextId] = useState<number>(
-    Math.max(hardSkills.length, softSkills.length, languages.length) + 1
+  const baseMax = useMemo(
+    () =>
+      Math.max(BASE_HARD_SKILLS.length, BASE_SOFT_SKILLS.length, BASE_LANGUAGES.length) +
+      1,
+    []
   );
+
+  const [nextId, setNextId] = useState<number>(baseMax);
+  const hydratedRef = useRef(false);
 
   const selectHardSkill = (id: string) => {
     setSelectedHardSkills((prev) =>
@@ -143,47 +151,99 @@ export default function SkillsSection({ onSnapshot }: SkillsSectionProps) {
     }
   };
 
+  // Hydrate selections from incoming data (localStorage/state) once
+  useEffect(() => {
+    if (!data || hydratedRef.current) return;
+
+    let workingHard = [...BASE_HARD_SKILLS];
+    let workingSoft = [...BASE_SOFT_SKILLS];
+    let workingLang = [...BASE_LANGUAGES];
+    const selectedHard: string[] = [];
+    const selectedSoft: string[] = [];
+    const selectedLang: string[] = [];
+    let idCounter = baseMax;
+
+    const findOrAdd = (
+      list: SkillTag[],
+      selected: string[],
+      skillName: string,
+      isCustom: boolean
+    ) => {
+      const existing = list.find(
+        (s) => s.name.trim().toLowerCase() === skillName.trim().toLowerCase()
+      );
+      if (existing) {
+        selected.push(existing.id);
+        return { list, selected, idCounter };
+      }
+      const newId = String(idCounter++);
+      const newSkill = { id: newId, name: skillName, isCustom: true || isCustom };
+      return {
+        list: [...list, newSkill],
+        selected: [...selected, newId],
+        idCounter,
+      };
+    };
+
+    data.forEach((skill) => {
+      if (!skill?.name) return;
+      if (skill.type === "HARD") {
+        const res = findOrAdd(workingHard, selectedHard, skill.name, skill.isCustom);
+        workingHard = res.list;
+        selectedHard.splice(0, selectedHard.length, ...res.selected);
+        idCounter = res.idCounter;
+      } else if (skill.type === "SOFT") {
+        const res = findOrAdd(workingSoft, selectedSoft, skill.name, skill.isCustom);
+        workingSoft = res.list;
+        selectedSoft.splice(0, selectedSoft.length, ...res.selected);
+        idCounter = res.idCounter;
+      } else if (skill.type === "LANGUAGE") {
+        const res = findOrAdd(workingLang, selectedLang, skill.name, skill.isCustom);
+        workingLang = res.list;
+        selectedLang.splice(0, selectedLang.length, ...res.selected);
+        idCounter = res.idCounter;
+      }
+    });
+
+    setHardSkills(workingHard);
+    setSoftSkills(workingSoft);
+    setLanguages(workingLang);
+    setSelectedHardSkills(selectedHard);
+    setSelectedSoftSkills(selectedSoft);
+    setSelectedLanguages(selectedLang);
+    setNextId(idCounter);
+    hydratedRef.current = true;
+  }, [data, baseMax]);
+
+  const buildFormattedSkills = () => {
+    const formatted: FormattedSkill[] = [];
+
+    hardSkills
+      .filter((s) => selectedHardSkills.includes(s.id))
+      .forEach((s) =>
+        formatted.push({ name: s.name, type: "HARD", isCustom: s.isCustom })
+      );
+
+    softSkills
+      .filter((s) => selectedSoftSkills.includes(s.id))
+      .forEach((s) =>
+        formatted.push({ name: s.name, type: "SOFT", isCustom: s.isCustom })
+      );
+
+    languages
+      .filter((l) => selectedLanguages.includes(l.id))
+      .forEach((l) =>
+        formatted.push({ name: l.name, type: "LANGUAGE", isCustom: l.isCustom })
+      );
+
+    return formatted;
+  };
+
   // Register snapshot getter so parent can pull values on navigation
   useEffect(() => {
-    const getSnapshot = (): FormattedSkill[] => {
-      const formattedSkills: FormattedSkill[] = [];
-
-      // Add selected hard skills
-      hardSkills
-        .filter((s) => selectedHardSkills.includes(s.id))
-        .forEach((s) => {
-          formattedSkills.push({
-            name: s.name,
-            type: "HARD",
-            isCustom: s.isCustom,
-          });
-        });
-
-      // Add selected soft skills
-      softSkills
-        .filter((s) => selectedSoftSkills.includes(s.id))
-        .forEach((s) => {
-          formattedSkills.push({
-            name: s.name,
-            type: "SOFT",
-            isCustom: s.isCustom,
-          });
-        });
-
-      // Add selected languages
-      languages
-        .filter((l) => selectedLanguages.includes(l.id))
-        .forEach((l) => {
-          formattedSkills.push({
-            name: l.name,
-            type: "LANGUAGE",
-            isCustom: l.isCustom,
-          });
-        });
-
-      return formattedSkills;
-    };
-    onSnapshot?.(getSnapshot);
+    const formatted = buildFormattedSkills();
+    onUpdate(formatted);
+    onSnapshot?.(() => buildFormattedSkills());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     hardSkills,

@@ -8,11 +8,8 @@ import {
   MapPin,
   Calendar,
   FileText,
-  Download,
-  CheckCircle,
   Clock,
   AlertCircle,
-  ExternalLink,
 } from "lucide-react";
 import { useParams } from "next/navigation";
 import {
@@ -20,11 +17,11 @@ import {
   useSubmissionStatusMutation,
 } from "@/src/redux/features/submissions";
 import { toast } from "sonner";
-import Link from "next/link";
-import { pdf } from "@react-pdf/renderer";
-import { ResumePDF } from "@/components/dashboard/submissions/ResumeDownload";
 import previewImage from "@/public/images/10.png";
 import Image from "next/image";
+import { ResumeDownloadModal } from "@/components/dashboard/submissions/ResumeDownloadModal";
+import { TemplatePreviewModal } from "@/components/dashboard/submissions/TemplatePreviewModal";
+import ApprovedModal from "@/components/dashboard/submissions/ApprovedModal";
 
 interface SubmissionDetails {
   id: string;
@@ -132,18 +129,6 @@ export default function SubmissionDetailsPage() {
     status: mapStatus(apiItem?.status || ""),
   };
 
-  const handleApprove = async () => {
-    const res = await submissionStatus({
-      id,
-      status: "APPROVED",
-    });
-    if (res?.data?.success) {
-      toast.success("Submission status approved");
-    } else {
-      toast.error("Something wont wrong");
-    }
-  };
-
   const handlePending = async () => {
     const res = await submissionStatus({
       id,
@@ -152,7 +137,12 @@ export default function SubmissionDetailsPage() {
     if (res?.data?.success) {
       toast.success("Submission status pending");
     } else {
-      toast.error("Something wont wrong");
+      const errorMessage =
+        ("error" in res && res.error && "data" in res.error
+          ? (res.error.data as any)?.message?.message ||
+            (res.error.data as any)?.message
+          : null) || "Something went wrong";
+      toast.error(errorMessage);
     }
   };
 
@@ -164,7 +154,12 @@ export default function SubmissionDetailsPage() {
     if (res?.data?.success) {
       toast.success("Submission status revision");
     } else {
-      toast.error("Something wont wrong");
+      const errorMessage =
+        ("error" in res && res.error && "data" in res.error
+          ? (res.error.data as any)?.message?.message ||
+            (res.error.data as any)?.message
+          : null) || "Something went wrong";
+      toast.error(errorMessage);
     }
   };
 
@@ -179,18 +174,6 @@ export default function SubmissionDetailsPage() {
       </div>
     );
   }
-
-  const downloadAsPdf = async () => {
-    const blob = await pdf(<ResumePDF />).toBlob();
-
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `${"download"}.pdf`;
-    a.click();
-    URL.revokeObjectURL(url);
-    toast.success("Download resume");
-  };
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
@@ -282,13 +265,8 @@ export default function SubmissionDetailsPage() {
 
           {/* Action Buttons */}
           <div className="space-y-3">
-            <button
-              onClick={handleApprove}
-              className="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2 cursor-pointer"
-            >
-              <CheckCircle className="w-5 h-5" />
-              Approve Submission
-            </button>
+            {/* Approved Modal */}
+            <ApprovedModal />
 
             <button
               onClick={handlePending}
@@ -306,14 +284,16 @@ export default function SubmissionDetailsPage() {
               Revision
             </button>
 
-            <button
+            {/* Download Resume */}
+            {/* <button
               onClick={downloadAsPdf}
               type="button"
               className="w-full border border-gray-300 hover:bg-gray-50 text-[#4a4c56] font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2 cursor-pointer"
             >
               <Download className="w-5 h-5" />
               Download PDF
-            </button>
+            </button> */}
+            <ResumeDownloadModal />
           </div>
         </div>
 
@@ -389,40 +369,25 @@ export default function SubmissionDetailsPage() {
           </div>
 
           {/* Template Preview */}
-          <Link href={`/dashboard/submissions/preview/${id}`}>
-            <div className="group bg-white rounded-lg p-4 md:p-6 shadow-sm cursor-pointer">
-              <h3 className="text-lg font-semibold text-[#4a4c56] mb-4">
-                Template Preview
-              </h3>
+          <div className="bg-white rounded-lg p-4 md:p-6 shadow-sm">
+            <h3 className="text-lg font-semibold text-[#4a4c56] mb-4">
+              Template Preview
+            </h3>
 
-              {/* Preview Container */}
-              <div className="relative border-2 border-dashed border-gray-300 rounded-3xl overflow-hidden flex items-center justify-center h-[450px]">
-                {/* Image */}
-                <Image
-                  src={previewImage}
-                  alt="image"
-                  fill
-                  className="object-cover"
-                />
-
-                {/* Hover Overlay */}
-                <div
-                  className="absolute inset-0 bg-black/30 flex items-center justify-center
-                      opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                >
-                  <button
-                    className="flex items-center gap-2 px-6 py-3 bg-white text-[#1e3a8a]
-             font-semibold rounded-full shadow-lg
-             hover:bg-[#1e3a8a] hover:text-white
-             transition-all duration-300 cursor-pointer"
-                  >
-                    Preview
-                    <ExternalLink className="w-5 h-5" />
-                  </button>
-                </div>
-              </div>
+            {/* Preview Container */}
+            <div className="relative border-2 border-dashed border-gray-300 rounded-3xl overflow-hidden flex items-center justify-center h-[450px] mb-4">
+              {/* Image */}
+              <Image
+                src={previewImage}
+                alt="image"
+                fill
+                className="object-cover"
+              />
             </div>
-          </Link>
+
+            {/* Preview Button */}
+            <TemplatePreviewModal submissionId={id} />
+          </div>
         </div>
       </div>
     </div>

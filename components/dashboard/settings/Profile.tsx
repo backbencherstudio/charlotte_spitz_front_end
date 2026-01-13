@@ -16,7 +16,10 @@ import { Pencil, User } from "lucide-react";
 
 import { toast } from "sonner";
 import Image from "next/image";
-import { useGetProfileQuery, useUpdateProfileMutation } from "@/src/redux/features/(auth)/profile";
+import {
+  useGetProfileQuery,
+  useUpdateProfileMutation,
+} from "@/src/redux/features/(auth)/profile";
 
 export default function Profile() {
   const { data: profileData } = useGetProfileQuery({});
@@ -31,11 +34,14 @@ export default function Profile() {
     language: "",
     image: "",
   });
+  const [selectedImageFile, setSelectedImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string>("");
 
   // Set default values when profileData is available
   useEffect(() => {
     const func = () => {
       if (profileData?.data) {
+        const avatarUrl = profileData.data.userProfile?.avatar || "";
         setFormData({
           first_name: profileData.data.userProfile?.firstName || "",
           last_name: profileData.data.userProfile?.lastName || "",
@@ -43,12 +49,22 @@ export default function Profile() {
           phoneNumber: profileData.data.userProfile?.phoneNumber || "",
           designation: profileData.data.userProfile?.designation || "",
           language: profileData.data.userProfile?.language || "",
-          image: profileData.data.userProfile?.avatar || "",
+          image: avatarUrl,
         });
+        setImagePreview(avatarUrl);
       }
     };
     func();
   }, [profileData]);
+
+  // Cleanup blob URL when component unmounts or image changes
+  useEffect(() => {
+    return () => {
+      if (imagePreview && imagePreview.startsWith("blob:")) {
+        URL.revokeObjectURL(imagePreview);
+      }
+    };
+  }, [imagePreview]);
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -57,22 +73,21 @@ export default function Profile() {
   const handleSave = async () => {
     const payload = new FormData();
 
-    payload.append("first_name", formData.first_name);
-    payload.append("last_name", formData.last_name);
+    payload.append("firstName", formData.first_name);
+    payload.append("lastName", formData.last_name);
     payload.append("email", formData.email);
     payload.append("phoneNumber", formData.phoneNumber);
     payload.append("designation", formData.designation);
     payload.append("language", formData.language);
 
-    if (formData.image) {
-      payload.append("image", formData.image);
+    if (selectedImageFile) {
+      payload.append("image", selectedImageFile);
     }
 
     try {
       const res = await updateProfile(payload);
       if (res?.data?.success) {
         toast.success(res?.data?.message);
-      
       } else {
         toast.error("Something went wrong");
       }
@@ -104,6 +119,7 @@ export default function Profile() {
                       width={100}
                       height={100}
                       className="object-cover"
+                      crossOrigin="anonymous"
                     />
                   ) : (
                     <User className="size-16 text-muted-foreground" />
@@ -188,13 +204,14 @@ export default function Profile() {
               <h4 className="font-bold text-lg">Profile Image</h4>
               <div className="relative inline-block">
                 <div className="size-24 rounded-full bg-muted flex items-center justify-center overflow-hidden border border-[#5952FF]">
-                  {formData.image ? (
+                  {imagePreview ? (
                     <Image
-                      src={formData.image}
+                      src={imagePreview}
                       alt="Profile"
                       width={100}
                       height={100}
                       className="object-cover"
+                      crossOrigin="anonymous"
                     />
                   ) : (
                     <User className="size-16 text-muted-foreground" />
@@ -213,11 +230,14 @@ export default function Profile() {
                   accept="image/*"
                   onChange={(e) => {
                     if (e.target.files && e.target.files[0]) {
-                      handleInputChange(
-                        "image",
-                        URL.createObjectURL(e.target.files[0])
-                      );
-                      // If you need to send the actual file to the backend, you might want to store it differently
+                      const file = e.target.files[0];
+                      // Clean up previous blob URL if it exists
+                      if (imagePreview && imagePreview.startsWith("blob:")) {
+                        URL.revokeObjectURL(imagePreview);
+                      }
+                      setSelectedImageFile(file);
+                      const previewUrl = URL.createObjectURL(file);
+                      setImagePreview(previewUrl);
                     }
                   }}
                   className="hidden"
@@ -232,7 +252,7 @@ export default function Profile() {
                   First Name
                 </Label>
                 <Input
-                  id="first_name"
+                  id="firstName"
                   placeholder="Enter your name"
                   value={formData.first_name}
                   onChange={(e) =>
@@ -246,7 +266,7 @@ export default function Profile() {
                   Last Name
                 </Label>
                 <Input
-                  id="last_name"
+                  id="lastName"
                   placeholder="Enter your last name"
                   value={formData.last_name}
                   onChange={(e) =>
@@ -262,6 +282,7 @@ export default function Profile() {
                 <Input
                   id="email"
                   type="email"
+                  disabled
                   placeholder="Enter your email"
                   value={formData.email}
                   onChange={(e) => handleInputChange("email", e.target.value)}
