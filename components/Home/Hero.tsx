@@ -1,55 +1,54 @@
-'use client';
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import { MdArrowOutward } from 'react-icons/md';
-import { PiClockCountdown } from 'react-icons/pi';
-import Button from '../reusable/Button';
-import { ATSDashboard } from './ATSDashboard';
-import { ATSScoreCard } from './ATSScoreCard';
-import { ResumePreview } from './ResumePreview';
+"use client";
+import { useRouter } from "next/navigation";
+import { MdArrowOutward } from "react-icons/md";
+import { PiClockCountdown } from "react-icons/pi";
+import Button from "../reusable/Button";
+import { ATSDashboard } from "./ATSDashboard";
+import { ATSScoreCard } from "./ATSScoreCard";
+import { ResumePreview } from "./ResumePreview";
 const sampleResumeData = {
-  name: 'John Smith',
-  email: 'john.smith@example.com',
-  phone: '(555) 123-0567',
-  location: 'New York, NY',
+  name: "John Smith",
+  email: "john.smith@example.com",
+  phone: "(555) 123-0567",
+  location: "New York, NY",
   summary: `Experienced software engineer with over 8 years of expertise in developing
 scalable web applications and leading development teams. Proficient in JavaScript,React, and Node.js, with a proven track record of delivering high-quality code that meets both technical and business requirements.`,
   experience: [
     {
-      id: '1',
-      position: 'Senior Software Engineer',
-      company: 'TechCorp',
-      date: '2022 - Present',
-      location: 'New York, NY',
+      id: "1",
+      position: "Senior Software Engineer",
+      company: "TechCorp",
+      date: "2022 - Present",
+      location: "New York, NY",
       achievements: [
-        'Led the development of a customer-facing portal that increased user engagement ',
-        'Architected and implemented RESTful APIs serving 1M+ daily requests',
+        "Led the development of a customer-facing portal that increased user engagement ",
+        "Architected and implemented RESTful APIs serving 1M+ daily requests",
       ],
     },
     {
-      id: '2',
-      position: 'Software Engineer',
-      company: 'SoftCorp',
-      date: '2017 - 2020',
-      location: 'Boston, MA',
+      id: "2",
+      position: "Software Engineer",
+      company: "SoftCorp",
+      date: "2017 - 2020",
+      location: "Boston, MA",
       achievements: [
-        'Led the development of a customer-facing portal that increased user engagement ',
-        'Architected and implemented RESTful APIs serving 1M+ daily requests',
+        "Led the development of a customer-facing portal that increased user engagement ",
+        "Architected and implemented RESTful APIs serving 1M+ daily requests",
       ],
     },
   ],
   education: [
     {
-      id: '1',
-      degree: 'Bachelor of Science in Computer Science',
-      school: 'Massachusetts Institute of Technology',
-      date: '2017',
+      id: "1",
+      degree: "Bachelor of Science in Computer Science",
+      school: "Massachusetts Institute of Technology",
+      date: "2017",
     },
   ],
   skills: {
-    languages: ['JavaScript', 'TypeScript', 'Python', 'Java'],
-    frameworks: ['React', 'Node.js', 'Express', 'Next.js'],
-    tools: ['Git', 'Docker', 'AWS', 'PostgreSQL', 'MongoDB'],
+    languages: ["JavaScript", "TypeScript", "Python", "Java"],
+    frameworks: ["React", "Node.js", "Express", "Next.js"],
+    tools: ["Git", "Docker", "AWS", "PostgreSQL", "MongoDB"],
   },
 };
 
@@ -57,7 +56,7 @@ const HeroSection = () => {
   const router = useRouter();
   return (
     <section className="relative">
-      <div className="absolute bottom-0 right-0 min-[1024px]:max-w-[300px] min-[768px]:max-w-[450px] min-[1280px]:max-w-[500px] min-[1600px]:max-w-[600px] w-full h-[550px] z-0 bg-primaryColor" />
+      <div className="absolute bottom-0 right-0 min-[1024px]:max-w-75 min-[768px]:max-w-112.5 min-[1280px]:max-w-125 min-[1600px]:max-w-150 w-full h-137.5 z-0 bg-primaryColor" />
       <div className="py-10">
         <div className="container grid grid-cols-1 gap-6 lg:gap-0 lg:grid-cols-11 h-full items-center  ">
           <div className="lg:col-span-6 md:mr-10">
@@ -72,7 +71,7 @@ const HeroSection = () => {
 
             <div>
               <h1 className="md:text-[56px] text-3xl font-bold text-black leading-[120%] mb-4">
-                Your Next Job Starts in the{' '}
+                Your Next Job Starts in the{" "}
                 <span className=" text-[#2920FE]">Dirt You Dig.</span>
               </h1>
             </div>
@@ -109,13 +108,13 @@ const HeroSection = () => {
                 <div>
                   <div className="text-xl font-bold text-[#07080B]">2 min</div>
                   <div className="text-sm text-descriptionColor">
-                    its only takes 2 min
+                    It only takes two minutes.
                   </div>
                 </div>
               </div>
             </div>
             <Button
-              onClick={() => router.push('/personal-info')}
+              onClick={() => router.push("/personal-info")}
               icon={
                 <MdArrowOutward className="w-5 h-5 transition-transform duration-200" />
               }
@@ -128,7 +127,7 @@ const HeroSection = () => {
             <div className="w-full hero-Shadow2 rounded-lg border border-gray-100 bg-white  shadow-lg  p-3">
               <ResumePreview data={sampleResumeData} />
             </div>
-            <div className=" absolute top-0 -right-3.5 min-[1024px]:-right-3 min-[1400px]:-right-16 min-[1600px]:-right-[200px] h-full ">
+            <div className=" absolute top-0 -right-3.5 min-[1024px]:-right-3 min-[1400px]:-right-16 min-[1600px]:-right-50 h-full ">
               <div className="h-full flex flex-col justify-center md:justify-between gap-4">
                 <ATSScoreCard
                   score={75}
