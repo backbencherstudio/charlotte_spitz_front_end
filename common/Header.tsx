@@ -15,7 +15,6 @@ export default function Header({
   isSidebarOpen,
 }: HeaderProps) {
   const { data: profileData } = useGetProfileQuery({});
-  console.log("profileData -->", profileData?.data?.userProfile?.avatar);
   return (
     <div className="w-full bg-white">
       <div className="flex items-center justify-between px-2 md:px-6 py-4">
