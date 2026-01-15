@@ -1,8 +1,9 @@
 "use client";
 
-import React from "react";
 import { Search, Bell, User, Menu, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { useGetProfileQuery } from "@/src/redux/features/(auth)/profile";
+import Image from "next/image";
 
 interface HeaderProps {
   onToggleSidebar: () => void;
@@ -13,6 +14,8 @@ export default function Header({
   onToggleSidebar,
   isSidebarOpen,
 }: HeaderProps) {
+  const { data: profileData } = useGetProfileQuery({});
+  console.log("profileData -->", profileData?.data?.userProfile?.avatar);
   return (
     <div className="w-full bg-white">
       <div className="flex items-center justify-between px-2 md:px-6 py-4">
@@ -52,9 +55,18 @@ export default function Header({
           </button>
 
           {/* User profile icon */}
-          <button className="relative flex items-center justify-center w-10 h-10 rounded-full bg-white hover:bg-gray-100 transition-colors border border-gray-200">
+          {profileData?.data?.userProfile?.avatar ? (
+            <Image
+              src={profileData?.data?.userProfile?.avatar}
+              alt="Profile"
+              width={34}
+              height={34}
+              className="object-cover rounded-full"
+              crossOrigin="anonymous"
+            />
+          ) : (
             <User className="h-5 w-5 text-gray-600" />
-          </button>
+          )}
         </div>
       </div>
     </div>

@@ -8,6 +8,7 @@ import MostUsedTemplates, {
 } from "@/components/reusable/MostUsedTemplates";
 import { DashboardChart } from "@/components/reusable/DashboardChart";
 import { useGetAllOverviewQuery } from "@/src/redux/features/dashboard";
+import { useGetProfileQuery } from "@/src/redux/features/(auth)/profile";
 
 // JSON data for most used templates
 const mostUsedTemplatesData: TemplateData[] = [
@@ -33,10 +34,14 @@ const mostUsedTemplatesData: TemplateData[] = [
 
 export default function DashboardPage() {
   const { data: dashboardData } = useGetAllOverviewQuery({});
+  const { data: profileData } = useGetProfileQuery({});
+  // console.log("profileData -->", profileData?.data?.userProfile?.firstName);
   return (
     <div className="p-4 sm:p-6 bg-gray-50 min-h-screen">
       <div className="mb-6">
-        <h1 className="text-2xl md:text-4xl font-semibold mb-2">Good Morning, Smith 👋 </h1>
+        <h1 className="text-2xl md:text-4xl font-semibold mb-2">
+          Good Morning, {profileData?.data?.userProfile?.firstName} 👋
+        </h1>
         <p className="text-sm text-gray-500">
           Welcome to Syntera Admin — Manage submissions, approvals, tokens, and
           platform activity.
