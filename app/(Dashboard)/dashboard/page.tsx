@@ -35,7 +35,6 @@ const mostUsedTemplatesData: TemplateData[] = [
 export default function DashboardPage() {
   const { data: dashboardData } = useGetAllOverviewQuery({});
   const { data: profileData } = useGetProfileQuery({});
-  // console.log("profileData -->", profileData?.data?.userProfile?.firstName);
   return (
     <div className="p-4 sm:p-6 bg-gray-50 min-h-screen">
       <div className="mb-6">
