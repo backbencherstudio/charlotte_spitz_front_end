@@ -64,9 +64,9 @@ const LoginForm = () => {
   };
   return (
     <div className="bg-white rounded-[10px] p-8">
-      <h2 className="text-[32px] font-medium text-[#070707] mb-12">
+      {/* <h2 className="text-[32px] font-medium text-[#070707] mb-12">
         Admin Login
-      </h2>
+      </h2> */}
 
       <form onSubmit={handleSubmit(onSubmit)}>
         {/* Email Field */}
@@ -84,11 +84,10 @@ const LoginForm = () => {
                 message: "Invalid email format",
               },
             })}
-            className={`w-full px-2.5 py-2.75 border rounded-xl outline-none transition-colors mb-2 ${
-              errors.name
+            className={`w-full px-2.5 py-2.75 border rounded-xl outline-none transition-colors mb-2 ${errors.name
                 ? "border-red-500 focus:ring-2 focus:ring-red-500"
                 : "border-gray-300 focus:ring-2 focus:ring-primaryColor"
-            }`}
+              }`}
           />
           {errors.email && (
             <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>
@@ -111,11 +110,10 @@ const LoginForm = () => {
                   message: "Password must be at least 8 characters",
                 },
               })}
-              className={`w-full px-2.5 py-2.75 border rounded-xl outline-none transition-colors mb-2 ${
-                errors.name
+              className={`w-full px-2.5 py-2.75 border rounded-xl outline-none transition-colors mb-2 ${errors.name
                   ? "border-red-500 focus:ring-2 focus:ring-red-500"
                   : "border-gray-300 focus:ring-2 focus:ring-primaryColor"
-              }`}
+                }`}
             />
             <button
               type="button"
