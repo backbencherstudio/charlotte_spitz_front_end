@@ -11,7 +11,7 @@ import {
   X,
 } from "lucide-react";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import React from "react";
 
 interface NavItem {
@@ -34,28 +34,32 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
     },
     {
       icon: <FileText size={20} />,
-      label: "Submissions",
-      href: "/dashboard/submissions",
+      label: "Donation History",
+      href: "/dashboard/donation-history",
     },
     {
       icon: <FolderOpen size={20} />,
-      label: "Templates",
-      href: "/dashboard/templates",
+      label: "Earning",
+      href: "/dashboard/earning",
     },
     {
       icon: <CreditCard size={20} />,
-      label: "Subscriptions",
-      href: "/dashboard/subscriptions",
+      label: "User",
+      href: "/dashboard/user",
     },
     {
       icon: <BarChart3 size={20} />,
-      label: "Activity Logs",
-      href: "/dashboard/activity-logs",
+      label: "Analytics",
+      href: "/dashboard/analytics",
+    },
+    {
+      icon: <BarChart3 size={20} />,
+      label: "Setting",
+      href: "/dashboard/setting",
     },
   ];
 
   const pathname = usePathname();
-  const router = useRouter();
 
   const isActive = (href: string): boolean => {
     const pathWithoutLocale =
@@ -103,11 +107,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
         </div>
 
         {/* App Name Section */}
-        <div className="px-6 py-6">
+        {/* <div className="px-6 py-6">
           <Link href="/" className="block">
             <h1 className="text-3xl font-bold text-[#5952FF]">CVdigger</h1>
           </Link>
-        </div>
+        </div> */}
 
         {/* Navigation Items */}
         <div className="px-4 space-y-1">
