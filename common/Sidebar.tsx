@@ -106,14 +106,14 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
         </div>
 
         {/* App Name Section */}
-        {/* <div className="px-6 py-6">
+        <div className="px-6 py-6">
           <Link href="/" className="block">
             <h1 className="text-3xl font-bold text-[#5952FF]">CVdigger</h1>
           </Link>
-        </div> */}
+        </div>
 
         {/* Navigation Items */}
-        <div className="px-4 space-y-1 pt-8">
+        <div className="px-4 space-y-1 ">
           {navItems.map((item, idx) => {
             const active = isActive(item.href);
             return (
