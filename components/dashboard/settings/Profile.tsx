@@ -134,7 +134,7 @@ export default function Profile() {
                 <p className="text-sm text-muted-foreground mt-1">
                   {profileData?.data?.userProfile?.designation || "N/A"}
                 </p>
-                <p className="text-sm font-semibold">Dhaka, Bangladesh</p>
+                <p className="text-sm font-semibold">United States</p>
               </div>
             </div>
 
