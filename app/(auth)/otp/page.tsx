@@ -1,4 +1,3 @@
-import LoginForm from "@/components/auth/login-form";
 import OtpForm from "@/components/auth/otp-form";
 import Image from "next/image";
 import { Suspense } from "react";
@@ -8,9 +7,9 @@ function OtpPage() {
     <section className="bg-[#705AEF]">
       <div className="container">
         <div className="w-full grid grid-cols-1 lg:grid-cols-2 min-h-screen items-center justify-center gap-8 py-10">
-          <div>
+          <div className="overflow-hidden rounded-3xl">
             <Image
-              src="/images/auth.png"
+              src="/images/auth.jpg"
               alt="Signup Illustration"
               width={500}
               height={500}
