@@ -38,9 +38,6 @@ const LoginForm = () => {
     // console.log("Form submitted:", data);
     try {
       const response = await login(data);
-      // console.log(response?.data?.data?.accessToken);
-      console.log(response);
-      console.log(response?.data?.user?.role);
 
       if (response?.data?.success) {
         SetCookies(
@@ -85,8 +82,8 @@ const LoginForm = () => {
               },
             })}
             className={`w-full px-2.5 py-2.75 border rounded-xl outline-none transition-colors mb-2 ${errors.name
-                ? "border-red-500 focus:ring-2 focus:ring-red-500"
-                : "border-gray-300 focus:ring-2 focus:ring-primaryColor"
+              ? "border-red-500 focus:ring-2 focus:ring-red-500"
+              : "border-gray-300 focus:ring-2 focus:ring-primaryColor"
               }`}
           />
           {errors.email && (
@@ -111,8 +108,8 @@ const LoginForm = () => {
                 },
               })}
               className={`w-full px-2.5 py-2.75 border rounded-xl outline-none transition-colors mb-2 ${errors.name
-                  ? "border-red-500 focus:ring-2 focus:ring-red-500"
-                  : "border-gray-300 focus:ring-2 focus:ring-primaryColor"
+                ? "border-red-500 focus:ring-2 focus:ring-red-500"
+                : "border-gray-300 focus:ring-2 focus:ring-primaryColor"
                 }`}
             />
             <button
