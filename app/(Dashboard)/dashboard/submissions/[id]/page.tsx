@@ -140,7 +140,7 @@ export default function SubmissionDetailsPage() {
       const errorMessage =
         ("error" in res && res.error && "data" in res.error
           ? (res.error.data as any)?.message?.message ||
-            (res.error.data as any)?.message
+          (res.error.data as any)?.message
           : null) || "Something went wrong";
       toast.error(errorMessage);
     }
@@ -157,7 +157,7 @@ export default function SubmissionDetailsPage() {
       const errorMessage =
         ("error" in res && res.error && "data" in res.error
           ? (res.error.data as any)?.message?.message ||
-            (res.error.data as any)?.message
+          (res.error.data as any)?.message
           : null) || "Something went wrong";
       toast.error(errorMessage);
     }

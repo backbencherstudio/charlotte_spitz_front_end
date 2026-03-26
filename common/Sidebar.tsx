@@ -11,7 +11,7 @@ import {
   X,
 } from "lucide-react";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import React from "react";
 
 interface NavItem {
@@ -52,10 +52,14 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
       label: "Activity Logs",
       href: "/dashboard/activity-logs",
     },
+    // {
+    //   icon: <BarChart3 size={20} />,
+    //   label: "Setting",
+    //   href: "/dashboard/setting",
+    // },
   ];
 
   const pathname = usePathname();
-  const router = useRouter();
 
   const isActive = (href: string): boolean => {
     const pathWithoutLocale =
@@ -79,10 +83,9 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
       {/* Sidebar container */}
       <div
         className={`
-          ${
-            isOpen
-              ? "z-50 h-full overflow-hidden absolute top-0 left-0 xl:relative xl:z-auto"
-              : "h-full hidden xl:flex"
+          ${isOpen
+            ? "z-50 h-full overflow-hidden absolute top-0 left-0 xl:relative xl:z-auto"
+            : "h-full hidden xl:flex"
           }
           flex flex-col
           bg-white
@@ -110,7 +113,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
         </div>
 
         {/* Navigation Items */}
-        <div className="px-4 space-y-1">
+        <div className="px-4 space-y-1 ">
           {navItems.map((item, idx) => {
             const active = isActive(item.href);
             return (
@@ -121,10 +124,9 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
                 className={`
                   flex items-center gap-3 px-3 py-2.5 rounded-lg
                   transition-colors duration-200
-                  ${
-                    active
-                      ? "bg-[#5952FF] text-white"
-                      : "text-black hover:bg-gray-100"
+                  ${active
+                    ? "bg-[#5952FF] text-white"
+                    : "text-black hover:bg-gray-100"
                   }
                 `}
               >

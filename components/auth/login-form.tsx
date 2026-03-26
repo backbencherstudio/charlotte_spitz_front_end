@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import GoogleAuth from "./GoogleAuth";
 import SetCookies from "./token";
 
 interface LoginFormData {
@@ -33,19 +34,16 @@ const LoginForm = () => {
       password: "",
     },
   });
-  console.log(redirect == "/", "params");
+
   const onSubmit = async (data: LoginFormData) => {
     // console.log("Form submitted:", data);
     try {
       const response = await login(data);
-      // console.log(response?.data?.data?.accessToken);
-      console.log(response);
-      console.log(response?.data?.user?.role);
 
       if (response?.data?.success) {
         SetCookies(
           response?.data?.data?.accessToken,
-          response?.data?.data?.user?.role
+          response?.data?.data?.user?.role,
         );
         if (redirect) {
           router.push(redirect);
@@ -64,9 +62,9 @@ const LoginForm = () => {
   };
   return (
     <div className="bg-white rounded-[10px] p-8">
-      <h2 className="text-[32px] font-medium text-[#070707] mb-12">
+      {/* <h2 className="text-[32px] font-medium text-[#070707] mb-12">
         Admin Login
-      </h2>
+      </h2> */}
 
       <form onSubmit={handleSubmit(onSubmit)}>
         {/* Email Field */}
@@ -151,20 +149,28 @@ const LoginForm = () => {
         >
           {isLoading ? "Continue..." : "Continue"}
         </button>
-        {redirect == "/" && (
-          <div>
-            <p className="text-center mt-6 text-sm text-[#101010]">
-              Don&#39;t have an account?{" "}
-              <Link
-                href="/signup"
-                className="text-primaryColor font-medium hover:underline"
-              >
-                Sign Up
-              </Link>
-            </p>
-          </div>
-        )}
       </form>
+      <div>
+        <div className="flex items-center gap-2 my-4 ">
+          <hr className="grow border-t border-[#E9E9EA]" />
+          <span className="text-sm text-grayColor1">Or register with</span>
+          <hr className="grow border-t border-[#E9E9EA]" />
+        </div>
+        <GoogleAuth />
+      </div>
+      {redirect == "/" && (
+        <div>
+          <p className="text-center mt-6 text-sm text-[#101010]">
+            Don&#39;t have an account?{" "}
+            <Link
+              href="/signup"
+              className="text-primaryColor font-medium hover:underline"
+            >
+              Sign Up
+            </Link>
+          </p>
+        </div>
+      )}
     </div>
   );
 };
