@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import GoogleAuth from "./GoogleAuth";
 import SetCookies from "./token";
 
 interface LoginFormData {
@@ -33,7 +34,7 @@ const LoginForm = () => {
       password: "",
     },
   });
-  console.log(redirect == "/", "params");
+
   const onSubmit = async (data: LoginFormData) => {
     // console.log("Form submitted:", data);
     try {
@@ -42,7 +43,7 @@ const LoginForm = () => {
       if (response?.data?.success) {
         SetCookies(
           response?.data?.data?.accessToken,
-          response?.data?.data?.user?.role
+          response?.data?.data?.user?.role,
         );
         if (redirect) {
           router.push(redirect);
@@ -81,10 +82,11 @@ const LoginForm = () => {
                 message: "Invalid email format",
               },
             })}
-            className={`w-full px-2.5 py-2.75 border rounded-xl outline-none transition-colors mb-2 ${errors.name
-              ? "border-red-500 focus:ring-2 focus:ring-red-500"
-              : "border-gray-300 focus:ring-2 focus:ring-primaryColor"
-              }`}
+            className={`w-full px-2.5 py-2.75 border rounded-xl outline-none transition-colors mb-2 ${
+              errors.name
+                ? "border-red-500 focus:ring-2 focus:ring-red-500"
+                : "border-gray-300 focus:ring-2 focus:ring-primaryColor"
+            }`}
           />
           {errors.email && (
             <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>
@@ -107,10 +109,11 @@ const LoginForm = () => {
                   message: "Password must be at least 8 characters",
                 },
               })}
-              className={`w-full px-2.5 py-2.75 border rounded-xl outline-none transition-colors mb-2 ${errors.name
-                ? "border-red-500 focus:ring-2 focus:ring-red-500"
-                : "border-gray-300 focus:ring-2 focus:ring-primaryColor"
-                }`}
+              className={`w-full px-2.5 py-2.75 border rounded-xl outline-none transition-colors mb-2 ${
+                errors.name
+                  ? "border-red-500 focus:ring-2 focus:ring-red-500"
+                  : "border-gray-300 focus:ring-2 focus:ring-primaryColor"
+              }`}
             />
             <button
               type="button"
@@ -146,20 +149,28 @@ const LoginForm = () => {
         >
           {isLoading ? "Continue..." : "Continue"}
         </button>
-        {redirect == "/" && (
-          <div>
-            <p className="text-center mt-6 text-sm text-[#101010]">
-              Don&#39;t have an account?{" "}
-              <Link
-                href="/signup"
-                className="text-primaryColor font-medium hover:underline"
-              >
-                Sign Up
-              </Link>
-            </p>
-          </div>
-        )}
       </form>
+      <div>
+        <div className="flex items-center gap-2 my-4 ">
+          <hr className="grow border-t border-[#E9E9EA]" />
+          <span className="text-sm text-grayColor1">Or register with</span>
+          <hr className="grow border-t border-[#E9E9EA]" />
+        </div>
+        <GoogleAuth />
+      </div>
+      {redirect == "/" && (
+        <div>
+          <p className="text-center mt-6 text-sm text-[#101010]">
+            Don&#39;t have an account?{" "}
+            <Link
+              href="/signup"
+              className="text-primaryColor font-medium hover:underline"
+            >
+              Sign Up
+            </Link>
+          </p>
+        </div>
+      )}
     </div>
   );
 };

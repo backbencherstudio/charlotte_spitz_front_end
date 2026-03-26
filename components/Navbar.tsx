@@ -165,7 +165,6 @@ export default function Navbar() {
             </DropdownMenuContent>
           </DropdownMenu>
         )}
-
         {/* Mobile Menu Toggle */}
         <div className="md:hidden flex items-center gap-2">
           {userData && (
