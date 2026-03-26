@@ -8,7 +8,7 @@ function GoogleAuth() {
   // }
   const fetchGoogleLogin = async () => {
     try {
-      window.location.href = `${process.env.NEXT_PUBLIC_BASE_URL}auth/google`;
+      window.location.href = `https://backend.cvdigger.com/api/auth/google`;
     } catch (error) {
       console.log("google login error", error);
     }
