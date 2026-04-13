@@ -142,7 +142,7 @@ export default function PersonalInfoStep({
             </Label>
             <input
               id="cityState"
-              placeholder="Bangladesh"
+              placeholder="Enter your city & state"
               className="w-full px-6 py-3 border rounded-sm focus:outline-none focus:ring-2 focus:ring-[#5952FF]"
               {...register("city_and_state", {
                 required: "City & State is required",
