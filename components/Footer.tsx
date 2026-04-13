@@ -17,7 +17,7 @@ export default function Footer() {
       <div className="py-16">
         <div className="container">
           {/* TOP SECTION */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 text-center md:text-left">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 text-center md:text-left">
             {/* Logo + tagline */}
             <div>
               <Link
@@ -50,7 +50,7 @@ export default function Footer() {
             </div>
 
             {/* Social Icons */}
-            <div>
+            {/* <div>
               <h1 className="text-white font-bold tracking-wide text-lg text-center">
                 Connect
               </h1>
@@ -72,13 +72,13 @@ export default function Footer() {
                   className="cursor-pointer text-gray-200 hover:text-[#5952FF]"
                 />
               </div>
-            </div>
+            </div> */}
           </div>
 
           {/* BOTTOM SECTION */}
-          <div className="mt-12 md:mt-20 border-t border-gray-600 pt-6 flex flex-col md:flex-row items-center justify-between gap-3 text-gray-400 text-sm md:text-base text-center md:text-left">
-            <p>Copyright 2025 cvtailor ai. All Rights Reserved</p>
-            <p>Made with AI for AI-optimized careers</p>
+          <div className="mt-12 md:mt-20 border-t border-gray-600 pt-6 gap-3 text-gray-400 text-sm md:text-base text-center ">
+            <p>Copyright 2025 CVdigger. All Rights Reserved</p>
+            {/* <p>Made with AI for AI-optimized careers</p> */}
           </div>
         </div>
       </div>
