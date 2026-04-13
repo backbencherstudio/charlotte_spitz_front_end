@@ -42,7 +42,7 @@ const BASE_SOFT_SKILLS: SkillTag[] = [
 ];
 
 const BASE_LANGUAGES: SkillTag[] = [
-  { id: "1", name: "Bangla", isCustom: false },
+  // { id: "1", name: "Bangla", isCustom: false },
   { id: "2", name: "English", isCustom: false },
   { id: "3", name: "Hindi", isCustom: false },
   { id: "4", name: "Spanish", isCustom: false },
@@ -336,11 +336,10 @@ export default function SkillsSection({ data, onUpdate, onSnapshot }: SkillsSect
               <div
                 key={skill.id}
                 onClick={() => selectSoftSkill(skill.id)}
-                className={`inline-flex items-center gap-2 px-2 py-1 hover:bg-primaryColor hover:text-white duration-200 md:px-4 md:py-2.5 border rounded-sm cursor-pointer transition-all ${
-                  selectedSoftSkills.includes(skill.id)
+                className={`inline-flex items-center gap-2 px-2 py-1 hover:bg-primaryColor hover:text-white duration-200 md:px-4 md:py-2.5 border rounded-sm cursor-pointer transition-all ${selectedSoftSkills.includes(skill.id)
                     ? "bg-primaryColor text-white border-primaryColor"
                     : "border-primaryColor text-headerColor"
-                }`}
+                  }`}
               >
                 <span>{skill.name}</span>
               </div>
@@ -396,11 +395,10 @@ export default function SkillsSection({ data, onUpdate, onSnapshot }: SkillsSect
               <div
                 key={lang.id}
                 onClick={() => selectLanguage(lang.id)}
-                className={`inline-flex items-center gap-2 px-2 py-1 hover:bg-primaryColor hover:text-white duration-200  md:px-4 md:py-2.5 border rounded-sm cursor-pointer transition-all ${
-                  selectedLanguages.includes(lang.id)
+                className={`inline-flex items-center gap-2 px-2 py-1 hover:bg-primaryColor hover:text-white duration-200  md:px-4 md:py-2.5 border rounded-sm cursor-pointer transition-all ${selectedLanguages.includes(lang.id)
                     ? "bg-primaryColor text-white border-primaryColor"
                     : "border-primaryColor text-headerColor"
-                }`}
+                  }`}
               >
                 <span>{lang.name}</span>
               </div>

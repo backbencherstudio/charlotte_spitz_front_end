@@ -1,9 +1,6 @@
 "use client";
 
-import { Facebook, Instagram } from "lucide-react";
 import Link from "next/link";
-import { FaXTwitter } from "react-icons/fa6";
-import { LiaLinkedin } from "react-icons/lia";
 
 const quickLinks = [
   { name: "Product", slug: "/" },
