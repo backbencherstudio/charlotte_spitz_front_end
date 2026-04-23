@@ -54,7 +54,7 @@ interface ApiItem {
 const formatPeriod = (
   startDate: string | null | undefined,
   endDate: string | null | undefined,
-  isCurrentRole?: boolean
+  isCurrentRole?: boolean,
 ): string => {
   if (!startDate) return "";
   // Extract just the year from the date
@@ -69,7 +69,7 @@ const formatPeriod = (
 // Helper function to parse bullets from responsibilities and achievements
 const parseBullets = (
   responsibilities?: string,
-  achievements?: string
+  achievements?: string,
 ): string[] => {
   const bullets: string[] = [];
 
@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   name: {
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: "bold",
     color: "#111827",
     marginBottom: 10,
@@ -399,14 +399,14 @@ export const ResumePDF3 = ({ apiItem }: { apiItem: ApiItem | undefined }) => {
             <Text style={styles.name}>{fullName}</Text>
 
             {/* Multiple Titles with Orange Accent on First */}
-            <View style={styles.titlesContainer}>
+            {/* <View style={styles.titlesContainer}>
               {jobTitles.map((title, idx) => (
                 <View key={idx} style={styles.titleRow}>
                   {idx === 0 && <View style={styles.titleAccent} />}
                   <Text style={styles.title}>{title.toUpperCase()}</Text>
                 </View>
               ))}
-            </View>
+            </View> */}
 
             {/* Location with Icon */}
             <View style={styles.locationContainer}>
@@ -468,7 +468,7 @@ export const ResumePDF3 = ({ apiItem }: { apiItem: ApiItem | undefined }) => {
           {/* Contact Section with Profile Picture */}
           <View style={styles.contactSection}>
             {/* Profile Picture Placeholder */}
-            <View style={styles.profileImage} />
+            {styles.profileImage ? <View style={styles?.profileImage} /> : null}
 
             {/* Contact Information */}
             <View style={styles.contactInfo}>

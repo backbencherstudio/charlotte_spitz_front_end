@@ -26,6 +26,8 @@ export function ResumeDownloadModal() {
 
   const apiItem = submissionData?.data?.[0];
 
+  // console.log(" ------------>", apiItem);
+
   const downloadAsPdf = async () => {
     const blob = await pdf(<ResumePDF apiItem={apiItem} />).toBlob();
 
@@ -93,7 +95,7 @@ export function ResumeDownloadModal() {
                   className="w-full border border-gray-300 hover:bg-gray-50 text-[#4a4c56] font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <Download className="w-5 h-5" />
-                  Download PDF 
+                  Download PDF
                 </button>
               </div>
               <div className="space-y-1">
@@ -127,7 +129,7 @@ export function ResumeDownloadModal() {
                   className="w-full border border-gray-300 hover:bg-gray-50 text-[#4a4c56] font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <Download className="w-5 h-5" />
-                  Download PDF 
+                  Download PDF
                 </button>
               </div>
             </div>
