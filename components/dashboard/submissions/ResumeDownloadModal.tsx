@@ -53,6 +53,7 @@ export function ResumeDownloadModal() {
   };
 
   const downloadAsPdf3 = async () => {
+    // console.log(apiItem)
     const blob = await pdf(<ResumePDF3 apiItem={apiItem} />).toBlob();
 
     const url = URL.createObjectURL(blob);

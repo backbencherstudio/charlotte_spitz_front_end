@@ -49,6 +49,7 @@ export default function PersonalInfoStep({
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+
   useEffect(() => {
     onSnapshot?.(() => getValues());
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -57,13 +58,25 @@ export default function PersonalInfoStep({
   const onSubmit = (formData: PersonalInfoData) => {
     const data = {
       ...formData,
-      profileImage
-    }
+      profileImage,
+    };
     onUpdate(data);
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+
+      reader.onloadend = () => {
+        const base64 = reader.result as string;
+
+        // store in localStorage
+        localStorage.setItem("file", base64);
+      };
+
+      reader.readAsDataURL(file);
+    }
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -91,10 +104,12 @@ export default function PersonalInfoStep({
           title="Click to upload photo"
         >
           {profileImage ? (
-            <img
+            <Image
               src={profileImage}
               alt="Profile preview"
               className="w-full h-full object-cover"
+              height={100}
+              width={100}
             />
           ) : (
             <div className="flex flex-col items-center justify-center text-gray-400 group-hover:text-[#5952FF] transition-colors">
@@ -157,7 +172,9 @@ export default function PersonalInfoStep({
         />
 
         <p className="mt-2 text-xs text-gray-400">
-          {profileImage ? "Click to change photo" : "Upload profile photo (optional)"}
+          {profileImage
+            ? "Click to change photo"
+            : "Upload profile photo (optional)"}
         </p>
       </div>
 

@@ -6,6 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { HiOutlineMenu, HiX } from "react-icons/hi";
+import { MdDashboard } from "react-icons/md";
 import { removeToken } from "./auth/token";
 import {
   DropdownMenu,
@@ -13,7 +14,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { MdDashboard } from "react-icons/md";
 type User = {
   id: string;
   email: string;
@@ -45,8 +45,6 @@ export default function Navbar() {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const [userData, setUserData] = useState<User | null>(null);
-
-  console.log(userData)
 
   // Only call API if token exists
   const { data } = useGetLoggedUserQuery() as {
@@ -83,7 +81,7 @@ export default function Navbar() {
               href={item.href}
               className={cn(
                 "hover:text-primaryColor transition",
-                pathname === item.label ? "text-primaryColor" : "text-white"
+                pathname === item.label ? "text-primaryColor" : "text-white",
               )}
             >
               {item.label}
@@ -129,7 +127,7 @@ export default function Navbar() {
 
             <DropdownMenuContent
               align="end"
-              className="min-w-[180px] rounded-xl bg-white shadow-lg p-1"
+              className="min-w-45 rounded-xl bg-white shadow-lg p-1"
             >
               {/* Dashboard */}
               {userData?.role === "ADMIN" && (
@@ -209,7 +207,7 @@ export default function Navbar() {
               href={item.href}
               className={cn(
                 "block text-base py-2",
-                pathname === item.label ? "text-secondaryColor" : "text-white"
+                pathname === item.label ? "text-secondaryColor" : "text-white",
               )}
               onClick={() => setMenuOpen(false)}
             >
