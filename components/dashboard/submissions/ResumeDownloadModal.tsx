@@ -26,7 +26,7 @@ export function ResumeDownloadModal() {
 
   const apiItem = submissionData?.data?.[0];
 
-  console.log(" ------------>", apiItem);
+  // console.log(" ------------>", apiItem);
 
   const downloadAsPdf = async () => {
     const blob = await pdf(<ResumePDF apiItem={apiItem} />).toBlob();

@@ -468,7 +468,7 @@ export const ResumePDF3 = ({ apiItem }: { apiItem: ApiItem | undefined }) => {
           {/* Contact Section with Profile Picture */}
           <View style={styles.contactSection}>
             {/* Profile Picture Placeholder */}
-            {/* <View style={styles.profileImage} /> */}
+            {styles.profileImage ? <View style={styles?.profileImage} /> : null}
 
             {/* Contact Information */}
             <View style={styles.contactInfo}>
