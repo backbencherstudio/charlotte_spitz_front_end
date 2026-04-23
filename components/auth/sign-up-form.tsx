@@ -2,6 +2,7 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { useSignUpMutation } from "@/src/redux/features/(auth)/auth";
 import { Eye, EyeOff } from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -37,14 +38,12 @@ const SignUpForm = () => {
   });
 
   const onSubmit = async (data: SignupFormData) => {
-    console.log("Form submitted:", data);
     const payload = {
       ...data,
       role: "USER",
     };
     try {
       const response = await signUp(payload);
-      console.log(response?.data);
       if (response?.data?.success) {
         router.push(`/otp?email=${data.email}`);
         toast.success(response?.data?.message || "Check your email for otp.");
@@ -77,7 +76,7 @@ const SignUpForm = () => {
                 message: "Name must be at least 2 characters",
               },
             })}
-            className={`w-full px-2.5 py-[11px] border rounded-xl outline-none transition-colors mb-2 ${
+            className={`w-full px-2.5 py-2.75 border rounded-xl outline-none transition-colors mb-2 ${
               errors.first_name
                 ? "border-red-500 focus:ring-2 focus:ring-red-500"
                 : "border-gray-300 focus:ring-2 focus:ring-primaryColor"
@@ -104,7 +103,7 @@ const SignUpForm = () => {
                 message: "Name must be at least 2 characters",
               },
             })}
-            className={`w-full px-2.5 py-[11px] border rounded-xl outline-none transition-colors mb-2 ${
+            className={`w-full px-2.5 py-2.75 border rounded-xl outline-none transition-colors mb-2 ${
               errors.last_name
                 ? "border-red-500 focus:ring-2 focus:ring-red-500"
                 : "border-gray-300 focus:ring-2 focus:ring-primaryColor"
@@ -132,7 +131,7 @@ const SignUpForm = () => {
                 message: "Invalid email format",
               },
             })}
-            className={`w-full px-2.5 py-[11px] border rounded-xl outline-none transition-colors mb-2 ${
+            className={`w-full px-2.5 py-2.75 border rounded-xl outline-none transition-colors mb-2 ${
               errors.first_name
                 ? "border-red-500 focus:ring-2 focus:ring-red-500"
                 : "border-gray-300 focus:ring-2 focus:ring-primaryColor"
@@ -158,7 +157,7 @@ const SignUpForm = () => {
                 message: "Invalid phone format",
               },
             })}
-            className={`w-full px-2.5 py-[11px] border rounded-xl outline-none transition-colors mb-2 ${
+            className={`w-full px-2.5 py-2.75 border rounded-xl outline-none transition-colors mb-2 ${
               errors.first_name
                 ? "border-red-500 focus:ring-2 focus:ring-red-500"
                 : "border-gray-300 focus:ring-2 focus:ring-primaryColor"
@@ -187,7 +186,7 @@ const SignUpForm = () => {
                   message: "Password must be at least 8 characters",
                 },
               })}
-              className={`w-full px-2.5 py-[11px] border rounded-xl outline-none transition-colors mb-2 ${
+              className={`w-full px-2.5 py-2.75 border rounded-xl outline-none transition-colors mb-2 ${
                 errors.first_name
                   ? "border-red-500 focus:ring-2 focus:ring-red-500"
                   : "border-gray-300 focus:ring-2 focus:ring-primaryColor"
@@ -227,20 +226,21 @@ const SignUpForm = () => {
         {/* Submit Button */}
         <button
           type="submit"
+          disabled={isLoading}
           className="w-full bg-primaryColor text-white px-5 py-4 font-semibold rounded-2xl cursor-pointer hover:bg-primaryColor/90"
         >
-          Continue
+          {isLoading ? "Continue..." : "Continue"}
         </button>
 
         {/* Login Link */}
         <p className="text-center text-sm text-gray-600 pt-2">
           Already have an account?{" "}
-          <a
-            href="/login"
+          <Link
+            href="/login?redirect=/"
             className="text-blue-600 hover:underline font-medium"
           >
             Log In
-          </a>
+          </Link>
         </p>
       </form>
     </div>

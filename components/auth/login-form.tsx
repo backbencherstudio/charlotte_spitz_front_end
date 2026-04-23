@@ -36,7 +36,6 @@ const LoginForm = () => {
   });
 
   const onSubmit = async (data: LoginFormData) => {
-    // console.log("Form submitted:", data);
     try {
       const response = await login(data);
 
