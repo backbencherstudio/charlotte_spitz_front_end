@@ -307,7 +307,6 @@ export default function MultiStepForm() {
       updated = { ...formData, references: referencesGetterRef.current() };
     }
     setFormData(updated);
-    console.log("MultiStepForm data (step " + currentStep + "):", updated);
     // Persist snapshot before navigating forward
     try {
       if (typeof window !== "undefined") {
