@@ -1,7 +1,8 @@
 /* eslint-disable jsx-a11y/alt-text */
 "use client";
 
-import { Document, Page, Text, View, StyleSheet, Image } from "@react-pdf/renderer";
+import { Document, Page, Text, View, StyleSheet } from "@react-pdf/renderer";
+import { Image as PdfImage } from "@react-pdf/renderer";
 
 interface WorkExperience {
   jobTitle?: string;
@@ -39,6 +40,7 @@ interface PersonalInfo {
   resumeType?: string;
   linkedinUrl?: string;
   websiteUrl?: string;
+  profilePhotoUrl?: string;
 }
 
 interface SubmissionInfo {
@@ -359,15 +361,15 @@ export const ResumePDF3 = ({ apiItem }: { apiItem: ApiItem | undefined }) => {
 
   const fullName = personalInfo?.fullName || "N/A";
   const location = personalInfo?.city_and_state || "N/A";
-  const professionalSummary = personalInfo?.professionalSummary || "No summary provided";
+  const professionalSummary =
+    personalInfo?.professionalSummary || "No summary provided";
   const email = personalInfo?.email || "";
   const phone = personalInfo?.phoneNumber || "";
   const linkedin = personalInfo?.linkedinUrl || "";
   const website = personalInfo?.websiteUrl || "";
+  const profileImage = personalInfo?.profilePhotoUrl || "";
 
-  // ✅ Get the actual profile photo URL
-  const profilePhotoUrl = personalInfo?.profilePhotoUrl || "";
-
+  // Get job titles - can have multiple titles
   const jobTitles: string[] = [];
   if (personalInfo?.resumeType) {
     const titles = personalInfo.resumeType
@@ -460,15 +462,13 @@ export const ResumePDF3 = ({ apiItem }: { apiItem: ApiItem | undefined }) => {
         <View style={styles.rightColumn}>
           {/* Contact Section with Profile Picture */}
           <View style={styles.contactSection}>
-
-            {/*  Render actual image if URL exists, otherwise show placeholder */}
-            {profilePhotoUrl ? (
-              <Image
-                src={profilePhotoUrl}
-                style={styles.profilePhoto}
+            {/* Profile Picture Placeholder */}
+            {/* {styles.profileImage ? <View style={styles?.profileImage} /> : null} */}
+            {profileImage && (
+              <PdfImage
+                src={profileImage}
+                style={{ width: 80, height: 80, borderRadius: 40 }}
               />
-            ) : (
-              <View style={styles.profilePhotoPlaceholder} />
             )}
 
             {/* Contact Information */}
