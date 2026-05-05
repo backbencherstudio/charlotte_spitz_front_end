@@ -1,15 +1,7 @@
 "use client";
 
-import {
-  Document,
-  Page,
-  Text,
-  View,
-  StyleSheet,
-  Image,
-} from "@react-pdf/renderer";
-
-import image1 from "@/public/images/image 265.png";
+import { Document, Page, Text, View, StyleSheet } from "@react-pdf/renderer";
+import { Image as PdfImage } from "@react-pdf/renderer";
 
 interface ExperienceItem {
   company: string;
@@ -58,6 +50,7 @@ interface PersonalInfo {
   resumeType?: string;
   linkedinUrl?: string;
   websiteUrl?: string;
+  profilePhotoUrl?: string;
 }
 
 interface SubmissionInfo {
@@ -84,7 +77,7 @@ const formatDate = (dateString: string | null | undefined): string => {
 const formatPeriod = (
   startDate: string | null | undefined,
   endDate: string | null | undefined,
-  isCurrentRole?: boolean
+  isCurrentRole?: boolean,
 ): string => {
   if (!startDate) return "";
   const start = formatDate(startDate);
@@ -98,7 +91,7 @@ const formatPeriod = (
 // Helper function to parse bullets from responsibilities and achievements
 const parseBullets = (
   responsibilities?: string,
-  achievements?: string
+  achievements?: string,
 ): string[] => {
   const bullets: string[] = [];
 
@@ -141,6 +134,13 @@ const styles = StyleSheet.create({
     borderRadius: 40,
     marginBottom: 12,
     alignSelf: "center",
+  },
+  profileImage: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    marginRight: 15,
+    backgroundColor: "#E5E7EB",
   },
   name: {
     fontSize: 16,
@@ -239,6 +239,7 @@ export const ResumePDF2 = ({ apiItem }: { apiItem: ApiItem | undefined }) => {
   const workExperiences = submissionInfo?.workExperiences ?? [];
   const educations = submissionInfo?.educations ?? [];
   const skills = submissionInfo?.skills ?? [];
+  const profileImage = personalInfo?.profilePhotoUrl || "";
 
   // Format work experiences
   const experiences: ExperienceItem[] = workExperiences.map(
@@ -247,7 +248,7 @@ export const ResumePDF2 = ({ apiItem }: { apiItem: ApiItem | undefined }) => {
       position: exp.jobTitle || "N/A",
       period: formatPeriod(exp.startDate, exp.endDate, exp.isCurrentRole),
       bullets: parseBullets(exp.responsibilities, exp.achievements),
-    })
+    }),
   );
 
   // Format skills with default proficiency
@@ -283,12 +284,22 @@ export const ResumePDF2 = ({ apiItem }: { apiItem: ApiItem | undefined }) => {
       <Page size="A4" style={styles.page}>
         {/* LEFT SIDEBAR */}
         <View style={styles.sidebar}>
-          <Image src={image1.src} style={styles.avatar} />
+          {profileImage && (
+            <PdfImage
+              src={profileImage}
+              style={{
+                width: 80,
+                height: 80,
+                borderRadius: 40,
+                alignSelf: "center",
+              }}
+            />
+          )}
 
           <Text style={styles.name}>{fullName}</Text>
           <Text style={styles.role}>{jobTitle}</Text>
 
-          <Text style={styles.sidebarTitle}>Details</Text>
+          {/* <Text style={styles.sidebarTitle}>Details</Text> */}
           <Text style={styles.sidebarText}>{location}</Text>
           <Text style={styles.sidebarText}>{phone}</Text>
           <Text style={styles.sidebarText}>{email}</Text>
@@ -307,14 +318,14 @@ export const ResumePDF2 = ({ apiItem }: { apiItem: ApiItem | undefined }) => {
               {formattedSkills.map((skill, i) => (
                 <View key={i} style={styles.skillItem}>
                   <Text style={styles.skillName}>{skill.name}</Text>
-                  <View style={styles.skillBar}>
+                  {/* <View style={styles.skillBar}>
                     <View
                       style={[
                         styles.skillFill,
                         { width: `${skill.proficiency}%` },
                       ]}
                     />
-                  </View>
+                  </View> */}
                 </View>
               ))}
             </>
@@ -348,7 +359,7 @@ export const ResumePDF2 = ({ apiItem }: { apiItem: ApiItem | undefined }) => {
             <>
               <Text style={styles.sectionTitle}>Education</Text>
               {educations.map((edu: Education, idx: number) => (
-                <View key={idx}>
+                <View key={idx} style={{ marginBottom: 8 }}>
                   <Text style={styles.educationTitle}>
                     {edu.institutionName || "N/A"}
                   </Text>

@@ -1,6 +1,7 @@
 "use client";
 
 import { Document, Page, Text, View, StyleSheet } from "@react-pdf/renderer";
+import { Image as PdfImage } from "@react-pdf/renderer";
 
 interface WorkExperience {
   jobTitle?: string;
@@ -37,6 +38,7 @@ interface PersonalInfo {
   resumeType?: string;
   linkedinUrl?: string;
   websiteUrl?: string;
+  profilePhotoUrl?: string;
 }
 
 interface SubmissionInfo {
@@ -356,6 +358,7 @@ export const ResumePDF3 = ({ apiItem }: { apiItem: ApiItem | undefined }) => {
   const phone = personalInfo?.phoneNumber || "";
   const linkedin = personalInfo?.linkedinUrl || "";
   const website = personalInfo?.websiteUrl || "";
+  const profileImage = personalInfo?.profilePhotoUrl || "";
 
   // Get job titles - can have multiple titles
   const jobTitles: string[] = [];
@@ -468,7 +471,13 @@ export const ResumePDF3 = ({ apiItem }: { apiItem: ApiItem | undefined }) => {
           {/* Contact Section with Profile Picture */}
           <View style={styles.contactSection}>
             {/* Profile Picture Placeholder */}
-            {styles.profileImage ? <View style={styles?.profileImage} /> : null}
+            {/* {styles.profileImage ? <View style={styles?.profileImage} /> : null} */}
+            {profileImage && (
+              <PdfImage
+                src={profileImage}
+                style={{ width: 80, height: 80, borderRadius: 40 }}
+              />
+            )}
 
             {/* Contact Information */}
             <View style={styles.contactInfo}>

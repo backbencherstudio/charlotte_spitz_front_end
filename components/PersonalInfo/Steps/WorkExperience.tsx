@@ -41,7 +41,7 @@ export default function WorkExperienceStep({
             achievements: "",
             isCurrentRole: false,
           },
-        ]
+        ],
   );
 
   // Register snapshot getter for parent
@@ -53,7 +53,7 @@ export default function WorkExperienceStep({
   const handleFieldChange = (
     index: number,
     field: keyof WorkExperienceData,
-    value: string | boolean
+    value: string | boolean,
   ) => {
     const updated = [...experiences];
     updated[index] = { ...updated[index], [field]: value };
@@ -174,7 +174,7 @@ export default function WorkExperienceStep({
                     className="cursor-pointer rounded-sm h-5 w-5 data-[state=checked]:bg-primaryColor data-[state=checked]:border-primaryColor"
                     checked={experience.isCurrentRole}
                     onCheckedChange={(checked) =>
-                      handleFieldChange(index,  "isCurrentRole", !!checked)
+                      handleFieldChange(index, "isCurrentRole", !!checked)
                     }
                   />
                   <Label
@@ -242,7 +242,7 @@ export default function WorkExperienceStep({
                 }
               />
             </div>
-            <div className="col-span-2">
+            {/* <div className="col-span-2">
               <Label
                 htmlFor={`achievements-${index}`}
                 className="block mb-2 font-medium text-headerColor"
@@ -259,7 +259,7 @@ export default function WorkExperienceStep({
                   handleFieldChange(index, "achievements", e.target.value)
                 }
               />
-            </div>
+            </div> */}
           </div>
         ))}
         <div>

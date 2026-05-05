@@ -56,7 +56,7 @@ export default function EducationStep({
   const handleFieldChange = (
     index: number,
     field: keyof EducationData,
-    value: string
+    value: string,
   ) => {
     const updated = [...educations];
     updated[index] = { ...updated[index], [field]: value };
@@ -127,7 +127,11 @@ export default function EducationStep({
                 required
                 value={education.degreeOrCertificate}
                 onChange={(e) =>
-                  handleFieldChange(index, "degreeOrCertificate", e.target.value)
+                  handleFieldChange(
+                    index,
+                    "degreeOrCertificate",
+                    e.target.value,
+                  )
                 }
               />
             </div>
@@ -160,7 +164,7 @@ export default function EducationStep({
               </Label>
               <input
                 id={`passingYear-${index}`}
-                type="date"
+                type="text"
                 placeholder="Enter passing year"
                 className="w-full px-6 py-3 border rounded-sm focus:outline-none focus:ring-2 focus:ring-[#5952FF]"
                 required
@@ -176,7 +180,7 @@ export default function EducationStep({
                 htmlFor={`resultOrCGPA`}
                 className="block mb-2 font-medium text-headerColor"
               >
-                Result/CGPA:
+                GPA: (Optional)
               </Label>
               <input
                 id={`resultOrCGPA-${index}`}
