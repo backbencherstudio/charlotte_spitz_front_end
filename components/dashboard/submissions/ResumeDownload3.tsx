@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/alt-text */
 "use client";
 
 import { Document, Page, Text, View, StyleSheet } from "@react-pdf/renderer";
@@ -34,6 +35,7 @@ interface PersonalInfo {
   phoneNumber?: string;
   email?: string;
   city_and_state?: string;
+  profilePhotoUrl: string;
   professionalSummary?: string;
   resumeType?: string;
   linkedinUrl?: string;
@@ -59,7 +61,6 @@ const formatPeriod = (
   isCurrentRole?: boolean,
 ): string => {
   if (!startDate) return "";
-  // Extract just the year from the date
   const startYear = new Date(startDate).getFullYear();
   if (isCurrentRole || !endDate) {
     return `${startYear} - present`;
@@ -145,7 +146,7 @@ const styles = StyleSheet.create({
   titleAccent: {
     width: 4,
     height: 12,
-    backgroundColor: "#FF6B35", // Orange accent
+    backgroundColor: "#FF6B35",
     marginRight: 6,
   },
   title: {
@@ -240,13 +241,25 @@ const styles = StyleSheet.create({
     marginBottom: 25,
     alignItems: "flex-start",
   },
-  profileImage: {
+
+  // ✅ Profile photo — actual image style
+  profilePhoto: {
     width: 80,
     height: 80,
     borderRadius: 40,
     marginRight: 15,
     backgroundColor: "#E5E7EB",
   },
+
+  // Placeholder shown when no photo URL
+  profilePhotoPlaceholder: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    marginRight: 15,
+    backgroundColor: "#E5E7EB",
+  },
+
   contactInfo: {
     flex: 1,
   },
@@ -333,23 +346,19 @@ const styles = StyleSheet.create({
 // Helper function to format education date range
 const formatEducationDateRange = (edu: Education): string => {
   if (!edu.passingYear) return "";
-  // If passingYear contains a range like "2016-2018", return as is
   if (edu.passingYear.includes("-")) {
     return edu.passingYear;
   }
-  // Otherwise, just return the year
   return edu.passingYear;
 };
 
 export const ResumePDF3 = ({ apiItem }: { apiItem: ApiItem | undefined }) => {
-  // Extract data from API
   const submissionInfo = apiItem?.submission;
   const personalInfo = submissionInfo?.personalInfo;
   const workExperiences = submissionInfo?.workExperiences ?? [];
   const educations = submissionInfo?.educations ?? [];
   const skills = submissionInfo?.skills ?? [];
 
-  // Get personal info with fallbacks
   const fullName = personalInfo?.fullName || "N/A";
   const location = personalInfo?.city_and_state || "N/A";
   const professionalSummary =
@@ -363,26 +372,22 @@ export const ResumePDF3 = ({ apiItem }: { apiItem: ApiItem | undefined }) => {
   // Get job titles - can have multiple titles
   const jobTitles: string[] = [];
   if (personalInfo?.resumeType) {
-    // Split resumeType by common separators to get multiple titles
     const titles = personalInfo.resumeType
       .split(/[,|/]/)
       .map((t) => t.trim())
       .filter((t) => t.length > 0);
     jobTitles.push(...titles);
   }
-  // If no titles from resumeType, get from work experiences
   if (jobTitles.length === 0 && workExperiences.length > 0) {
     const firstJobTitle = workExperiences[0]?.jobTitle;
     if (firstJobTitle) {
       jobTitles.push(firstJobTitle);
     }
   }
-  // Fallback
   if (jobTitles.length === 0) {
     jobTitles.push("Professional");
   }
 
-  // Format work experiences
   const experiences = workExperiences.map((exp: WorkExperience) => ({
     company: exp.companyName || "N/A",
     position: exp.jobTitle || "N/A",
@@ -400,20 +405,7 @@ export const ResumePDF3 = ({ apiItem }: { apiItem: ApiItem | undefined }) => {
           {/* Header with Name and Titles */}
           <View style={styles.headerLeft}>
             <Text style={styles.name}>{fullName}</Text>
-
-            {/* Multiple Titles with Orange Accent on First */}
-            {/* <View style={styles.titlesContainer}>
-              {jobTitles.map((title, idx) => (
-                <View key={idx} style={styles.titleRow}>
-                  {idx === 0 && <View style={styles.titleAccent} />}
-                  <Text style={styles.title}>{title.toUpperCase()}</Text>
-                </View>
-              ))}
-            </View> */}
-
-            {/* Location with Icon */}
             <View style={styles.locationContainer}>
-              {/* <Text style={styles.locationIcon}>📍</Text> */}
               <Text style={styles.location}>{location}</Text>
             </View>
           </View>
@@ -483,19 +475,16 @@ export const ResumePDF3 = ({ apiItem }: { apiItem: ApiItem | undefined }) => {
             <View style={styles.contactInfo}>
               {email && (
                 <View style={styles.contactItem}>
-                  {/* <Text style={styles.contactIcon}>✉</Text> */}
                   <Text style={styles.contactText}>{email}</Text>
                 </View>
               )}
               {phone && (
                 <View style={styles.contactItem}>
-                  {/* <Text style={styles.contactIcon}>📞</Text> */}
                   <Text style={styles.contactText}>{phone}</Text>
                 </View>
               )}
               {linkedin && (
                 <View style={styles.contactItem}>
-                  {/* <Text style={styles.contactIcon}>💼</Text> */}
                   <Text style={styles.contactText}>
                     {linkedin.startsWith("http") ? linkedin : `www.${linkedin}`}
                   </Text>
@@ -503,7 +492,6 @@ export const ResumePDF3 = ({ apiItem }: { apiItem: ApiItem | undefined }) => {
               )}
               {website && (
                 <View style={styles.contactItem}>
-                  {/* <Text style={styles.contactIcon}>🌐</Text> */}
                   <Text style={styles.contactText}>
                     {website.startsWith("http") ? website : `www.${website}`}
                   </Text>
