@@ -235,7 +235,7 @@ const formatDate = (dateString: string | null | undefined): string => {
 const formatPeriod = (
   startDate: string | null | undefined,
   endDate: string | null | undefined,
-  isCurrentRole?: boolean
+  isCurrentRole?: boolean,
 ): string => {
   if (!startDate) return "";
   const start = formatDate(startDate);
@@ -249,7 +249,7 @@ const formatPeriod = (
 // Helper function to parse bullets from responsibilities and achievements
 const parseBullets = (
   responsibilities?: string,
-  achievements?: string
+  achievements?: string,
 ): string[] => {
   const bullets: string[] = [];
 
@@ -288,14 +288,30 @@ export const ResumePDF = ({ apiItem }: { apiItem: ApiItem | undefined }) => {
       position: exp.jobTitle || "N/A",
       period: formatPeriod(exp.startDate, exp.endDate, exp.isCurrentRole),
       bullets: parseBullets(exp.responsibilities, exp.achievements),
-    })
+    }),
   );
 
-  // Format skills with default proficiency
-  const formattedSkills: Skill[] = skills.map((skill: SkillData) => ({
-    name: skill.name || "N/A",
-    proficiency: skill.proficiency || 75, // Default proficiency if not provided
-  }));
+  // Separate skills by type
+  const hardSkills: Skill[] = skills
+    .filter((skill: SkillData) => skill.type === "HARD")
+    .map((skill: SkillData) => ({
+      name: skill.name || "N/A",
+      proficiency: skill.proficiency || 75,
+    }));
+
+  const softSkills: Skill[] = skills
+    .filter((skill: SkillData) => skill.type === "SOFT")
+    .map((skill: SkillData) => ({
+      name: skill.name || "N/A",
+      proficiency: skill.proficiency || 75,
+    }));
+
+  const languageSkills: Skill[] = skills
+    .filter((skill: SkillData) => skill.type === "LANGUAGE")
+    .map((skill: SkillData) => ({
+      name: skill.name || "N/A",
+      proficiency: skill.proficiency || 0,
+    }));
 
   // Get personal info with fallbacks
   const fullName = personalInfo?.fullName || "N/A";
@@ -318,6 +334,7 @@ export const ResumePDF = ({ apiItem }: { apiItem: ApiItem | undefined }) => {
       <Page size="A4" style={styles.page}>
         <View style={styles.container}>
           {/* Background Image */}
+          {/* eslint-disable-next-line jsx-a11y/alt-text */}
           <Image src={image1.src} style={styles.backgroundImage} />
           {/* Header Section */}
           <View style={styles.header}>
@@ -390,13 +407,13 @@ export const ResumePDF = ({ apiItem }: { apiItem: ApiItem | undefined }) => {
                 {email}
               </Text>
 
-              {/* Skills Section */}
-              {formattedSkills.length > 0 && (
+              {/* Hard Skills Section */}
+              {hardSkills.length > 0 && (
                 <>
                   <Text style={[styles.sectionTitle, { marginTop: 15 }]}>
-                    Skills
+                    Hard Skills
                   </Text>
-                  {formattedSkills.map((skill, idx) => (
+                  {hardSkills.map((skill, idx) => (
                     <View key={idx} style={styles.skillItem}>
                       <View
                         style={{
@@ -406,19 +423,45 @@ export const ResumePDF = ({ apiItem }: { apiItem: ApiItem | undefined }) => {
                         }}
                       >
                         <Text style={styles.skillName}>{skill.name}</Text>
-                        <Text style={styles.skillName}>
+                        {/* <Text style={styles.skillName}>
                           {skill.proficiency}%
-                        </Text>
+                        </Text> */}
                       </View>
-                      <View style={styles.skillBar}>
+                      {/* <View style={styles.skillBar}>
                         <View
                           style={[
                             styles.skillFill,
                             { width: `${skill.proficiency}%` },
                           ]}
                         />
-                      </View>
+                      </View> */}
                     </View>
+                  ))}
+                </>
+              )}
+
+              {softSkills.length > 0 && (
+                <>
+                  <Text style={[styles.sectionTitle, { marginTop: 15 }]}>
+                    Soft Skills
+                  </Text>
+                  {softSkills.map((skill, idx) => (
+                    <Text key={idx} style={styles.detailItem}>
+                      {skill.name}
+                    </Text>
+                  ))}
+                </>
+              )}
+
+              {languageSkills.length > 0 && (
+                <>
+                  <Text style={[styles.sectionTitle, { marginTop: 15 }]}>
+                    Languages
+                  </Text>
+                  {languageSkills.map((skill, idx) => (
+                    <Text key={idx} style={styles.detailItem}>
+                      {skill.name}
+                    </Text>
                   ))}
                 </>
               )}

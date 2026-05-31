@@ -51,6 +51,8 @@ export default function SubmissionDetailsPage() {
   const apiItem = submissionData?.data?.[0];
   const submissionInfo = apiItem?.submission;
 
+  console.log(" ------------>", submissionInfo);
+
   const personalInfo = submissionInfo?.personalInfo;
   const workExperiences = submissionInfo?.workExperiences ?? [];
   const educations = submissionInfo?.educations ?? [];
@@ -87,7 +89,7 @@ export default function SubmissionDetailsPage() {
           (endDate.getFullYear() - startDate.getFullYear()) * 12 +
           (endDate.getMonth() - startDate.getMonth());
         totalMonths += months;
-      }
+      },
     );
 
     const years = Math.floor(totalMonths / 12);
@@ -140,7 +142,7 @@ export default function SubmissionDetailsPage() {
       const errorMessage =
         ("error" in res && res.error && "data" in res.error
           ? (res.error.data as any)?.message?.message ||
-          (res.error.data as any)?.message
+            (res.error.data as any)?.message
           : null) || "Something went wrong";
       toast.error(errorMessage);
     }
@@ -157,7 +159,7 @@ export default function SubmissionDetailsPage() {
       const errorMessage =
         ("error" in res && res.error && "data" in res.error
           ? (res.error.data as any)?.message?.message ||
-          (res.error.data as any)?.message
+            (res.error.data as any)?.message
           : null) || "Something went wrong";
       toast.error(errorMessage);
     }

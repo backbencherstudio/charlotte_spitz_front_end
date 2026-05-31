@@ -35,7 +35,6 @@ interface PersonalInfo {
   phoneNumber?: string;
   email?: string;
   city_and_state?: string;
-  profilePhotoUrl: string;
   professionalSummary?: string;
   resumeType?: string;
   linkedinUrl?: string;
@@ -122,13 +121,13 @@ const styles = StyleSheet.create({
 
   // Name and Title Section in left column
   headerLeft: {
-    marginBottom: 30,
+    marginBottom: 8,
   },
   name: {
     fontSize: 22,
     fontWeight: "bold",
     color: "#111827",
-    marginBottom: 10,
+    marginBottom: 4,
     letterSpacing: 0.5,
   },
   titlesContainer: {
@@ -158,7 +157,7 @@ const styles = StyleSheet.create({
   locationContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginTop: 8,
+    marginTop: 2,
   },
   locationIcon: {
     fontSize: 9,
@@ -176,7 +175,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#111827",
     marginBottom: 12,
-    marginTop: 20,
+    marginTop: 10,
     paddingBottom: 6,
     borderBottomWidth: 1,
     borderBottomColor: "#D1D5DB",
@@ -185,7 +184,7 @@ const styles = StyleSheet.create({
 
   // Education items in left column
   educationItem: {
-    marginBottom: 20,
+    marginBottom: 10,
   },
   educationHeader: {
     flexDirection: "row",
@@ -226,7 +225,7 @@ const styles = StyleSheet.create({
 
   // Skills section in left column
   skillsList: {
-    marginBottom: 20,
+    marginBottom: 10,
   },
   skillItem: {
     fontSize: 9,
@@ -238,7 +237,7 @@ const styles = StyleSheet.create({
   // Contact section in right column
   contactSection: {
     flexDirection: "row",
-    marginBottom: 25,
+    marginBottom: 10,
     alignItems: "flex-start",
   },
 
@@ -285,7 +284,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#111827",
     marginBottom: 12,
-    marginTop: 20,
+    marginTop: 10,
     paddingBottom: 6,
     borderBottomWidth: 1,
     borderBottomColor: "#111827",
@@ -297,12 +296,12 @@ const styles = StyleSheet.create({
     fontSize: 9,
     color: "#6B7280",
     lineHeight: 1.5,
-    marginBottom: 20,
+    marginBottom: 10,
   },
 
   // Experience items in right column
   experienceItem: {
-    marginBottom: 20,
+    marginBottom: 10,
   },
   experienceHeader: {
     flexDirection: "row",
@@ -358,6 +357,12 @@ export const ResumePDF3 = ({ apiItem }: { apiItem: ApiItem | undefined }) => {
   const workExperiences = submissionInfo?.workExperiences ?? [];
   const educations = submissionInfo?.educations ?? [];
   const skills = submissionInfo?.skills ?? [];
+
+  const hardSkills = skills.filter((skill: SkillData) => skill.type === "HARD");
+  const softSkills = skills.filter((skill: SkillData) => skill.type === "SOFT");
+  const languageSkills = skills.filter(
+    (skill: SkillData) => skill.type === "LANGUAGE",
+  );
 
   const fullName = personalInfo?.fullName || "N/A";
   const location = personalInfo?.city_and_state || "N/A";
@@ -443,16 +448,58 @@ export const ResumePDF3 = ({ apiItem }: { apiItem: ApiItem | undefined }) => {
             </>
           )}
 
-          {/* Skills Section */}
-          {skills.length > 0 && (
+          {(hardSkills.length > 0 ||
+            softSkills.length > 0 ||
+            languageSkills.length > 0) && (
             <>
               <Text style={styles.sectionTitleLeft}>SKILLS</Text>
               <View style={styles.skillsList}>
-                {skills.map((skill: SkillData, idx: number) => (
-                  <Text key={idx} style={styles.skillItem}>
-                    • {skill.name || "N/A"}
-                  </Text>
-                ))}
+                {hardSkills.length > 0 && (
+                  <>
+                    <Text style={[styles.skillItem, { fontWeight: "bold" }]}>
+                      Hard Skills
+                    </Text>
+                    {hardSkills.map((skill: SkillData, idx: number) => (
+                      <Text key={`hard-${idx}`} style={styles.skillItem}>
+                        • {skill.name || "N/A"}
+                      </Text>
+                    ))}
+                  </>
+                )}
+                {softSkills.length > 0 && (
+                  <>
+                    <Text
+                      style={[
+                        styles.skillItem,
+                        { fontWeight: "bold", marginTop: 4 },
+                      ]}
+                    >
+                      Soft Skills
+                    </Text>
+                    {softSkills.map((skill: SkillData, idx: number) => (
+                      <Text key={`soft-${idx}`} style={styles.skillItem}>
+                        • {skill.name || "N/A"}
+                      </Text>
+                    ))}
+                  </>
+                )}
+                {languageSkills.length > 0 && (
+                  <>
+                    <Text
+                      style={[
+                        styles.skillItem,
+                        { fontWeight: "bold", marginTop: 4 },
+                      ]}
+                    >
+                      Languages
+                    </Text>
+                    {languageSkills.map((skill: SkillData, idx: number) => (
+                      <Text key={`lang-${idx}`} style={styles.skillItem}>
+                        • {skill.name || "N/A"}
+                      </Text>
+                    ))}
+                  </>
+                )}
               </View>
             </>
           )}

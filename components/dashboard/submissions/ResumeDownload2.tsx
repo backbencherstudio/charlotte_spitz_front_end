@@ -251,11 +251,24 @@ export const ResumePDF2 = ({ apiItem }: { apiItem: ApiItem | undefined }) => {
     }),
   );
 
-  // Format skills with default proficiency
-  const formattedSkills: Skill[] = skills.map((skill: SkillData) => ({
-    name: skill.name || "N/A",
-    proficiency: skill.proficiency || 75,
-  }));
+  // Separate skills by type
+  const hardSkills: Skill[] = skills
+    .filter((skill: SkillData) => skill.type === "HARD")
+    .map((skill: SkillData) => ({
+      name: skill.name || "N/A",
+      proficiency: skill.proficiency || 75,
+    }));
+
+  const softSkills: Skill[] = skills
+    .filter((skill: SkillData) => skill.type === "SOFT")
+    .map((skill: SkillData) => ({
+      name: skill.name || "N/A",
+      proficiency: skill.proficiency || 75,
+    }));
+
+  const languageSkills = skills.filter(
+    (skill: SkillData) => skill.type === "LANGUAGE" && skill.name,
+  );
 
   // Get personal info with fallbacks
   const fullName = personalInfo?.fullName || "N/A";
@@ -312,21 +325,35 @@ export const ResumePDF2 = ({ apiItem }: { apiItem: ApiItem | undefined }) => {
             </>
           )}
 
-          {formattedSkills.length > 0 && (
+          {hardSkills.length > 0 && (
             <>
-              <Text style={styles.sidebarTitle}>Skills</Text>
-              {formattedSkills.map((skill, i) => (
-                <View key={i} style={styles.skillItem}>
-                  <Text style={styles.skillName}>{skill.name}</Text>
-                  {/* <View style={styles.skillBar}>
-                    <View
-                      style={[
-                        styles.skillFill,
-                        { width: `${skill.proficiency}%` },
-                      ]}
-                    />
-                  </View> */}
-                </View>
+              <Text style={styles.sidebarTitle}>Hard Skills</Text>
+              {hardSkills.map((skill, i) => (
+                <Text key={i} style={styles.sidebarText}>
+                  {skill.name}
+                </Text>
+              ))}
+            </>
+          )}
+
+          {softSkills.length > 0 && (
+            <>
+              <Text style={styles.sidebarTitle}>Soft Skills</Text>
+              {softSkills.map((skill, i) => (
+                <Text key={i} style={styles.sidebarText}>
+                  {skill.name}
+                </Text>
+              ))}
+            </>
+          )}
+
+          {languageSkills.length > 0 && (
+            <>
+              <Text style={styles.sidebarTitle}>Languages</Text>
+              {languageSkills.map((skill, i) => (
+                <Text key={i} style={styles.sidebarText}>
+                  {skill.name}
+                </Text>
               ))}
             </>
           )}
