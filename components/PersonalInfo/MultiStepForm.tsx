@@ -13,7 +13,6 @@ import PersonalInfoStep from "./Steps/PersonalInfoStep";
 import ProgressBar from "./Steps/ProgressBar";
 import SkillsSection from "./Steps/SkillsSection";
 import WorkExperienceStep from "./Steps/WorkExperience";
-// import { ReferenceArea } from "recharts";
 import { VscReferences } from "react-icons/vsc";
 import ReferenceStep from "./Steps/ReferenceStep";
 const STEPS = [
@@ -223,7 +222,10 @@ export default function MultiStepForm() {
           ) {
             parsed.certifications = initial.certifications;
           }
-          if (Array.isArray(parsed.references) && parsed.references.length === 0) {
+          if (
+            Array.isArray(parsed.references) &&
+            parsed.references.length === 0
+          ) {
             parsed.references = initial.references;
           }
           return parsed as FormData;
@@ -235,18 +237,18 @@ export default function MultiStepForm() {
 
   // Snapshot getters registered by child steps
   const personalInfoGetterRef = useRef<(() => FormData["personalInfo"]) | null>(
-    null
+    null,
   );
   const skillsGetterRef = useRef<(() => FormData["skills"]) | null>(null);
   const workGetterRef = useRef<(() => FormData["workExperiences"]) | null>(
-    null
+    null,
   );
   const educationsGetterRef = useRef<(() => FormData["educations"]) | null>(
-    null
+    null,
   );
   const certGetterRef = useRef<(() => FormData["certifications"]) | null>(null);
   const referencesGetterRef = useRef<(() => FormData["references"]) | null>(
-    null
+    null,
   );
 
   // LocalStorage keys
@@ -263,7 +265,7 @@ export default function MultiStepForm() {
     try {
       window.localStorage.setItem(
         "multiStepFormData",
-        JSON.stringify(formData)
+        JSON.stringify(formData),
       );
     } catch {
       // ignore
@@ -281,7 +283,7 @@ export default function MultiStepForm() {
 
   const handleUpdateFormData = <T extends keyof FormData>(
     stepName: T,
-    data: FormData[T]
+    data: FormData[T],
   ) => {
     setFormData((prev) => ({
       ...prev,
@@ -427,9 +429,7 @@ export default function MultiStepForm() {
           {currentStep === 6 && (
             <ReferenceStep
               data={formData.references}
-              onUpdate={(data: any) =>
-                handleUpdateFormData("references", data)
-              }
+              onUpdate={(data: any) => handleUpdateFormData("references", data)}
               onSnapshot={(getter) => {
                 referencesGetterRef.current =
                   getter as () => FormData["references"];
