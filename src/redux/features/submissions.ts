@@ -26,15 +26,24 @@ const submissionsApi = baseApi.injectEndpoints({
         const queryParams = new URLSearchParams();
         queryParams.append("page", page.toString());
         queryParams.append("limit", limit.toString());
-        if (search) queryParams.append("search", search);
-        if (status && status !== "All") queryParams.append("status", status);
+        // API expects `q` for search (example: ?q=user)
+        if (search) queryParams.append("q", search);
+        // Normalize frontend status values to backend enum values
+        if (status && status !== "All") {
+          const s = String(status).toLowerCase();
+          let mappedStatus = String(status).toUpperCase();
+          if (s === "approve" || s === "approved") mappedStatus = "APPROVED";
+          else if (s === "pending") mappedStatus = "PENDING";
+          else if (s === "revision") mappedStatus = "REVISION";
+          queryParams.append("status", mappedStatus);
+        }
 
         return {
           url: `submissions?${queryParams.toString()}`,
           method: "GET",
         };
       },
-      providesTags: ["submissions"]
+      providesTags: ["submissions"],
     }),
     getSubmissionsById: builder.query({
       query: (id) => ({
@@ -55,7 +64,7 @@ const submissionsApi = baseApi.injectEndpoints({
           body: formData,
         };
       },
-      invalidatesTags: ["submissions"]
+      invalidatesTags: ["submissions"],
     }),
     createSubmissions: builder.mutation({
       query: (data) => ({

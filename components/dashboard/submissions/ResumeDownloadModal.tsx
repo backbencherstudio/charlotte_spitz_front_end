@@ -78,7 +78,7 @@ export function ResumeDownloadModal() {
             Download PDF
           </Button>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[725px]">
+        <DialogContent className="sm:max-w-181.25">
           <DialogHeader>
             <DialogTitle>Resume Download</DialogTitle>
             <div className="flex flex-col md:flex-row justify-between gap-3 pt-5">

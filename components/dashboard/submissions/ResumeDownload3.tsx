@@ -241,7 +241,7 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
   },
 
-  // ✅ Profile photo — actual image style
+  // Profile photo — actual image style
   profilePhoto: {
     width: 80,
     height: 80,
