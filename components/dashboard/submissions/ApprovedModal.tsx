@@ -19,6 +19,7 @@ export default function ApprovedModal() {
   const id = params.id as string;
   const [submissionStatus, { isLoading }] = useSubmissionStatusMutation();
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [adminNote, setAdminNote] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,15 +34,22 @@ export default function ApprovedModal() {
       return;
     }
 
+    if (!adminNote.trim()) {
+      toast.error("Please enter an admin note");
+      return;
+    }
+
     try {
       const res = await submissionStatus({
         id,
         status: "APPROVED",
         file: selectedFile,
+        adminNote: adminNote.trim(),
       });
       if (res?.data?.success) {
         toast.success("Submission status approved");
         setSelectedFile(null);
+        setAdminNote("");
         if (fileInputRef.current) {
           fileInputRef.current.value = "";
         }
@@ -62,7 +70,7 @@ export default function ApprovedModal() {
             Approve Submission
           </button>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[500px]">
+        <DialogContent className="sm:max-w-125">
           <DialogHeader>
             <DialogTitle>Approve Submission & Send Email</DialogTitle>
             <div className="pt-5 space-y-3">
@@ -78,10 +86,24 @@ export default function ApprovedModal() {
                   Selected: {selectedFile.name}
                 </p>
               )}
+
+              <div>
+                <label className="text-sm font-medium text-[#4a4c56] mb-2 block">
+                  Admin Note
+                </label>
+                <textarea
+                  value={adminNote}
+                  onChange={(e) => setAdminNote(e.target.value)}
+                  placeholder="Write an admin note for the approval email..."
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#5952FF] focus:border-transparent resize-none"
+                  rows={4}
+                />
+              </div>
+
               <button
                 type="button"
                 onClick={handleApprove}
-                disabled={isLoading || !selectedFile}
+                disabled={isLoading || !selectedFile || !adminNote.trim()}
                 className="w-full bg-green-600 hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2"
               >
                 <CheckCircle className="w-5 h-5" />

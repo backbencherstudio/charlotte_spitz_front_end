@@ -52,11 +52,14 @@ const submissionsApi = baseApi.injectEndpoints({
       }),
     }),
     submissionStatus: builder.mutation({
-      query: ({ id, status, file }) => {
+      query: ({ id, status, file, adminNote }) => {
         const formData = new FormData();
         formData.append("status", status);
         if (file) {
           formData.append("file", file);
+        }
+        if (adminNote) {
+          formData.append("adminNote", adminNote.trim());
         }
         return {
           url: `submissions/${id}/status`,
