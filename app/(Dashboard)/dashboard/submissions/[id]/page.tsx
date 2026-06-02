@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import {
   Mail,
   Phone,
@@ -10,6 +10,7 @@ import {
   FileText,
   Clock,
   AlertCircle,
+  X,
 } from "lucide-react";
 import { useParams } from "next/navigation";
 import {
@@ -46,12 +47,17 @@ export default function SubmissionDetailsPage() {
   const { data: submissionData, isLoading } = useGetSubmissionsByIdQuery(id);
   const [submissionStatus] = useSubmissionStatusMutation();
 
+  // State management for message input
+  const [selectedAction, setSelectedAction] = useState<
+    "PENDING" | "REVISION" | null
+  >(null);
+  const [adminNote, setAdminNote] = useState("");
+  const [isUpdating, setIsUpdating] = useState(false);
+
   // console.log(submissionData);
 
   const apiItem = submissionData?.data?.[0];
   const submissionInfo = apiItem?.submission;
-
-  console.log(" ------------>", submissionInfo);
 
   const personalInfo = submissionInfo?.personalInfo;
   const workExperiences = submissionInfo?.workExperiences ?? [];
@@ -131,38 +137,52 @@ export default function SubmissionDetailsPage() {
     status: mapStatus(apiItem?.status || ""),
   };
 
-  const handlePending = async () => {
-    const res = await submissionStatus({
-      id,
-      status: "PENDING",
-    });
-    if (res?.data?.success) {
-      toast.success("Submission status pending");
-    } else {
-      const errorMessage =
-        ("error" in res && res.error && "data" in res.error
-          ? (res.error.data as any)?.message?.message ||
-            (res.error.data as any)?.message
-          : null) || "Something went wrong";
-      toast.error(errorMessage);
+  const handlePending = () => {
+    setSelectedAction("PENDING");
+    setAdminNote("");
+  };
+
+  const handleRevision = () => {
+    setSelectedAction("REVISION");
+    setAdminNote("");
+  };
+
+  const handleUpdateStatus = async () => {
+    if (!adminNote.trim()) {
+      toast.error("Please enter an admin note");
+      return;
+    }
+
+    setIsUpdating(true);
+    try {
+      const res = await submissionStatus({
+        id,
+        status: selectedAction,
+        adminNote: adminNote.trim(),
+      });
+
+      if (res?.data?.success) {
+        toast.success(
+          `Submission status updated to ${selectedAction === "PENDING" ? "pending" : "revision"}`,
+        );
+        setSelectedAction(null);
+        setAdminNote("");
+      } else {
+        const errorMessage =
+          ("error" in res && res.error && "data" in res.error
+            ? (res.error.data as any)?.message?.message ||
+              (res.error.data as any)?.message
+            : null) || "Something went wrong";
+        toast.error(errorMessage);
+      }
+    } finally {
+      setIsUpdating(false);
     }
   };
 
-  const handleRevision = async () => {
-    const res = await submissionStatus({
-      id,
-      status: "REVISION",
-    });
-    if (res?.data?.success) {
-      toast.success("Submission status revision");
-    } else {
-      const errorMessage =
-        ("error" in res && res.error && "data" in res.error
-          ? (res.error.data as any)?.message?.message ||
-            (res.error.data as any)?.message
-          : null) || "Something went wrong";
-      toast.error(errorMessage);
-    }
+  const handleCancel = () => {
+    setSelectedAction(null);
+    setAdminNote("");
   };
 
   // Loading state
@@ -287,14 +307,6 @@ export default function SubmissionDetailsPage() {
             </button>
 
             {/* Download Resume */}
-            {/* <button
-              onClick={downloadAsPdf}
-              type="button"
-              className="w-full border border-gray-300 hover:bg-gray-50 text-[#4a4c56] font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2 cursor-pointer"
-            >
-              <Download className="w-5 h-5" />
-              Download PDF
-            </button> */}
             <ResumeDownloadModal />
           </div>
         </div>
@@ -369,6 +381,61 @@ export default function SubmissionDetailsPage() {
               </div>
             </div>
           </div>
+
+          {/* Admin Note / Message Input Form */}
+          {selectedAction && (
+            <div className="bg-white rounded-lg p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-lg font-semibold text-[#4a4c56]">
+                  {selectedAction === "PENDING" ? "Pending" : "Revision"} Note
+                </h2>
+                <button
+                  onClick={handleCancel}
+                  className="text-gray-500 hover:text-gray-700"
+                  disabled={isUpdating}
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              <div className="space-y-4">
+                <div>
+                  <label className="text-sm font-medium text-[#4a4c56] mb-2 block">
+                    Admin Note
+                  </label>
+                  <textarea
+                    value={adminNote}
+                    onChange={(e) => setAdminNote(e.target.value)}
+                    placeholder={
+                      selectedAction === "PENDING"
+                        ? "e.g., Resume moved back to pending review."
+                        : "e.g., Please improve the professional summary and add more achievements."
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#5952FF] focus:border-transparent resize-none"
+                    rows={6}
+                    disabled={isUpdating}
+                  />
+                </div>
+
+                <div className="flex gap-2">
+                  <button
+                    onClick={handleUpdateStatus}
+                    disabled={isUpdating || !adminNote.trim()}
+                    className="flex-1 bg-[#5952FF] hover:bg-blue-700 disabled:bg-gray-400 text-white font-medium py-3 px-4 rounded-lg transition-colors"
+                  >
+                    {isUpdating ? "Updating..." : "Update Status"}
+                  </button>
+                  <button
+                    onClick={handleCancel}
+                    disabled={isUpdating}
+                    className="flex-1 bg-gray-200 hover:bg-gray-300 disabled:bg-gray-400 text-gray-700 font-medium py-3 px-4 rounded-lg transition-colors"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Template Preview */}
           <div className="bg-white rounded-lg p-4 md:p-6 shadow-sm">
