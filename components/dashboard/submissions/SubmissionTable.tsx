@@ -153,7 +153,7 @@ export default function SubmissionTable({
   const statusColors = {
     APPROVED: "bg-[#D7FFE7] text-[#00C853]",
     PENDING: "bg-[#FFFEDD] text-[#CF9800]",
-    REJECTED: "bg-[#A29EFF] text-[#1E00FF]",
+    REVISION: "bg-[#A29EFF] text-white",
   };
 
   return (
@@ -254,7 +254,7 @@ export default function SubmissionTable({
                   <td className="px-2 sm:px-3 lg:px-4 py-2 sm:py-3 font-semibold text-sm text-[#070707]">
                     {row?.submissionDate
                       ? new Date(
-                          row.submissionDate as string | number | Date
+                          row.submissionDate as string | number | Date,
                         ).toLocaleDateString("en-US", {
                           year: "numeric",
                           month: "long",

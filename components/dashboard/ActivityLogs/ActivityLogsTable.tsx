@@ -1,15 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import {
-  Search,
-  Eye,
-  MoreVertical,
-  ChevronDown,
-  ChevronLeft,
-  ChevronRight,
-} from "lucide-react";
-import Link from "next/link";
+import { Search, ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
 
 interface ColumnConfig {
   label: React.ReactNode;
@@ -152,19 +144,13 @@ export default function ActivityLogsTable({
     };
   }, []);
 
-  const statusColors = {
-    APPROVED: "bg-[#D7FFE7] text-[#00C853]",
-    PENDING: "bg-[#FFFEDD] text-[#CF9800]",
-    REJECTED: "bg-[#A29EFF] text-[#1E00FF]",
-  };
-
   return (
     <div>
       {/* Table Controls */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
         <div className="flex items-center gap-2 sm:gap-4 flex-wrap">
           <h2 className="text-base sm:text-lg font-semibold text-[#4a4c56]">
-            Submissions List
+            Activity Logs
           </h2>
           {filterOptions && onFilterChange && (
             <div className="relative" ref={filterDropdownRef}>
@@ -176,7 +162,7 @@ export default function ActivityLogsTable({
                 <ChevronDown className="w-3 h-3 sm:w-4 sm:h-4" />
               </button>
               {showFilterDropdown && (
-                <div className="absolute top-full left-0 mt-1 bg-white border rounded shadow-lg z-10 min-w-[120px]">
+                <div className="absolute top-full left-0 mt-1 bg-white border rounded shadow-lg z-10 min-w-30">
                   {filterOptions.map((option) => (
                     <button
                       key={option.value}
@@ -216,7 +202,7 @@ export default function ActivityLogsTable({
 
       {/* Table */}
       <div className="overflow-x-auto border rounded-lg">
-        <table className="min-w-[600px] sm:min-w-[800px] lg:min-w-[1000px] w-full text-left">
+        <table className="min-w-150 sm:min-w-200 lg:min-w-250 w-full text-left">
           <thead className="bg-neutral-50">
             <tr>
               {columns.map((col, index) => (
@@ -290,7 +276,7 @@ export default function ActivityLogsTable({
                 <ChevronDown className="w-3 h-3" />
               </button>
               {showItemsPerPageDropdown && (
-                <div className="absolute top-full left-0 mt-1 bg-white border rounded shadow-lg z-10 min-w-[60px]">
+                <div className="absolute top-full left-0 mt-1 bg-white border rounded shadow-lg z-10 min-w-15">
                   {itemsPerPageOptions.map((option) => (
                     <button
                       key={option}

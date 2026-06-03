@@ -82,6 +82,14 @@ const submissionsApi = baseApi.injectEndpoints({
         method: "DELETE",
       }),
     }),
+    updateSubmissions: builder.mutation({
+      query: ({ id, data }) => ({
+        url: `submissions/${id}`,
+        method: "PATCH",
+        body: data,
+      }),
+      invalidatesTags: ["submissions"],
+    }),
   }),
 });
 
@@ -91,4 +99,5 @@ export const {
   useSubmissionStatusMutation,
   useCreateSubmissionsMutation,
   useDeleteSubmissionsMutation,
+  useUpdateSubmissionsMutation,
 } = submissionsApi;
