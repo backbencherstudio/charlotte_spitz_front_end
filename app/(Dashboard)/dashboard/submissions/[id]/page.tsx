@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Mail,
   Phone,
@@ -11,17 +11,16 @@ import {
   Clock,
   AlertCircle,
   X,
+  Edit,
 } from "lucide-react";
 import { useParams } from "next/navigation";
 import {
   useGetSubmissionsByIdQuery,
   useSubmissionStatusMutation,
+  useUpdateSubmissionsMutation,
 } from "@/src/redux/features/submissions";
 import { toast } from "sonner";
-import previewImage from "@/public/images/10.png";
-import Image from "next/image";
 import { ResumeDownloadModal } from "@/components/dashboard/submissions/ResumeDownloadModal";
-import { TemplatePreviewModal } from "@/components/dashboard/submissions/TemplatePreviewModal";
 import ApprovedModal from "@/components/dashboard/submissions/ApprovedModal";
 
 interface SubmissionDetails {
@@ -44,8 +43,14 @@ export default function SubmissionDetailsPage() {
   const params = useParams();
   const id = params.id as string;
 
-  const { data: submissionData, isLoading } = useGetSubmissionsByIdQuery(id);
+  const {
+    data: submissionData,
+    isLoading,
+    refetch,
+  } = useGetSubmissionsByIdQuery(id);
   const [submissionStatus] = useSubmissionStatusMutation();
+  const [updateSubmissions, { isLoading: isSavingSummary }] =
+    useUpdateSubmissionsMutation();
 
   // State management for message input
   const [selectedAction, setSelectedAction] = useState<
@@ -53,11 +58,14 @@ export default function SubmissionDetailsPage() {
   >(null);
   const [adminNote, setAdminNote] = useState("");
   const [isUpdating, setIsUpdating] = useState(false);
+  const [isEditingSummary, setIsEditingSummary] = useState(false);
+  const [summaryDraft, setSummaryDraft] = useState("");
 
   // console.log(submissionData);
 
-  const apiItem = submissionData?.data?.[0];
+  const apiItem = submissionData?.data;
   const submissionInfo = apiItem?.submission;
+  const creditsInfo = apiItem?.creditsInfo;
 
   const personalInfo = submissionInfo?.personalInfo;
   const workExperiences = submissionInfo?.workExperiences ?? [];
@@ -137,6 +145,10 @@ export default function SubmissionDetailsPage() {
     status: mapStatus(apiItem?.status || ""),
   };
 
+  useEffect(() => {
+    setSummaryDraft(submission.professionalSummary || "");
+  }, [submission.professionalSummary]);
+
   const handlePending = () => {
     setSelectedAction("PENDING");
     setAdminNote("");
@@ -183,6 +195,39 @@ export default function SubmissionDetailsPage() {
   const handleCancel = () => {
     setSelectedAction(null);
     setAdminNote("");
+  };
+
+  const handleSummaryUpdate = async () => {
+    if (!summaryDraft.trim()) {
+      toast.error("Please enter a professional summary");
+      return;
+    }
+
+    try {
+      const res = await updateSubmissions({
+        id,
+        data: {
+          personalInfo: {
+            professionalSummary: summaryDraft.trim(),
+          },
+        },
+      });
+
+      if (res && "data" in res && (res.data as any)?.success) {
+        toast.success("Professional summary updated successfully");
+        setIsEditingSummary(false);
+        await refetch();
+      } else {
+        const errorMessage =
+          (res && "error" in res && res.error && "data" in res.error
+            ? (res.error.data as any)?.message?.message ||
+              (res.error.data as any)?.message
+            : null) || "Something went wrong";
+        toast.error(errorMessage);
+      }
+    } catch {
+      toast.error("Failed to update professional summary");
+    }
   };
 
   // Loading state
@@ -234,7 +279,7 @@ export default function SubmissionDetailsPage() {
               </div>
 
               <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
-                <Mail className="w-5 h-5 text-[#777980]" />
+                <Mail className="w-5 h-5 text-descriptionColor" />
                 <div>
                   <p className="text-xs text-[#A1A1A1] mb-1">Email</p>
                   <p className="text-sm font-medium text-[#4a4c56]">
@@ -244,7 +289,7 @@ export default function SubmissionDetailsPage() {
               </div>
 
               <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
-                <Phone className="w-5 h-5 text-[#777980]" />
+                <Phone className="w-5 h-5 text-descriptionColor" />
                 <div>
                   <p className="text-xs text-[#A1A1A1] mb-1">Phone</p>
                   <p className="text-sm font-medium text-[#4a4c56]">
@@ -254,7 +299,7 @@ export default function SubmissionDetailsPage() {
               </div>
 
               <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
-                <MapPin className="w-5 h-5 text-[#777980]" />
+                <MapPin className="w-5 h-5 text-descriptionColor" />
                 <div>
                   <p className="text-xs text-[#A1A1A1] mb-1">Location</p>
                   <p className="text-sm font-medium text-[#4a4c56]">
@@ -264,7 +309,7 @@ export default function SubmissionDetailsPage() {
               </div>
 
               <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
-                <Calendar className="w-5 h-5 text-[#777980]" />
+                <Calendar className="w-5 h-5 text-descriptionColor" />
                 <div>
                   <p className="text-xs text-[#A1A1A1] mb-1">Submitted</p>
                   <p className="text-sm font-medium text-[#4a4c56]">
@@ -274,7 +319,7 @@ export default function SubmissionDetailsPage() {
               </div>
 
               <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
-                <FileText className="w-5 h-5 text-[#777980]" />
+                <FileText className="w-5 h-5 text-descriptionColor" />
                 <div>
                   <p className="text-xs text-[#A1A1A1] mb-1">Template</p>
                   <p className="text-sm font-medium text-[#4a4c56]">
@@ -372,12 +417,90 @@ export default function SubmissionDetailsPage() {
               </div>
 
               <div>
-                <p className="text-xs text-[#A1A1A1] mb-1">
+                <p className="flex items-center gap-2 text-xs text-[#A1A1A1] mb-1">
                   Professional Summary
+                  <button
+                    type="button"
+                    onClick={() => setIsEditingSummary(true)}
+                    className="text-[#5952FF] hover:text-blue-700"
+                    aria-label="Edit professional summary"
+                  >
+                    <Edit className="cursor-pointer text-sm" />
+                  </button>
                 </p>
-                <p className="text-sm text-[#4a4c56] leading-relaxed">
-                  {submission.professionalSummary}
+
+                {isEditingSummary ? (
+                  <div className="space-y-3">
+                    <textarea
+                      value={summaryDraft}
+                      onChange={(e) => setSummaryDraft(e.target.value)}
+                      rows={5}
+                      className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm text-[#4a4c56] focus:border-[#5952FF] focus:outline-none focus:ring-2 focus:ring-[#5952FF]/20"
+                    />
+                    <div className="flex gap-2">
+                      <button
+                        type="button"
+                        onClick={handleSummaryUpdate}
+                        disabled={isSavingSummary}
+                        className="rounded-lg bg-[#5952FF] px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-gray-400 cursor-pointer"
+                      >
+                        {isSavingSummary ? "Updating..." : "Update"}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setIsEditingSummary(false);
+                          setSummaryDraft(submission.professionalSummary || "");
+                        }}
+                        className="rounded-lg bg-gray-200 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-300 cursor-pointer"
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <p className="text-sm text-[#4a4c56] leading-relaxed">
+                    {submission.professionalSummary}
+                  </p>
+                )}
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-lg p-6 shadow-sm">
+            <h2 className="text-lg font-semibold text-[#4a4c56] mb-4 border-b border-gray-200 pb-2">
+              Credits Info
+            </h2>
+
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div className="rounded-lg bg-gray-50 p-4">
+                <p className="text-xs text-[#A1A1A1] mb-1">Max Revisions</p>
+                <p className="text-sm font-semibold text-[#4a4c56]">
+                  {creditsInfo?.maxRevisions ?? 0}
                 </p>
+              </div>
+              <div className="rounded-lg bg-gray-50 p-4">
+                <p className="text-xs text-[#A1A1A1] mb-1">Used Revisions</p>
+                <p className="text-sm font-semibold text-[#4a4c56]">
+                  {creditsInfo?.usedRevisions ?? 0}
+                </p>
+              </div>
+              <div className="rounded-lg bg-gray-50 p-4">
+                <p className="text-xs text-[#A1A1A1] mb-1">
+                  Remaining Revisions
+                </p>
+                <p className="text-sm font-semibold text-[#4a4c56]">
+                  {creditsInfo?.remainingRevisions ?? 0}
+                </p>
+              </div>
+              <div className="rounded-lg bg-gray-50 p-4">
+                <p className="text-xs text-[#A1A1A1] mb-1">Package</p>
+                <p className="text-sm font-semibold text-[#4a4c56]">
+                  {creditsInfo?.packageType ?? "N/A"}
+                </p>
+                {/* <p className="text-xs text-[#A1A1A1] mt-1">
+                  {creditsInfo?.packageType ?? "Unknown"}
+                </p> */}
               </div>
             </div>
           </div>
@@ -421,14 +544,14 @@ export default function SubmissionDetailsPage() {
                   <button
                     onClick={handleUpdateStatus}
                     disabled={isUpdating || !adminNote.trim()}
-                    className="flex-1 bg-[#5952FF] hover:bg-blue-700 disabled:bg-gray-400 text-white font-medium py-3 px-4 rounded-lg transition-colors"
+                    className="flex-1 bg-[#5952FF] hover:bg-blue-700 disabled:bg-gray-400 text-white font-medium py-3 px-4 rounded-lg transition-colors cursor-pointer"
                   >
                     {isUpdating ? "Updating..." : "Update Status"}
                   </button>
                   <button
                     onClick={handleCancel}
                     disabled={isUpdating}
-                    className="flex-1 bg-gray-200 hover:bg-gray-300 disabled:bg-gray-400 text-gray-700 font-medium py-3 px-4 rounded-lg transition-colors"
+                    className="flex-1 bg-gray-200 hover:bg-gray-300 disabled:bg-gray-400 text-gray-700 font-medium py-3 px-4 rounded-lg transition-colors cursor-pointer"
                   >
                     Cancel
                   </button>
@@ -438,25 +561,25 @@ export default function SubmissionDetailsPage() {
           )}
 
           {/* Template Preview */}
-          <div className="bg-white rounded-lg p-4 md:p-6 shadow-sm">
-            <h3 className="text-lg font-semibold text-[#4a4c56] mb-4">
+          {/* <div className="bg-white rounded-lg p-4 md:p-6 shadow-sm"> */}
+          {/* <h3 className="text-lg font-semibold text-[#4a4c56] mb-4">
               Template Preview
-            </h3>
+            </h3> */}
 
-            {/* Preview Container */}
-            <div className="relative border-2 border-dashed border-gray-300 rounded-3xl overflow-hidden flex items-center justify-center h-[450px] mb-4">
-              {/* Image */}
+          {/* Preview Container */}
+          {/* <div className="relative border-2 border-dashed border-gray-300 rounded-3xl overflow-hidden flex items-center justify-center h-[450px] mb-4">
+           
               <Image
                 src={previewImage}
                 alt="image"
                 fill
                 className="object-cover"
               />
-            </div>
+            </div> */}
 
-            {/* Preview Button */}
-            <TemplatePreviewModal submissionId={id} />
-          </div>
+          {/* Preview Button */}
+          {/* <TemplatePreviewModal submissionId={id} /> */}
+          {/* </div> */}
         </div>
       </div>
     </div>
