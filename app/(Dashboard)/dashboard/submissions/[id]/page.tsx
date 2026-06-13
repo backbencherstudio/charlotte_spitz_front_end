@@ -408,7 +408,7 @@ export default function SubmissionDetailsPage() {
               <div>
                 <p className="text-xs text-[#A1A1A1] mb-1">Skills</p>
                 <p className="text-sm font-medium text-[#4a4c56] flex flex-wrap">
-                  {skills.map((skill: any) => (
+                  {skills?.map((skill: any) => (
                     <span key={skill.id} className="mr-2">
                       {skill.name},
                     </span>
