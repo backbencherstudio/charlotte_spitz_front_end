@@ -13,6 +13,8 @@ import {
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
+import { TemplateSelectModal } from "./TemplateSelectModal";
+import { stringify } from "querystring";
 
 interface PersonalInfoData {
   fullName: string;
@@ -48,18 +50,25 @@ export default function PersonalInfoStep({
 
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-
+  const [templateId, setTemplate] = useState<number>(0);
 
   useEffect(() => {
-    onSnapshot?.(() => getValues());
+    onSnapshot?.(() => ({
+      ...getValues(),
+      templateId: String(templateId),
+    }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [templateId]);
 
   const onSubmit = (formData: PersonalInfoData) => {
     const data = {
       ...formData,
+      templateId: String(templateId),
       profileImage,
     };
+    if (typeof window !== "undefined" && templateId) {
+      localStorage.setItem("selectedTemplate", String(templateId));
+    }
     onUpdate(data);
   };
 
@@ -366,6 +375,13 @@ export default function PersonalInfoStep({
               className="w-full px-6 py-3 border rounded-sm focus:outline-none focus:ring-2 focus:ring-[#5952FF]"
               rows={4}
               {...register("professionalSummary")}
+            />
+          </div>
+
+          <div className="md:col-span-2">
+            <TemplateSelectModal
+              setTemplate={setTemplate}
+              templateId={templateId}
             />
           </div>
         </div>

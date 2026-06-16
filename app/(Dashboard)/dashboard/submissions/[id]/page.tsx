@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Mail,
   Phone,
@@ -30,7 +30,7 @@ interface SubmissionDetails {
   phone: string;
   location: string;
   submitted: string;
-  template: string;
+  templateId: string;
   position: string;
   education: string;
   yearsOfExperience: string;
@@ -135,7 +135,9 @@ export default function SubmissionDetailsPage() {
     phone: personalInfo?.phoneNumber || "N/A",
     location: personalInfo?.city_and_state || "N/A",
     submitted: formatDate(apiItem?.createdAt || ""),
-    template: apiItem?.templateId ?? "Not assigned",
+    templateId: personalInfo?.templateId
+      ? personalInfo?.templateId
+      : "Not assigned",
     position: workExperiences[0]?.jobTitle || "N/A",
     education: educations[0]?.degreeOrCertificate || "N/A",
     yearsOfExperience: calculateYearsOfExperience(),
@@ -323,7 +325,7 @@ export default function SubmissionDetailsPage() {
                 <div>
                   <p className="text-xs text-[#A1A1A1] mb-1">Template</p>
                   <p className="text-sm font-medium text-[#4a4c56]">
-                    {submission.template}
+                    {submission.templateId}
                   </p>
                 </div>
               </div>

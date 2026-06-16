@@ -263,7 +263,7 @@ export default function SubmissionTable({
                       : "N/A"}
                   </td>
                   <td className="px-2 sm:px-3 lg:px-4 py-2 sm:py-3 font-semibold text-sm text-[#070707]">
-                    {String(row?.template ?? "-")}
+                    {String(row?.templateId ?? "-")}
                   </td>
                   <td>
                     <span

@@ -10,24 +10,24 @@ import {
 } from "@/components/ui/dialog";
 import { Eye } from "lucide-react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import image1 from "@/public/images/10.png";
 import image2 from "@/public/images/template2.png";
 import image3 from "@/public/images/Screenshot_9.png";
+import { Dispatch, ReactNode, SetStateAction } from "react";
+import { toast } from "sonner";
 
-interface TemplatePreviewModalProps {
-  submissionId: string;
-}
+type Props = {
+  setTemplate: Dispatch<SetStateAction<number>>;
+  templateId: ReactNode;
+};
 
-export function TemplatePreviewModal({
-  submissionId,
-}: TemplatePreviewModalProps) {
-  const router = useRouter();
-
+export function TemplateSelectModal({ setTemplate, templateId }: Props) {
   const handleTemplateSelect = (templateNumber: number) => {
-    router.push(
-      `/dashboard/submissions/preview/${submissionId}?template=${templateNumber}`,
-    );
+    setTemplate(templateNumber);
+    if (typeof window !== "undefined") {
+      localStorage.setItem("selectedTemplate", String(templateNumber));
+    }
+    toast.success(`Template ${templateNumber} selected`);
   };
 
   return (
@@ -38,7 +38,7 @@ export function TemplatePreviewModal({
           className="w-full border border-gray-300 hover:bg-[#E7E4FF] text-[#5952FF] hover:text-[#5952FF] hover:border-[#5952FF]  font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2 cursor-pointer"
         >
           <Eye className="w-5 h-5" />
-          Template Preview
+          Template Selection {templateId}
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-200">
