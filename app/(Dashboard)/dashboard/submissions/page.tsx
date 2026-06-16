@@ -26,7 +26,7 @@ export default function SubmissionsPage() {
     search: searchQuery,
   });
 
-  console.log("submissions -->", submissionsData);
+  // console.log("submissions -->", submissionsData);
 
   const columns = [
     {
@@ -50,8 +50,8 @@ export default function SubmissionsPage() {
       },
     },
     {
-      label: "Template",
-      accessor: "template",
+      label: "Template Id",
+      accessor: "templateId",
     },
     {
       label: "Status",
@@ -98,7 +98,7 @@ export default function SubmissionsPage() {
     console.log("View submission:", submission);
     // You can implement a modal or navigation here
     alert(
-      `Viewing submission:\nUser ID: ${submission.userId}\nCustomer: ${submission.customerName}\nTemplate: ${submission.template}\nStatus: ${submission.status}`
+      `Viewing submission:\nUser ID: ${submission.userId}\nCustomer: ${submission.customerName}\nTemplate: ${submission.template}\nStatus: ${submission.status}`,
     );
   };
 

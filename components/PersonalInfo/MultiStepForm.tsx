@@ -66,6 +66,7 @@ interface FormData {
     includeFullAddress: boolean;
     websiteUrl: string;
     professionalSummary: string;
+    templateId: string;
   };
   skills: FormattedSkill[];
 
@@ -133,6 +134,10 @@ export default function MultiStepForm() {
         websiteUrl: "",
         professionalSummary: "",
         includeFullAddress: true,
+        templateId:
+          typeof window !== "undefined"
+            ? localStorage.getItem("selectedTemplate") || ""
+            : "",
       },
       skills: [],
       workExperiences: [

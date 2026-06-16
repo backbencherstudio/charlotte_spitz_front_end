@@ -185,10 +185,13 @@ const styles = StyleSheet.create({
   // Education items in left column
   educationItem: {
     marginBottom: 10,
+    paddingRight: 5,
   },
   educationHeader: {
     flexDirection: "row",
+    flexWrap: "wrap",
     marginBottom: 4,
+    alignItems: "flex-start",
   },
   educationLabel: {
     fontSize: 9,
@@ -199,6 +202,8 @@ const styles = StyleSheet.create({
   educationValue: {
     fontSize: 9,
     color: "#6B7280",
+    flexShrink: 1,
+    flexWrap: "wrap",
   },
   educationPeriod: {
     fontSize: 9,
@@ -219,8 +224,8 @@ const styles = StyleSheet.create({
   educationDescription: {
     fontSize: 8,
     color: "#6B7280",
-    lineHeight: 1.4,
-    marginTop: 4,
+    // lineHeight: 1.4,
+    // marginTop: 4,
   },
 
   // Skills section in left column
@@ -427,21 +432,24 @@ export const ResumePDF3 = ({ apiItem }: { apiItem: ApiItem | undefined }) => {
                     </Text>
                   )}
                   <View style={styles.educationHeader}>
-                    <Text style={styles.educationLabel}>Course:</Text>
+                    <Text style={styles.educationLabel}>Course: </Text>
                     <Text style={styles.educationValue}>
                       {edu.degreeOrCertificate || "N/A"}
                     </Text>
                   </View>
                   <View style={styles.educationHeader}>
-                    <Text style={styles.educationLabel}>University:</Text>
+                    <Text style={styles.educationLabel}>University: </Text>
                     <Text style={styles.educationValue}>
                       {edu.institutionName || "N/A"}
                     </Text>
                   </View>
                   {edu.resultOrCGPA && (
-                    <Text style={styles.educationDescription}>
-                      {edu.resultOrCGPA}
-                    </Text>
+                    <View style={styles.educationHeader}>
+                      <Text style={styles.educationLabel}>GPA:</Text>
+                      <Text style={styles.educationDescription}>
+                        {edu.resultOrCGPA}
+                      </Text>
+                    </View>
                   )}
                 </View>
               ))}

@@ -1,4 +1,3 @@
-import PencilLoader from "@/components/PencilLoader";
 import { ReduxProvider } from "@/src/redux/provider";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";

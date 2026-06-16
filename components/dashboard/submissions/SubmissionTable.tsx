@@ -65,7 +65,7 @@ export default function SubmissionTable({
 
   const itemsPerPageOptions = [10, 20, 50, 100];
 
-  console.log("data -->", data);
+  // console.log("data -->", data);
 
   // Calculate pagination display values
   const startRecord =
@@ -174,7 +174,7 @@ export default function SubmissionTable({
                 <ChevronDown className="w-3 h-3 sm:w-4 sm:h-4" />
               </button>
               {showFilterDropdown && (
-                <div className="absolute top-full left-0 mt-1 bg-white border rounded shadow-lg z-10 min-w-[120px]">
+                <div className="absolute top-full left-0 mt-1 bg-white border rounded shadow-lg z-10 min-w-30">
                   {filterOptions.map((option) => (
                     <button
                       key={option.value}
@@ -214,7 +214,7 @@ export default function SubmissionTable({
 
       {/* Table */}
       <div className="overflow-x-auto border rounded-lg">
-        <table className="min-w-[600px] sm:min-w-[800px] lg:min-w-[1000px] w-full text-left">
+        <table className="min-w-150 sm:min-w-200 lg:min-w-250 w-full text-left">
           <thead className="bg-neutral-50">
             <tr>
               {columns.map((col, index) => (
@@ -263,7 +263,7 @@ export default function SubmissionTable({
                       : "N/A"}
                   </td>
                   <td className="px-2 sm:px-3 lg:px-4 py-2 sm:py-3 font-semibold text-sm text-[#070707]">
-                    {String(row?.template ?? "-")}
+                    {String(row?.templateId ?? "-")}
                   </td>
                   <td>
                     <span
@@ -341,7 +341,7 @@ export default function SubmissionTable({
                 <ChevronDown className="w-3 h-3" />
               </button>
               {showItemsPerPageDropdown && (
-                <div className="absolute top-full left-0 mt-1 bg-white border rounded shadow-lg z-10 min-w-[60px]">
+                <div className="absolute top-full left-0 mt-1 bg-white border rounded shadow-lg z-10 min-w-15">
                   {itemsPerPageOptions.map((option) => (
                     <button
                       key={option}
