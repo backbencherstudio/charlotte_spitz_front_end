@@ -23,7 +23,6 @@ export default function SubscriptionFormPage() {
   const [formData, setFormData] = useState({
     type: subscription?.data?.type || "",
     price: subscription?.data?.price || 0,
-    // cvOpt: subscription?.data?.cvOpt || "",
     maxCVs: subscription?.data?.maxCVs || "",
     benefits: "",
   });
