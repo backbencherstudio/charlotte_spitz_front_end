@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef, startTransition } from "react";
+import { useState, useEffect, useRef, startTransition } from "react";
 import { ChevronDown, Plus, X } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
@@ -29,7 +29,7 @@ export default function SubscriptionFormPage() {
   });
 
   const [benefits, setBenefits] = useState<string[]>(
-    subscription?.data?.benefits || []
+    subscription?.data?.benefits || [],
   );
 
   const [showPlanDurationDropdown, setShowPlanDurationDropdown] =
@@ -103,8 +103,8 @@ export default function SubscriptionFormPage() {
     const res = await updateSubscription({ data, id });
     if (res?.data?.success) {
       toast.success(res?.data?.message);
-    } else{
-      toast.error("Something wont wrong")
+    } else {
+      toast.error("Something wont wrong");
     }
   };
 
@@ -128,10 +128,7 @@ export default function SubscriptionFormPage() {
 
         {/* Breadcrumb */}
         <div className="flex items-center gap-2 text-sm text-[#4a4c56] mt-4">
-          <Link
-            href="/dashboard/subscriptions"
-            className="hover:text-[#5952FF]"
-          >
+          <Link href="/dashboard/package" className="hover:text-[#5952FF]">
             Membership Plans
           </Link>
           <span>&gt;</span>
