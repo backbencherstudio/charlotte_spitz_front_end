@@ -66,6 +66,7 @@ export default function SubmissionDetailsPage() {
   const apiItem = submissionData?.data;
   const submissionInfo = apiItem?.submission;
   const creditsInfo = apiItem?.creditsInfo;
+  const revisionHistory = apiItem?.revisionHistory ?? [];
 
   const personalInfo = submissionInfo?.personalInfo;
   const workExperiences = submissionInfo?.workExperiences ?? [];
@@ -469,44 +470,6 @@ export default function SubmissionDetailsPage() {
             </div>
           </div>
 
-          <div className="bg-white rounded-lg p-6 shadow-sm">
-            <h2 className="text-lg font-semibold text-[#4a4c56] mb-4 border-b border-gray-200 pb-2">
-              Credits Info
-            </h2>
-
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div className="rounded-lg bg-gray-50 p-4">
-                <p className="text-xs text-[#A1A1A1] mb-1">Max Revisions</p>
-                <p className="text-sm font-semibold text-[#4a4c56]">
-                  {creditsInfo?.maxRevisions ?? 0}
-                </p>
-              </div>
-              <div className="rounded-lg bg-gray-50 p-4">
-                <p className="text-xs text-[#A1A1A1] mb-1">Used Revisions</p>
-                <p className="text-sm font-semibold text-[#4a4c56]">
-                  {creditsInfo?.usedRevisions ?? 0}
-                </p>
-              </div>
-              <div className="rounded-lg bg-gray-50 p-4">
-                <p className="text-xs text-[#A1A1A1] mb-1">
-                  Remaining Revisions
-                </p>
-                <p className="text-sm font-semibold text-[#4a4c56]">
-                  {creditsInfo?.remainingRevisions ?? 0}
-                </p>
-              </div>
-              <div className="rounded-lg bg-gray-50 p-4">
-                <p className="text-xs text-[#A1A1A1] mb-1">Package</p>
-                <p className="text-sm font-semibold text-[#4a4c56]">
-                  {creditsInfo?.packageType ?? "N/A"}
-                </p>
-                {/* <p className="text-xs text-[#A1A1A1] mt-1">
-                  {creditsInfo?.packageType ?? "Unknown"}
-                </p> */}
-              </div>
-            </div>
-          </div>
-
           {/* Admin Note / Message Input Form */}
           {selectedAction && (
             <div className="bg-white rounded-lg p-6">
@@ -558,6 +521,81 @@ export default function SubmissionDetailsPage() {
                     Cancel
                   </button>
                 </div>
+              </div>
+            </div>
+          )}
+
+          <div className="bg-white rounded-lg p-6 shadow-sm">
+            <h2 className="text-lg font-semibold text-[#4a4c56] mb-4 border-b border-gray-200 pb-2">
+              Credits Info
+            </h2>
+
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div className="rounded-lg bg-gray-50 p-4">
+                <p className="text-xs text-[#A1A1A1] mb-1">Max Revisions</p>
+                <p className="text-sm font-semibold text-[#4a4c56]">
+                  {creditsInfo?.maxRevisions ?? 0}
+                </p>
+              </div>
+              <div className="rounded-lg bg-gray-50 p-4">
+                <p className="text-xs text-[#A1A1A1] mb-1">Used Revisions</p>
+                <p className="text-sm font-semibold text-[#4a4c56]">
+                  {creditsInfo?.usedRevisions ?? 0}
+                </p>
+              </div>
+              <div className="rounded-lg bg-gray-50 p-4">
+                <p className="text-xs text-[#A1A1A1] mb-1">
+                  Remaining Revisions
+                </p>
+                <p className="text-sm font-semibold text-[#4a4c56]">
+                  {creditsInfo?.remainingRevisions ?? 0}
+                </p>
+              </div>
+              <div className="rounded-lg bg-gray-50 p-4">
+                <p className="text-xs text-[#A1A1A1] mb-1">Package</p>
+                <p className="text-sm font-semibold text-[#4a4c56]">
+                  {creditsInfo?.packageType ?? "N/A"}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {revisionHistory.length && (
+            <div className="bg-white rounded-lg p-6">
+              <h2 className="text-lg font-semibold text-[#4a4c56] mb-4 border-b border-gray-200 pb-2">
+                Revision History
+              </h2>
+
+              <div className="space-y-4 max-h-75 overflow-y-auto">
+                {revisionHistory.length === 0 ? (
+                  <p className="text-sm text-gray-500">
+                    No revision history yet.
+                  </p>
+                ) : (
+                  revisionHistory.map((item: any) => (
+                    <div
+                      key={item.id}
+                      className="border-l-2 border-[#5952FF] pl-4"
+                    >
+                      <div className="flex items-center justify-between gap-2">
+                        <p className="text-sm font-semibold text-[#4a4c56]">
+                          {item.action || "Revision updated"}
+                        </p>
+                        <span className="text-xs text-[#A1A1A1]">
+                          {formatDate(item.date)}
+                        </span>
+                      </div>
+                      <p className="text-xs text-[#A1A1A1] mt-1">
+                        {item.adminName || "Admin"}
+                      </p>
+                      {item.note && (
+                        <p className="text-sm text-[#4a4c56] mt-2 leading-relaxed">
+                          {item.note}
+                        </p>
+                      )}
+                    </div>
+                  ))
+                )}
               </div>
             </div>
           )}

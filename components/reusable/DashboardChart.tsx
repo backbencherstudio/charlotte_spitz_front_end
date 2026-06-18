@@ -30,6 +30,8 @@ type MonthlyRevenue = {
 
 type DashboardChartProps = {
   chartdata: MonthlyRevenue[];
+  timeRange: string;
+  onTimeRangeChange: (value: string) => void;
 };
 
 /* ================= CONFIG ================= */
@@ -43,9 +45,11 @@ const chartConfig = {
 
 /* ================= COMPONENT ================= */
 
-export function DashboardChart({ chartdata }: DashboardChartProps) {
-  const [timeRange, setTimeRange] = React.useState("90d");
-
+export function DashboardChart({
+  chartdata,
+  timeRange,
+  onTimeRangeChange,
+}: DashboardChartProps) {
   /* ---------- FORMAT API DATA ---------- */
   const formattedData = React.useMemo(() => {
     if (!chartdata?.length) return [];
@@ -56,21 +60,8 @@ export function DashboardChart({ chartdata }: DashboardChartProps) {
     }));
   }, [chartdata]);
 
-  /* ---------- FILTER BY RANGE ---------- */
-  const filteredData = React.useMemo(() => {
-    if (!formattedData.length) return [];
-
-    const now = new Date();
-    let monthsBack = 3;
-
-    if (timeRange === "30d") monthsBack = 1;
-    if (timeRange === "7d") monthsBack = 0;
-
-    const startDate = new Date();
-    startDate.setMonth(now.getMonth() - monthsBack);
-
-    return formattedData.filter((item) => new Date(item.date) >= startDate);
-  }, [formattedData, timeRange]);
+  /* ---------- USE API RESPONSE AS-IS ---------- */
+  const filteredData = React.useMemo(() => formattedData, [formattedData]);
 
   /* ================= RENDER ================= */
 
@@ -81,7 +72,7 @@ export function DashboardChart({ chartdata }: DashboardChartProps) {
           <CardTitle className="text-2xl font-bold">Total Revenue</CardTitle>
         </div>
 
-        <Select value={timeRange} onValueChange={setTimeRange}>
+        <Select value={timeRange} onValueChange={onTimeRangeChange}>
           <SelectTrigger
             className="hidden w-40 rounded-lg sm:ml-auto sm:flex"
             aria-label="Select a value"
@@ -90,9 +81,10 @@ export function DashboardChart({ chartdata }: DashboardChartProps) {
           </SelectTrigger>
 
           <SelectContent className="rounded-xl">
-            <SelectItem value="90d">Last 3 months</SelectItem>
-            <SelectItem value="30d">Last 30 days</SelectItem>
-            <SelectItem value="7d">Last 7 days</SelectItem>
+            <SelectItem value="7days">Last 7 days</SelectItem>
+            <SelectItem value="30days">Last 30 days</SelectItem>
+            <SelectItem value="3months">Last 3 months</SelectItem>
+            <SelectItem value="yearly">Yearly</SelectItem>
           </SelectContent>
         </Select>
       </CardHeader>
@@ -100,7 +92,7 @@ export function DashboardChart({ chartdata }: DashboardChartProps) {
       <CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">
         <ChartContainer
           config={chartConfig}
-          className="aspect-auto h-[250px] w-full"
+          className="aspect-auto h-62.5 w-full"
         >
           <AreaChart data={filteredData}>
             <defs>

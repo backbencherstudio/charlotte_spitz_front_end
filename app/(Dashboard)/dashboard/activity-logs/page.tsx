@@ -34,6 +34,10 @@ export default function ActivityLogsPage() {
       label: "Description",
       accessor: "description",
     },
+    {
+      label: "Details",
+      accessor: "description",
+    },
   ];
 
   const filterOptions = [
@@ -57,7 +61,7 @@ export default function ActivityLogsPage() {
     console.log("View submission:", submission);
     // You can implement a modal or navigation here
     alert(
-      `Viewing submission:\nUser ID: ${submission.userId}\nCustomer: ${submission.customerName}\nTemplate: ${submission.template}\nStatus: ${submission.status}`
+      `Viewing submission:\nUser ID: ${submission.userId}\nCustomer: ${submission.customerName}\nTemplate: ${submission.template}\nStatus: ${submission.status}`,
     );
   };
 
