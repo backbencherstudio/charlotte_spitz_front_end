@@ -44,8 +44,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
     },
     {
       icon: <CreditCard size={20} />,
-      label: "Subscriptions",
-      href: "/dashboard/subscriptions",
+      label: "Package",
+      href: "/dashboard/package",
     },
     {
       icon: <BarChart3 size={20} />,
@@ -83,9 +83,10 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
       {/* Sidebar container */}
       <div
         className={`
-          ${isOpen
-            ? "z-50 h-full overflow-hidden absolute top-0 left-0 xl:relative xl:z-auto"
-            : "h-full hidden xl:flex"
+          ${
+            isOpen
+              ? "z-50 h-full overflow-hidden absolute top-0 left-0 xl:relative xl:z-auto"
+              : "h-full hidden xl:flex"
           }
           flex flex-col
           bg-white
@@ -124,9 +125,10 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
                 className={`
                   flex items-center gap-3 px-3 py-2.5 rounded-lg
                   transition-colors duration-200
-                  ${active
-                    ? "bg-[#5952FF] text-white"
-                    : "text-black hover:bg-gray-100"
+                  ${
+                    active
+                      ? "bg-[#5952FF] text-white"
+                      : "text-black hover:bg-gray-100"
                   }
                 `}
               >

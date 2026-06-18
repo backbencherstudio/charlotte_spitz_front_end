@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import DashboardCard from "@/components/reusable/DashboardCard";
 import { FileText, LayoutTemplate, DollarSign, User } from "lucide-react";
 import RecentActivities from "@/components/reusable/RecentActivities";
@@ -33,8 +34,12 @@ const mostUsedTemplatesData: TemplateData[] = [
 ];
 
 export default function DashboardPage() {
-  const { data: dashboardData } = useGetAllOverviewQuery({});
+  const [selectedRange, setSelectedRange] = useState("7days");
+  const { data: dashboardData } = useGetAllOverviewQuery({
+    range: selectedRange,
+  });
   const { data: profileData } = useGetProfileQuery({});
+
   return (
     <div className="p-4 sm:p-6 bg-gray-50 min-h-screen">
       <div className="mb-6">
@@ -70,7 +75,11 @@ export default function DashboardPage() {
       </div>
       <div className="mt-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center justify-center">
         <div className="lg:col-span-8">
-          <DashboardChart chartdata={dashboardData?.data?.monthlyRevenue} />
+          <DashboardChart
+            chartdata={dashboardData?.data?.revenue}
+            timeRange={selectedRange}
+            onTimeRangeChange={setSelectedRange}
+          />
         </div>
         <div className="lg:col-span-4 h-full">
           <RecentActivities

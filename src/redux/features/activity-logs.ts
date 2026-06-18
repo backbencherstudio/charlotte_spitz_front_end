@@ -8,7 +8,14 @@ const activityLogsApi = baseApi.injectEndpoints({
         method: "GET",
       }),
     }),
+    getActivityDetails: builder.query({
+      query: (id) => ({
+        url: `activity-logs/${id}`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
-export const { useGetAllActivityLogsQuery } = activityLogsApi;
+export const { useGetAllActivityLogsQuery, useGetActivityDetailsQuery } =
+  activityLogsApi;

@@ -39,9 +39,9 @@ export default function DashboardCard({
               </h3>
             </div>
             <p className="text-3xl font-bold text-foreground mb-2">{number}</p>
-            <p className="text-sm text-muted-foreground">
+            {/* <p className="text-sm text-muted-foreground">
               Update: {"July 20, 2025"}
-            </p>
+            </p> */}
           </div>
         </div>
       </CardContent>

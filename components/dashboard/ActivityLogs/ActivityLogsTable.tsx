@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { Search, ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
+import { ActivityDetailsModal } from "./ActivityDetailsModal";
 
 interface ColumnConfig {
   label: React.ReactNode;
@@ -241,6 +242,10 @@ export default function ActivityLogsTable({
                   </td>
                   <td className="px-2 sm:px-3 lg:px-4 py-2 sm:py-3 font-semibold text-sm text-[#070707]">
                     {String(row?.description ?? "-")}
+                  </td>
+                  <td className="px-2 sm:px-3 lg:px-4 py-2 sm:py-3 font-semibold text-sm text-[#070707]">
+                    {/* {row?.id} */}
+                    <ActivityDetailsModal activityId={row?.id} />
                   </td>
                 </tr>
               ))
